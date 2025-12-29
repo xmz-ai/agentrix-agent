@@ -2,6 +2,11 @@
 
 # dependencies
 /node_modules
+/dist
+
+**/node_modules
+**/dist
+
 /.pnp
 .pnp.js
 
@@ -34,3 +39,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.idea
