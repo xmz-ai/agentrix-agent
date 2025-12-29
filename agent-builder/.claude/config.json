@@ -1,0 +1,16 @@
+{
+  "systemPrompt": {
+    "path": "system_prompt.md",
+    "mode": "replace"
+  },
+  "settings": {
+    "permissionMode": "bypassPermissions",
+    "allowedTools": [
+      "mcp__index__*",
+      "mcp__context7__*"
+    ]
+  },
+  "sdkMcpTools": [
+    "plugins/agent-builder-tools/dist/index.js"
+  ]
+}
