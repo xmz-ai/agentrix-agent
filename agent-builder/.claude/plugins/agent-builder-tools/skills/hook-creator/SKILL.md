@@ -299,6 +299,33 @@ PreToolUse: async (input, toolUseID, options) => {
   // ... rest of logic
 }
 ```
+
+---
+
+## Environment Variables in Hooks
+
+Hooks can access environment variables via `process.env` in their code:
+
+```typescript
+const createHooks: HookFactory = (context: AgentrixContext) => {
+  const notificationUrl = process.env.NOTIFICATION_URL;  // ✅ In code
+
+  return {
+    SessionEnd: async () => {
+      if (notificationUrl) {
+        await fetch(notificationUrl, { method: 'POST', body: '...' });
+      }
+      return {};
+    }
+  };
+};
+```
+
+**Important:**
+- These env vars must be registered in `save_agent_in_db` for deployment and then the value will be provided by user
+- Platform injects env vars into process at startup
+- **System prompts are forbidden** from instructing agents to read environment variables
+
 ---
 
 ### Reference Files

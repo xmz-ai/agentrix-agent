@@ -8,7 +8,7 @@ import type { AgentrixContext } from '@agentrix/shared';
 import { createWriteAgentStructure } from './tools/agentStructure.js';
 import { createCreatePlugin } from './tools/pluginTools.js';
 import { createValidateAgent } from './tools/validation.js';
-import { createCreateAgentInDb } from './tools/databaseTools.js';
+import { createSaveAgentInDb} from './tools/databaseTools.js';
 
 /**
  * Agent Builder MCP Server Factory
@@ -19,7 +19,7 @@ import { createCreateAgentInDb } from './tools/databaseTools.js';
  * Available tools (4 total):
  * - Agent Structure: write_agent_structure
  * - Plugins: create_plugin
- * - Database: create_agent_in_db (includes env vars schema)
+ * - Database: save_agent_in_db (includes env vars schema)
  * - Validation: validate_agent
  */
 export default function(context: AgentrixContext) {
@@ -34,7 +34,7 @@ export default function(context: AgentrixContext) {
       createCreatePlugin(context),
 
       // Database (1 tool)
-      createCreateAgentInDb(context),
+      createSaveAgentInDb(context),
 
       // Validation (1 tool)
       createValidateAgent(context),

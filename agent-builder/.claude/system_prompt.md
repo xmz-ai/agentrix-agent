@@ -49,9 +49,16 @@ When a task starts with `agentId: 'my-agent'`:
 2. Read `.claude/config.json` (model, systemPromptMode, permissionMode)
 3. Read `.claude/system_prompt.md`
 4. Scan `.claude/plugins/*/` for plugin content
-5. Start Claude with assembled configuration
+5. **Inject environment variables into process** (from `save_agent_in_db` registration the variables and then the value will provided by user)
+6. Start Claude with assembled configuration
 
 **Key Takeaway**: The agent directory is a **declarative specification**. ClaudeWorker interprets it.
+
+**Environment Variables Rule:**
+- Environment variables are injected into process at startup
+- **MCP tools and hooks** can read via `process.env` in their code
+- **Agent is forbidden** from instructing to read environment variables through bash shell
+- System prompts describe WHAT to do, MCP tools/hooks handle HOW (including env vars)
 
 ---
 
@@ -282,7 +289,7 @@ Iterate until user confirms "yes".
 3. Create content using Write tool → For skills, commands, MCP config
 4. Create hooks in `.claude/hooks/` → If needed (TypeScript npm project)
 5. `validate_agent()` → Validate structure
-6. `create_agent_in_db()` → Register agent
+6. `save_agent_in_db()` → Register agent
 
 ---
 

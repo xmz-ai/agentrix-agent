@@ -22,7 +22,7 @@ This skill guides you through the complete agent creation process using the avai
 3. Create plugin content    → Use file operations (Write/Edit) for skills/commands/mcp
 4. Create hooks             → Use file operations in .claude/hooks/
 5. validate_agent()         → Validates structure
-6. create_agent_in_db()     → Registers in database
+6. save_agent_in_db()     → Registers in database
 ```
 
 ### Step 1: Create Agent Structure
@@ -102,7 +102,7 @@ Hooks are created in `.claude/hooks/` (NOT in plugins). **See Hook Creator skill
 
 ### Step 6: Register in Database
 
-**Tool:** `create_agent_in_db`
+**Tool:** `save_agent_in_db`
 
 **Parameters:**
 - `name` - Agent name
@@ -256,7 +256,7 @@ Before finalizing an agent:
 - [ ] Each plugin has clear, single purpose
 - [ ] `allowedTools` only lists NEW MCP tools (glob patterns like `mcp__*__*`)
 - [ ] `validate_agent()` passes
-- [ ] `create_agent_in_db()` succeeds
+- [ ] `save_agent_in_db()` succeeds
 - [ ] All required environment variables documented
 
 ---
@@ -266,9 +266,11 @@ Before finalizing an agent:
 After successful creation, inform the user:
 
 1. **Agent Location**: `{workspace}/{agent-name}/`
-2. **Required Environment Variables**: List them clearly
+2. **Required Environment Variables**: List variables that need to be configured at deployment
 3. **How to Use**: Explain how to invoke the agent
-4. **Generate README.md**: Create a README with build/deploy instructions and environment variables
+4. **Generate README.md**: Create a README with:
+   - Build/deploy instructions
+   - Environment variables required for deployment
 5. **Next Steps**: Offer to modify or create another agent
 
 **Example Output:**
@@ -284,7 +286,7 @@ Structure:
 - 1 command: /generate-report
 - 1 hook: SessionEnd
 
-Required Environment Variables:
+Required Environment Variables (for deployment):
   - GITHUB_TOKEN: For GitHub integration (optional)
 
 A README.md has been generated with build/deploy instructions and environment variable documentation.
