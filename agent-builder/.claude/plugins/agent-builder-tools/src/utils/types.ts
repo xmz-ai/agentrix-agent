@@ -20,7 +20,6 @@ export interface ClaudeConfig {
   };
   // NOTE: NO plugins field - plugins are auto-discovered from .claude/plugins/
   sdkMcpTools?: string[]; // Scripts that export createSdkMcpServer()
-  env?: Record<string, string>; // Environment variables for plugins
   pullRequestPrompt?: {
     path: string;
     mode: 'append' | 'replace';
