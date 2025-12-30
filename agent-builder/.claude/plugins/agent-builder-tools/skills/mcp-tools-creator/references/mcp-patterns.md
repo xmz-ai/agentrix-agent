@@ -174,34 +174,51 @@ The `sdkMcpTools` array contains paths to compiled MCP server entry points (rela
 
 ## Existing MCP Server Configuration
 
-For using pre-built MCP servers:
+For using pre-built MCP servers, configure in `.mcp.json`:
+
+**Note:** No `env` field needed - environment variables are already injected into process at startup.
 
 ### GitHub
 
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"]
+    }
+  }
+}
 ```
-mcpServerName: 'github'
-mcpCommand: 'npx'
-mcpArgs: ['-y', '@modelcontextprotocol/server-github']
-mcpEnv: { GITHUB_TOKEN: '${GITHUB_TOKEN}' }
-```
+Required env var: `GITHUB_TOKEN` (registered in `save_agent_in_db`)
 
 ### PostgreSQL
 
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"]
+    }
+  }
+}
 ```
-mcpServerName: 'postgres'
-mcpCommand: 'npx'
-mcpArgs: ['-y', '@modelcontextprotocol/server-postgres', '${DATABASE_URL}']
-mcpEnv: { DATABASE_URL: '${DATABASE_URL}' }
-```
+Required env var: `DATABASE_URL` (registered in `save_agent_in_db`)
 
 ### Slack
 
+```json
+{
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"]
+    }
+  }
+}
 ```
-mcpServerName: 'slack'
-mcpCommand: 'npx'
-mcpArgs: ['-y', '@modelcontextprotocol/server-slack']
-mcpEnv: { SLACK_BOT_TOKEN: '${SLACK_BOT_TOKEN}' }
-```
+Required env var: `SLACK_BOT_TOKEN` (registered in `save_agent_in_db`)
 
 ---
 

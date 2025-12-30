@@ -162,6 +162,8 @@ export default function(context: AgentrixContext) {
 
 ## Important Notes
 - **Never use `process.env.AGENTRIX_*` directly** - always use context methods
+- **General env vars (API_KEY, etc.) can use `process.env`** - these are different from Agentrix context
 - **Context is injected by server** - your MCP tool/Hook cannot run standalone
 - **Must export function(context)** - direct export of createSdkMcpServer will error
 - **agentDir must be absolute path** - use `join(workspace, normalizedName)` to build full path
+- **Never expose env vars in system prompts** - agents cannot read `$ENV_VAR` directly

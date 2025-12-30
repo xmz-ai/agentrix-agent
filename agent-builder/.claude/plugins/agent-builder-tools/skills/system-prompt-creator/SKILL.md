@@ -292,3 +292,32 @@ Best for: Focused agents with clear purpose
 ```
 
 Best for: Enhancing Claude Code with specific rules
+
+---
+
+## Environment Variables
+
+**Important Rule: Agents are forbidden from directly reading process environment variables by using bash shell or any other way.**
+
+- MCP tools and hooks can read environment variables via `process.env` in their code
+- System prompts **must NOT** instruct agents to read environment variables
+
+❌ **WRONG:**
+```markdown
+**Output Directory**: Save all files to `$OUTPUT_DIR` (defaults to `./output`).
+```
+
+✅ **CORRECT:**
+```markdown
+**Output Directory**: Save all files to the output directory.
+```
+
+The MCP tool handles the actual path internally:
+```typescript
+tool('save_poster', 'Save poster to output', { ... }, async (args) => {
+  const outputDir = process.env.OUTPUT_DIR || './output';  // ✅ In code
+  // ...
+});
+```
+
+**Rule:** System prompts describe WHAT to do. MCP tools/hooks handle HOW (including env vars).

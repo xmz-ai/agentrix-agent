@@ -89,7 +89,7 @@ See Hook Creator skill for format details.
 
 ### Database Tools
 
-#### `create_agent_in_db`
+#### `save_agent_in_db`
 Register agent in database AFTER all files are created. Uses `context.createAgentBuilder()` RPC call.
 
 **Parameters:**
@@ -190,7 +190,7 @@ src/
 ├── tools/
 │   ├── agentStructure.ts # write_agent_structure tool
 │   ├── pluginTools.ts    # create_plugin tool
-│   ├── databaseTools.ts  # create_agent_in_db tool
+│   ├── databaseTools.ts  # save_agent_in_db tool
 │   └── validation.ts     # validate_agent tool
 └── utils/
     ├── types.ts          # TypeScript type definitions
@@ -221,7 +221,7 @@ The Agent Builder agent uses these tools during agent creation:
 
 **Phase 4: Validate and Register (2 tool calls)**
 7. **Validate structure**: `validate_agent({ name: "My Agent" })`
-8. **Register in DB**: `create_agent_in_db({ name: "My Agent", envVars: [...] })`
+8. **Register in DB**: `save_agent_in_db({ name: "My Agent", envVars: [...] })`
    - agentDir is automatically resolved from name
    - Uses context.createAgentBuilder() RPC
    - Returns `agentId`

@@ -49,14 +49,13 @@ For existing MCP servers (npm packages), configure in `.mcp.json`:
   "mcpServers": {
     "server-name": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
-      }
+      "args": ["-y", "@modelcontextprotocol/server-github"]
     }
   }
 }
 ```
+
+**Note:** No `env` field needed - environment variables are already injected into process at startup.
 
 ---
 
@@ -233,7 +232,24 @@ Search Context7 before creating custom implementations.
 Only create tools that WILL be used. Optional features → Skill.
 
 ### 3. Document Env Vars
-Register required env vars in `create_agent_in_db`.
+Register required env vars in `save_agent_in_db`.
+
+---
+
+## Environment Variables
+
+MCP tools can read environment variables via `process.env` in their code:
+
+```typescript
+const API_KEY = process.env.API_KEY;  // ✅ In code
+const BASE_URL = process.env.API_BASE_URL || 'https://api.example.com';
+```
+
+**Important:**
+- Environment variables are registered in `save_agent_in_db`, and then will be provided by user
+- Platform injects env vars into process at startup
+- `.mcp.json` does NOT need `env` field configuration
+- **System prompts are forbidden** from instructing agents to read environment variables
 
 ---
 

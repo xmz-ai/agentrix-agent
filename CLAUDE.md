@@ -57,7 +57,7 @@ agent-builder/
 - `write_agent_structure` - Create agent directory with base files
 - `create_plugin` - Create plugin with manifest
 - `validate_agent` - Validate agent structure
-- `create_agent_in_db` - Register agent in database via RPC
+- `save_agent_in_db` - Register agent in database via RPC
 
 ### Creator Skills (in skills/)
 

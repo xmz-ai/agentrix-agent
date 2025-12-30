@@ -48,7 +48,7 @@ The agent-builder-tools plugin provides 4 MCP tools:
 | `write_agent_structure` | Create agent directory with base files |
 | `create_plugin` | Create plugin with manifest |
 | `validate_agent` | Validate agent structure and configuration |
-| `create_agent_in_db` | Register agent in database |
+| `save_agent_in_db` | Register agent in database |
 
 ## Available Skills
 

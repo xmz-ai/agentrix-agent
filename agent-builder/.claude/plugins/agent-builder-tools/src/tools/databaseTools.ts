@@ -3,16 +3,16 @@
 import {tool} from '@anthropic-ai/claude-agent-sdk';
 import {z} from 'zod';
 import type {AgentrixContext} from '@agentrix/shared';
-import {normalizeAgentName, resolveAgentDir} from '../utils/fileSystem.js';
+import {resolveAgentDir} from '../utils/fileSystem.js';
 import type {ToolResponse} from '../utils/types.js';
 
 /**
  * Create agent in database tool factory
  * CRITICAL: Call this AFTER all files are created to register the agent
  */
-export function createCreateAgentInDb(context: AgentrixContext) {
+export function createSaveAgentInDb(context: AgentrixContext) {
   return tool(
-  'create_agent_in_db',
+  'save_agent_in_db',
   'Register agent in database AFTER all files are created. agentDir is automatically resolved from name.',
   {
     name: z.string().describe('Agent name (same name used in write_agent_structure)'),
@@ -24,7 +24,8 @@ export function createCreateAgentInDb(context: AgentrixContext) {
       description: z.string().describe('Variable description'),
       required: z.boolean().default(false).describe('Whether required'),
       defaultValue: z.string().optional().describe('Default value'),
-    })).optional().describe('Environment variables required by agent')
+    })).optional().describe('Environment variables required by agent'),
+    isUpdate: z.boolean().optional().default(false).describe("Whether is agent updated"),
   },
   async (args) => {
     try {
@@ -40,6 +41,7 @@ export function createCreateAgentInDb(context: AgentrixContext) {
         type: args.type as 'claude' | 'codex',
         description: args.description,
         envVars: args.envVars,
+        isUpdate: args.isUpdate
       });
 
       // Build user-friendly env vars message
