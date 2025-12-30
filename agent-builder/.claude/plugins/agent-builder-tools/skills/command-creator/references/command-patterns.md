@@ -91,7 +91,7 @@ Verify:
 
 If missing:
 - Create default configuration
-- Show how to set env vars: `!setenv KEY value`
+- Document required environment variables in README.md
 
 ## Step 3: Validate
 

@@ -266,9 +266,10 @@ Before finalizing an agent:
 After successful creation, inform the user:
 
 1. **Agent Location**: `{workspace}/{agent-name}/`
-2. **Required Environment Variables**: List with `!setenv` instructions
+2. **Required Environment Variables**: List them clearly
 3. **How to Use**: Explain how to invoke the agent
-4. **Next Steps**: Offer to modify or create another agent
+4. **Generate README.md**: Create a README with build/deploy instructions and environment variables
+5. **Next Steps**: Offer to modify or create another agent
 
 **Example Output:**
 
@@ -286,7 +287,7 @@ Structure:
 Required Environment Variables:
   - GITHUB_TOKEN: For GitHub integration (optional)
 
-To set: !setenv GITHUB_TOKEN your-token-here
+A README.md has been generated with build/deploy instructions and environment variable documentation.
 
 The agent is ready to use!
 ```

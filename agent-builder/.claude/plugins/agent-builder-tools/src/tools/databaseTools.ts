@@ -63,12 +63,7 @@ export function createCreateAgentInDb(context: AgentrixContext) {
           });
         }
 
-        envVarsMessage += '\nTo set environment variables, use:\n';
-        envVarsMessage += '  !setenv [name] [value]\n';
-        envVarsMessage += 'Example:\n';
-        if (required.length > 0) {
-          envVarsMessage += `  !setenv ${required[0].name} your-value-here`;
-        }
+        envVarsMessage += '\nEnvironment variables should be configured in the agent\'s README.md.';
       }
 
       return {
