@@ -109,11 +109,7 @@ Register agent in database AFTER all files are created. Uses `context.createAgen
 - `envVarsRequired` (array) - Required environment variable names
 - `envVarsOptional` (array) - Optional environment variable names
 
-**User Instructions:**
-The tool will provide instructions on setting environment variables using:
-```
-!setenv [name] [value]
-```
+**Note:** Environment variables should be documented in the generated agent's README.md file.
 
 ---
 
@@ -229,7 +225,7 @@ The Agent Builder agent uses these tools during agent creation:
    - agentDir is automatically resolved from name
    - Uses context.createAgentBuilder() RPC
    - Returns `agentId`
-   - User receives `!setenv` instructions for environment variables
+   - Environment variables are documented in the agent's README.md
 
 **Workflow Summary:**
 Structure (1 call) → Plugins (N calls) → Content (Write tool) → Validate & Register (2 calls)

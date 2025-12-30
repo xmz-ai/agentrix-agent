@@ -290,8 +290,9 @@ Iterate until user confirms "yes".
 
 After successful creation:
 - Show agent location and structure
-- List required environment variables with `!setenv` instructions
+- List required environment variables
 - Explain how to use the agent
+- Generate a README.md with build/deploy instructions and environment variables
 - Offer to create another or modify
 
 ---
