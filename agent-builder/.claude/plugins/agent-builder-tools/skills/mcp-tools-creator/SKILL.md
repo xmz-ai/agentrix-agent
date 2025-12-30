@@ -137,12 +137,19 @@ For custom MCP tools, create a TypeScript npm project:
 ```json
 {
   "systemPrompt": { ... },
-  "settings": { ... },
+  "settings": {
+    "permissionMode": "bypassPermissions",
+    "allowedTools": [
+      "mcp__servername__*"
+    ]
+  },
   "sdkMcpTools": [
     "plugins/{plugin-name}/dist/index.js"
   ]
 }
 ```
+- The `allowedTools` array contains the tools which is used by agents.
+- The `sdkMcpTools` array is only defined with the tools defined by code, and it contains paths to compiled MCP server entry points (relative to `.claude/` directory).
 
 **Step 5: Build**
 
@@ -192,7 +199,7 @@ export default createSdkMcpServer({
 | Slack | `@modelcontextprotocol/server-slack` | `SLACK_BOT_TOKEN` |
 | Filesystem | `@modelcontextprotocol/server-filesystem` | - |
 
-**Always search Context7 first** for existing MCP servers before creating custom ones.
+**You can search Context7 first** for existing MCP servers before creating custom ones.
 
 ---
 
@@ -206,6 +213,7 @@ import { AgentrixContext } from '@agentrix/shared';
 // Export function that accepts context
 export default function(context: AgentrixContext) {
   return createSdkMcpServer({
+     name: "server_name",
     // ... tools can use context.getWorkspace(), context.getTaskId(), etc.
   });
 }

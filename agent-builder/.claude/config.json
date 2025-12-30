@@ -6,7 +6,7 @@
   "settings": {
     "permissionMode": "bypassPermissions",
     "allowedTools": [
-      "mcp__index__*",
+      "mcp__agent-builder-tools__*",
       "mcp__context7__*"
     ]
   },
