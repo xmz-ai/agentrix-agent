@@ -11,7 +11,7 @@ import { z } from 'zod';
 const BASE_URL = process.env.API_BASE_URL || 'https://api.example.com';
 
 export default createSdkMcpServer({
-  name: 'rest-api',
+  name: 'example-rest-api',
   version: '1.0.0',
   tools: [
     tool('api_get', 'GET request', {
@@ -52,7 +52,7 @@ import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
 import { z } from 'zod';
 
 export default createSdkMcpServer({
-  name: 'database',
+  name: 'example-database',
   version: '1.0.0',
   tools: [
     tool('query', 'Execute SQL query', {
@@ -80,7 +80,7 @@ import puppeteer from 'puppeteer';
 import * as fs from 'fs';
 
 export default createSdkMcpServer({
-  name: 'converter',
+  name: 'example-converter',
   version: '1.0.0',
   tools: [
     tool('html_to_pdf', 'Convert HTML to PDF', {
@@ -114,7 +114,7 @@ import * as fs from 'fs';
 
 export default function(context: AgentrixContext) {
   return createSdkMcpServer({
-    name: 'workspace',
+    name: 'agentrix-workspace',
     version: '1.0.0',
     tools: [
       tool('save_file', 'Save to workspace', {
@@ -157,14 +157,17 @@ export default function(context: AgentrixContext) {
     "mode": "replace"
   },
   "settings": {
-    "permissionMode": "bypassPermissions"
+    "permissionMode": "bypassPermissions",
+    "allowedTools": [
+      "mcp__servername__*"
+    ]
   },
   "sdkMcpTools": [
     "plugins/{plugin-name}/dist/index.js"
   ]
 }
 ```
-
+The `allowedTools` array contains the tools which is used by agents.
 The `sdkMcpTools` array contains paths to compiled MCP server entry points (relative to `.claude/` directory).
 
 ---
