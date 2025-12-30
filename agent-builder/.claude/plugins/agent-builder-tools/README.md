@@ -6,45 +6,32 @@ MCP tools plugin for the Agent Builder agent. Provides comprehensive tools for c
 
 This plugin extends the Agent Builder agent with MCP tools that enable:
 - Agent directory structure creation
-- Plugin management (skills, hooks, commands, MCP servers)
+- Plugin management
 - Database registration with environment variable schema
 - Agent validation
-
-## Environment Variables
-
-The following environment variables are injected by the Agentrix CLI worker process:
-
-- `AGENTRIX_SERVER_URL` - API server URL (e.g., `http://localhost:3000`)
-- `AGENTRIX_TOKEN` or `AGENTRIX_API_TOKEN` - Authentication token for API requests
-- `AGENTRIX_WORKING_USER` - Current user ID
-- `AGENTRIX_WORKING_TASK` - Current task ID
-- `AGENTRIX_WORKING_DIR` - Current working directory
-- `AGENTRIX_HOME_DIR` (optional) - Base directory for agents (default: `~/.agentrix-test`)
 
 ## Available Tools
 
 ### Agent Structure Tools
 
 #### `write_agent_structure`
-Create complete agent directory structure with all base files. Call this FIRST. Replaces 4 previous tools (create_agent_directory, write_agent_metadata, write_claude_config, write_system_prompt).
+Create complete agent directory structure with all base files. Call this FIRST.
 
 **Parameters:**
-- `name` (string) - Agent name (will be normalized to directory name, e.g., "My Agent" → "my-agent")
+- `name` (string, required) - Agent name (will be normalized to directory name, e.g., "My Agent" → "my-agent")
 - `displayName` (string, optional) - Agent display name (defaults to name if not provided)
 - `version` (string) - Agent version (default: "1.0.0")
 - `description` (string, optional) - Agent description
-- `model` (string) - Claude model to use (default: "claude-opus-4-5")
 - `maxTurns` (number, optional) - Maximum conversation turns
 - `systemPromptPath` (string, optional) - Path to system prompt file (relative to .claude/)
 - `systemPromptMode` (enum) - "append" or "replace" (default: "append")
 - `systemPromptContent` (string, optional) - System prompt content (creates .claude/system_prompt.md if provided)
-- `permissionMode` (string, optional) - Permission mode (default, acceptEdits, bypassPermissions, plan)
-- `allowedTools` (array, optional) - Allowed tool patterns
-- `plugins` (array, optional) - SDK MCP tool scripts to load
+- `allowedTools` (array, optional) - Allowed tool patterns (sets permissionMode to "bypassPermissions" when provided)
+- `plugins` (array, optional) - SDK MCP tool scripts to load (sdkMcpTools)
 
 **Creates:**
-- `{AGENTRIX_AGNET_DIR}/<normalized-name>/` directory structure
-- `agent.json` with metadata
+- `{workspace}/<normalized-name>/` directory structure
+- `agent.json` with metadata (name, version, description)
 - `.claude/config.json` with configuration
 - `.claude/system_prompt.md` (if systemPromptContent provided)
 - `.claude/plugins/` directory
@@ -62,16 +49,16 @@ Create complete agent directory structure with all base files. Call this FIRST. 
 Create a plugin directory structure with manifest (metadata only).
 
 **Parameters:**
-- `name` (string) - Agent name
-- `pluginName` (string) - Plugin name (lowercase, hyphens only)
-- `description` (string) - Plugin description
+- `name` (string, required) - Agent name
+- `pluginName` (string, required) - Plugin name (lowercase, hyphens only, regex: `^[a-z0-9-]+$`)
+- `description` (string, required) - Plugin description
 - `version` (string) - Plugin version (default: "1.0.0")
 - `authorName` (string, optional) - Plugin author name
 
 **Creates:**
 - `.claude/plugins/<pluginName>/`
-- `.claude-plugin/plugin.json` manifest
-- `README.md`
+- `.claude/plugins/<pluginName>/.claude-plugin/plugin.json` manifest
+- `.claude/plugins/<pluginName>/README.md`
 
 ---
 
@@ -103,12 +90,12 @@ See Hook Creator skill for format details.
 ### Database Tools
 
 #### `create_agent_in_db`
-Register agent in database AFTER all files are created. agentDir is automatically resolved from name.
+Register agent in database AFTER all files are created. Uses `context.createAgentBuilder()` RPC call.
 
 **Parameters:**
-- `name` (string) - Agent name (same name used in write_agent_structure)
+- `name` (string, required) - Agent name (same name used in write_agent_structure)
 - `description` (string, optional) - Agent description
-- `type` (string, optional) - Agent type (default: "claude")
+- `type` (string) - Agent type: "claude" or "codex" (default: "claude")
 - `envVars` (array, optional) - Environment variables required by agent:
   - `name` (string) - Variable name (e.g., "API_KEY")
   - `type` (enum) - "string", "number", or "boolean"
@@ -116,10 +103,9 @@ Register agent in database AFTER all files are created. agentDir is automaticall
   - `required` (boolean) - Whether required (default: false)
   - `defaultValue` (string, optional) - Default value
 
-**API Endpoint:** `POST /v1/agent-builder/create-agent`
-
 **Returns:**
 - `agentId` (string) - Generated agent ID
+- `agentDir` (string) - Agent directory path
 - `envVarsRequired` (array) - Required environment variable names
 - `envVarsOptional` (array) - Optional environment variable names
 
@@ -127,11 +113,6 @@ Register agent in database AFTER all files are created. agentDir is automaticall
 The tool will provide instructions on setting environment variables using:
 ```
 !setenv [name] [value]
-```
-
-Example:
-```
-!setenv API_KEY sk-your-api-key-here
 ```
 
 ---
@@ -142,20 +123,23 @@ Example:
 Validate agent directory structure and configuration files.
 
 **Parameters:**
-- `name` (string) - Agent name to validate
+- `name` (string, required) - Agent name to validate
 
 **Checks:**
 - Agent directory exists
-- `agent.json` is valid
-- `.claude/config.json` is valid
-- System prompt file exists (if referenced)
-- Plugin directories exist (if referenced)
-- Plugin manifests exist
+- `agent.json` exists and is valid (has name, version)
+- `.claude/config.json` exists and is valid
+- System prompt file exists (if referenced in config)
+- Plugin directories exist (if referenced in config)
+- Plugin manifests exist (`.claude-plugin/plugin.json`)
+- `.claude/plugins/` directory exists (warning if not)
+- Model specified in config (warning if not)
 
 **Returns:**
 - `valid` (boolean) - Validation result
 - `errors` (array) - Error messages
 - `warnings` (array) - Warning messages
+- `paths` (object) - Resolved paths (agentDir, agentJson, claudeConfig)
 
 ---
 
@@ -206,16 +190,15 @@ Watches for changes and recompiles automatically.
 
 ```
 src/
-├── index.ts              # MCP server entry point
+├── index.ts              # MCP server entry point (exports factory function)
 ├── tools/
-│   ├── agentStructure.ts # Agent structure creation (1 tool)
-│   ├── pluginTools.ts    # Plugin management (1 tool)
-│   ├── databaseTools.ts  # Database operations (1 tool)
-│   └── validation.ts     # Agent validation (1 tool)
+│   ├── agentStructure.ts # write_agent_structure tool
+│   ├── pluginTools.ts    # create_plugin tool
+│   ├── databaseTools.ts  # create_agent_in_db tool
+│   └── validation.ts     # validate_agent tool
 └── utils/
     ├── types.ts          # TypeScript type definitions
-    ├── fileSystem.ts     # File system utilities
-    └── apiClient.ts      # HTTP API client
+    └── fileSystem.ts     # File system utilities
 ```
 
 **Total: 4 MCP tools**
@@ -244,7 +227,8 @@ The Agent Builder agent uses these tools during agent creation:
 7. **Validate structure**: `validate_agent({ name: "My Agent" })`
 8. **Register in DB**: `create_agent_in_db({ name: "My Agent", envVars: [...] })`
    - agentDir is automatically resolved from name
-   - API generates and returns `agentId`
+   - Uses context.createAgentBuilder() RPC
+   - Returns `agentId`
    - User receives `!setenv` instructions for environment variables
 
 **Workflow Summary:**
@@ -252,47 +236,62 @@ Structure (1 call) → Plugins (N calls) → Content (Write tool) → Validate &
 
 ---
 
-## API Integration
+## Type Definitions
 
-### Required API Endpoints
-
-The following API endpoint must be implemented on the server:
-
-#### POST /v1/agent-builder/create-agent
-
-**Request:**
-```json
-{
-  "name": "My Agent",
-  "agentDir": "my-agent",
-  "description": "Agent description",
-  "type": "claude",
-  "userId": "user-abc123",
-  "taskId": "task-xyz789",
-  "config": {
-    "deploymentSchema": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "type": "object",
-      "properties": {
-        "API_KEY": {
-          "type": "string",
-          "description": "Your API key for authentication"
-        }
-      },
-      "required": ["API_KEY"]
-    }
-  }
+### AgentMetadata (agent.json)
+```typescript
+interface AgentMetadata {
+  name: string;
+  version: string;
+  description?: string;
 }
 ```
 
-**Response:**
-```json
-{
-  "agentId": "agent-generated-id-123"
+### ClaudeConfig (.claude/config.json)
+```typescript
+interface ClaudeConfig {
+  model?: string;
+  fallbackModel?: string;
+  maxTurns?: number;
+  systemPrompt?: {
+    path: string;
+    mode: 'append' | 'replace';
+  };
+  settings?: {
+    permissionMode?: 'default' | 'acceptEdits' | 'bypassPermissions' | 'plan';
+    allowedTools?: string[];
+  };
+  sdkMcpTools?: string[];  // Scripts that export createSdkMcpServer()
+  pullRequestPrompt?: {
+    path: string;
+    mode: 'append' | 'replace';
+  };
+  extraArgs?: Record<string, string | null>;
 }
 ```
 
-**Note:** The API generates the `agentId`, not the client. The `userId` and `taskId` are automatically injected from environment variables (`AGENTRIX_WORKING_USER` and `AGENTRIX_WORKING_TASK`).
+### PluginManifest (.claude-plugin/plugin.json)
+```typescript
+interface PluginManifest {
+  name: string;
+  description: string;
+  version: string;
+  author?: {
+    name: string;
+  };
+}
+```
+
+---
+
+## Architecture
+
+This plugin uses the Claude Agent SDK's `createSdkMcpServer` to create an MCP server. The server is initialized with an `AgentrixContext` that provides:
+
+- `getWorkspace()` - Returns the workspace directory path
+- `createAgentBuilder()` - RPC call to register agents in the database
+
+All tools are factory functions that receive the context and return tool definitions.
 
 ---
 
