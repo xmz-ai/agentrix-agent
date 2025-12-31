@@ -314,7 +314,7 @@ export default createHooks;
 - `getWorkspace()`: Absolute path to workspace directory
 - `getTaskId()`: Current task ID
 - `getUserId()`: Current user ID
-- `createAgentBuilder(params)`: Create agent builder via RPC
+- `saveDraftAgent(params)`: Create draft agent via RPC
 
 See [Development Guide - Using AgentrixContext](./development-guide.md#using-agentrixcontext-in-hooks) for complete documentation.
 

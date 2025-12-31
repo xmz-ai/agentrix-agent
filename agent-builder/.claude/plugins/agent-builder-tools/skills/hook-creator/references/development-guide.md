@@ -221,24 +221,13 @@ const createHooks: HookFactory = (context: AgentrixContext) => ({
 export default createHooks;
 ```
 
-### AgentrixContext Methods
-
-The `AgentrixContext` interface provides:
-
-| Method | Return Type | Description |
-|--------|-------------|-------------|
-| `getWorkspace()` | `string` | Absolute path to the workspace directory |
-| `getTaskId()` | `string` | Current task ID |
-| `getUserId()` | `string` | Current user ID |
-| `createAgentBuilder(params)` | `Promise<{agentId, displayName}>` | Create a new agent builder (RPC) |
-
 ### When to Use Factory Pattern
 
 Use the factory pattern when your hooks need to:
 
 1. **Access workspace path** - Know where files are being modified
 2. **Track task/user context** - Log or audit based on task/user
-3. **Make API calls** - Use RPC methods like `createAgentBuilder()`
+3. **Make API calls** - Use RPC methods like `saveDraftAgent()`
 4. **Share state across hooks** - Use closure variables in the factory
 
 ### Direct Export vs Factory Pattern

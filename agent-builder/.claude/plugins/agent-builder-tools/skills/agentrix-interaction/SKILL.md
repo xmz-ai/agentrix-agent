@@ -81,8 +81,8 @@ Get the current task ID (returns plain string, not Promise).
 const taskId = context.getTaskId();
 ```
 
-#### `context.createAgentBuilder(params): Promise<{ agentId: string, displayName: string }>`
-Create a new agent builder in the database (this is the ONLY method that makes RPC call).
+#### `context.saveDraftAgent(params): Promise<{ agentId: string, displayName: string }>`
+Create a new draft agent in the database (this is the ONLY method that makes RPC call).
 
 **Parameters:**
 ```typescript
@@ -104,7 +104,7 @@ Create a new agent builder in the database (this is the ONLY method that makes R
 
 **Example:**
 ```typescript
-const result = await context.createAgentBuilder({
+const result = await context.saveDraftAgent({
   name: 'my-agent',
   agentDir: '/path/to/agent',
   type: 'claude',
@@ -140,7 +140,7 @@ export default function(context: AgentrixContext) {
           const agentDir = join(workspace, args.name);
 
           // Create agent in database (returns Promise)
-          const result = await context.createAgentBuilder({
+          const result = await context.saveDraftAgent({
             name: args.name,
             description: args.description,
             agentDir,

@@ -234,17 +234,6 @@ return {};  // Most hooks just return empty object
 
 ---
 
-## AgentrixContext Methods
-
-| Method | Return Type | Description |
-|--------|-------------|-------------|
-| `getWorkspace()` | `string` | Absolute path to workspace |
-| `getTaskId()` | `string` | Current task ID |
-| `getUserId()` | `string` | Current user ID |
-| `createAgentBuilder(params)` | `Promise<{agentId, displayName}>` | Create agent via RPC |
-
----
-
 ## Key Principles
 
 ### 1. Keep Hooks Simple
