@@ -90,7 +90,7 @@ See Hook Creator skill for format details.
 ### Database Tools
 
 #### `save_agent_in_db`
-Register agent in database AFTER all files are created. Uses `context.createAgentBuilder()` RPC call.
+Register agent in database AFTER all files are created. Uses `context.saveDraftAgent()` RPC call.
 
 **Parameters:**
 - `name` (string, required) - Agent name (same name used in write_agent_structure)
@@ -223,7 +223,7 @@ The Agent Builder agent uses these tools during agent creation:
 7. **Validate structure**: `validate_agent({ name: "My Agent" })`
 8. **Register in DB**: `save_agent_in_db({ name: "My Agent", envVars: [...] })`
    - agentDir is automatically resolved from name
-   - Uses context.createAgentBuilder() RPC
+   - Uses context.saveDraftAgent() RPC
    - Returns `agentId`
    - Environment variables are documented in the agent's README.md
 
@@ -285,7 +285,7 @@ interface PluginManifest {
 This plugin uses the Claude Agent SDK's `createSdkMcpServer` to create an MCP server. The server is initialized with an `AgentrixContext` that provides:
 
 - `getWorkspace()` - Returns the workspace directory path
-- `createAgentBuilder()` - RPC call to register agents in the database
+- `saveDraftAgent()` - RPC call to register agents in the database
 
 All tools are factory functions that receive the context and return tool definitions.
 

@@ -34,8 +34,8 @@ export function createSaveAgentInDb(context: AgentrixContext) {
       // Resolve agentDir from name
       const agentDir = resolveAgentDir(workspace, args.name);
 
-      // Call context.createAgentBuilder() via RPC
-      const response = await context.createAgentBuilder({
+      // Call context.saveDraftAgent() via RPC
+      const response = await context.saveDraftAgent({
         name: args.name,
         agentDir,
         type: args.type as 'claude' | 'codex',
