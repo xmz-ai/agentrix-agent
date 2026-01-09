@@ -288,8 +288,9 @@ Iterate until user confirms "yes".
 2. `create_plugin()` → For each plugin
 3. Create content using Write tool → For skills, commands, MCP config
 4. Create hooks in `.claude/hooks/` → If needed (TypeScript npm project)
-5. `validate_agent()` → Validate structure
-6. `save_agent_in_db()` → Register agent
+5. **Install dependencies and compile** → If plugin contains Code MCP tools or hooks
+6. `validate_agent()` → Validate structure
+7. `save_agent_in_db()` → Register agent
 
 ---
 
