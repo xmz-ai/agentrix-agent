@@ -87,7 +87,7 @@ For custom MCP tools, create a TypeScript npm project:
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@agentrix/shared": "^1.0.0"
+    "@agentrix/shared": "lasted"
   },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.30",

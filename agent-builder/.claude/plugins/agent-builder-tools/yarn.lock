@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@agentrix/shared@^1.0.13":
-  version "1.0.13"
-  resolved "https://registry.npmjs.org/@agentrix/shared/-/shared-1.0.13.tgz"
-  integrity sha512-SHc9wI9Atsd6+obxn5kLO2oJEa5F9NP3pHOpYTGEt2odU/OkS56DUkm80kvQT9N3eCpQZLVN0zr242tqm8aMaQ==
+"@agentrix/shared@latest":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@agentrix/shared/-/shared-2.0.7.tgz#cb1e887fbd301e8bc22d9274c871c5d17e48ad64"
+  integrity sha512-Nsgx/1HQfn9xTjv7IMh64I1tLH7gGncooXT7bUXemUr5yApwXktbMpYIIxl/7VkU614IRJ0r3S/Azzqua+WvDQ==
   dependencies:
     "@anthropic-ai/claude-agent-sdk" "^0.1.61"
     "@anthropic-ai/sdk" "^0.71.2"

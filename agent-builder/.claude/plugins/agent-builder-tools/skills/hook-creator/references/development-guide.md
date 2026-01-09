@@ -81,7 +81,7 @@ Create `tsconfig.json`:
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@agentrix/shared": "^1.0.0"
+    "@agentrix/shared": "lasted"
   },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.30",

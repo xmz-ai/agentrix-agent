@@ -71,7 +71,7 @@ Hooks are created as a TypeScript npm project in the agent's `.claude/hooks/` di
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@agentrix/shared": "^1.0.0"
+    "@agentrix/shared": "lasted"
   },
   "devDependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.30",
