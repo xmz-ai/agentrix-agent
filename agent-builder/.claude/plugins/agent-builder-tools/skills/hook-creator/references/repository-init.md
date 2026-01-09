@@ -555,16 +555,6 @@ git log --oneline
 git show HEAD  # Shows files created by hook
 ```
 
-### Test Locally
-
-```bash
-# Test repository init
-agentrix task create --agent=./my-agent --prompt="Create a new project"
-
-# Check workspace
-ls -la ~/.agentrix/workspaces/<task-id>/project/
-```
-
 ## Related Hooks
 
 - [SessionStart](./session-hooks.md#sessionstart) - Session initialization
