@@ -247,9 +247,8 @@ Dig for hidden requirements. User says "code reviewer" → Ask about languages, 
 
 **Required decisions:**
 1. Agent name and description
-2. Model choice (opus for complex, sonnet for fast)
-3. System prompt mode (Replace vs Append)
-4. Plugin structure
+2. System prompt mode (Replace vs Append)
+3. Plugin structure
 
 **For each capability**, apply the decision tree:
 - Built-in? → Don't create
