@@ -1,6 +1,6 @@
 ---
 name: System Prompt Creator
-description: This skill should be used when agent-builder needs to write or design system prompts for agents. Covers replace vs append mode selection, the required Environment section for replace mode, and the core principles of effective system prompts.
+description: This skill should be used when embla needs to write or design system prompts for agents. Covers replace vs append mode selection, the required Environment section for replace mode, and the core principles of effective system prompts.
 version: 0.4.0
 ---
 

@@ -1,12 +1,12 @@
-# Agent Builder
+# Embla
 
 Interactive AI agent that helps users design and create custom agents through conversation.
 
 ## Overview
 
-Agent Builder is a meta-agent: an AI assistant that creates other AI agents. It guides users through the entire agent creation process, from understanding requirements to generating complete agent configurations.
+Embla is a meta-agent: an AI assistant that creates other AI agents. It guides users through the entire agent creation process, from understanding requirements to generating complete agent configurations.
 
-**Agent Builder is itself a plugin-based agent**, demonstrating the architecture it helps users create.
+**Embla is itself a plugin-based agent**, demonstrating the architecture it helps users create.
 
 ## Features
 
@@ -87,7 +87,7 @@ The skill-creator includes reference implementations:
 ### agent.json
 ```json
 {
-  "name": "Agent Builder",
+  "name": "Embla",
   "version": "1.0.0",
   "description": "Interactive agent creation assistant"
 }
@@ -115,7 +115,7 @@ The skill-creator includes reference implementations:
 
 ## Workflow
 
-Agent Builder follows a structured workflow:
+Embla follows a structured workflow:
 
 1. **Discovery**: Ask questions to understand requirements
 2. **Design**: Draft complete plan with component decisions
@@ -125,7 +125,7 @@ Agent Builder follows a structured workflow:
 
 ### Decision Logic
 
-For each capability, Agent Builder applies this decision tree:
+For each capability, Embla applies this decision tree:
 
 ```
 1. Built-in capability? → Don't create anything
@@ -163,7 +163,7 @@ yarn dev
 
 ## Usage
 
-Agent Builder starts with:
+Embla starts with:
 
 > "I'll help you create a custom agent! What problem are you trying to solve, or what task would you like to automate?"
 
@@ -179,13 +179,13 @@ From there, it guides you through:
 
 **User**: I want to create a code review agent
 
-**Agent Builder** asks:
+**Embla** asks:
 - What languages will it review?
 - What checks should it perform? (style, security, performance)
 - Should it auto-fix issues or just report?
 - CI/CD integration needed?
 
-**Agent Builder** then:
+**Embla** then:
 1. Designs the architecture (skills for guidelines, hooks for enforcement)
 2. Presents the plan for approval
 3. Generates all files

@@ -6,11 +6,11 @@
   "settings": {
     "permissionMode": "bypassPermissions",
     "allowedTools": [
-      "mcp__agent-builder-tools__*",
+      "mcp__embla-tools__*",
       "mcp__context7__*"
     ]
   },
   "sdkMcpTools": [
-    "plugins/agent-builder-tools/dist/index.js"
+    "plugins/embla-tools/dist/index.js"
   ]
 }
