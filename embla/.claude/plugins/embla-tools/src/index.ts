@@ -1,4 +1,4 @@
-// Agent Builder MCP Server
+// Embla MCP Server
 // Provides tools for creating and managing custom agents
 
 import { createSdkMcpServer } from '@anthropic-ai/claude-agent-sdk';
@@ -11,7 +11,7 @@ import { createValidateAgent } from './tools/validation.js';
 import { createSaveAgentInDb} from './tools/databaseTools.js';
 
 /**
- * Agent Builder MCP Server Factory
+ * Embla MCP Server Factory
  *
  * IMPORTANT: This function receives AgentrixContext from CLI at runtime.
  * The context provides access to workspace paths, user/task IDs, and RPC operations.
@@ -24,7 +24,7 @@ import { createSaveAgentInDb} from './tools/databaseTools.js';
  */
 export default function(context: AgentrixContext) {
   return createSdkMcpServer({
-    name: 'agent-builder-tools',
+    name: 'embla-tools',
     version: '2.0.0',
     tools: [
       // Agent structure (1 tool)

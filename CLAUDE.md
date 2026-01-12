@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the **Agent Builder** repository - a meta-agent that helps users design and create custom AI agents through conversation. Agent Builder is itself a plugin-based agent, demonstrating the architecture it helps users create.
+This is the **Embla** repository - a meta-agent that helps users design and create custom AI agents through conversation. Embla is itself a plugin-based agent, demonstrating the architecture it helps users create.
 
 ## Build Commands
 
 ```bash
-cd agent-builder/.claude/plugins/agent-builder-tools
+cd embla/.claude/plugins/embla-tools
 yarn install    # Install dependencies
 yarn build      # Compile TypeScript
 yarn dev        # Watch mode
@@ -20,14 +20,14 @@ yarn clean      # Remove dist/
 
 ### Agent Structure
 ```
-agent-builder/
+embla/
 ├── agent.json                    # Agent metadata (name, version)
 ├── README.md                     # Agent documentation
 └── .claude/
     ├── config.json               # Framework config (model, permissions, allowed tools)
     ├── system_prompt.md          # Agent behavior definition
     └── plugins/
-        ├── agent-builder-tools/  # TypeScript MCP tools
+        ├── embla-tools/  # TypeScript MCP tools
         │   ├── src/              # Source code
         │   ├── dist/             # Compiled output
         │   └── skills/           # Creator skills + skill library

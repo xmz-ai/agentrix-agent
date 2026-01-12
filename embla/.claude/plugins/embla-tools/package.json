@@ -1,7 +1,7 @@
 {
-  "name": "agent-builder-tools",
+  "name": "embla-tools",
   "version": "1.0.0",
-  "description": "MCP tools plugin for Agent Builder",
+  "description": "MCP tools plugin for Embla",
   "type": "module",
   "main": "dist/index.mjs",
   "scripts": {

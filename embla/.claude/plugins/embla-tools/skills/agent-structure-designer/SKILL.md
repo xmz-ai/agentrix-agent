@@ -1,6 +1,6 @@
 ---
 name: Agent Structure Designer
-description: This skill should be used when agent-builder needs to design plugin organization, execute the full agent creation workflow, or understand tool call sequences. Covers directory structure, naming conventions, permission modes, and the complete tool call flow for creating agents.
+description: This skill should be used when embla needs to design plugin organization, execute the full agent creation workflow, or understand tool call sequences. Covers directory structure, naming conventions, permission modes, and the complete tool call flow for creating agents.
 version: 0.2.0
 ---
 

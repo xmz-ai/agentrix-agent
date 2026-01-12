@@ -1,6 +1,6 @@
 ---
 name: Command Creator
-description: This skill should be used when agent-builder determines that the agent needs slash commands or user-invokable shortcuts. Covers command content format and best practices.
+description: This skill should be used when embla determines that the agent needs slash commands or user-invokable shortcuts. Covers command content format and best practices.
 version: 0.3.0
 ---
 

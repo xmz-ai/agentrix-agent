@@ -1,6 +1,6 @@
 ---
 name: Skill Creator
-description: This skill should be used when agent-builder determines that the agent needs Skills for domain knowledge, procedural guidance, creative tasks, or optional features that shouldn't pollute context. Provides skillContent format requirements, best practices, and a library of production-quality SKILL examples.
+description: This skill should be used when embla determines that the agent needs Skills for domain knowledge, procedural guidance, creative tasks, or optional features that shouldn't pollute context. Provides skillContent format requirements, best practices, and a library of production-quality SKILL examples.
 version: 0.4.0
 ---
 

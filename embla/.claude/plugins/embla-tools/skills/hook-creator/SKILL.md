@@ -1,6 +1,6 @@
 ---
 name: Hook Creator
-description: This skill should be used when agent-builder determines that the agent needs hooks for event-driven automation with fixed flow and fixed timing. Hooks are completely programmatic with zero AI judgment. Provides Agentrix hook format, implementation patterns, and best practices.
+description: This skill should be used when embla determines that the agent needs hooks for event-driven automation with fixed flow and fixed timing. Hooks are completely programmatic with zero AI judgment. Provides Agentrix hook format, implementation patterns, and best practices.
 version: 0.4.0
 ---
 

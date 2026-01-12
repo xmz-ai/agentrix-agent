@@ -1,6 +1,6 @@
 ---
 name: MCP Tools Creator
-description: This skill should be used when agent-builder determines that the agent needs MCP tools to execute fixed workflows, access environment variables, or interact with external programs. Provides MCP configuration format and best practices.
+description: This skill should be used when embla determines that the agent needs MCP tools to execute fixed workflows, access environment variables, or interact with external programs. Provides MCP configuration format and best practices.
 version: 0.3.0
 ---
 
