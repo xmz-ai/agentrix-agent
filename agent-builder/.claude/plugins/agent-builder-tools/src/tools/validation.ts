@@ -10,6 +10,104 @@ import {
   readJson,
 } from '../utils/fileSystem.js';
 import type { ToolResponse } from '../utils/types.js';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
+/**
+ * Validate skill directory structure within a plugin
+ * Skills must be in plugins/{plugin-name}/skills/{skill-name}/SKILL.md
+ * NOT in plugins/{plugin-name}/SKILL.md
+ */
+async function validateSkillStructure(
+  pluginPath: string,
+  pluginRelPath: string,
+  errors: string[]
+): Promise<void> {
+  try {
+    // Check if there's a SKILL.md directly in the plugin root (incorrect location)
+    const rootSkillPath = path.join(pluginPath, 'SKILL.md');
+    if (await fileExists(rootSkillPath)) {
+      errors.push(
+        `Invalid skill location in plugin '${pluginRelPath}': SKILL.md found at plugin root. ` +
+        `Skills must be in 'skills/{skill-name}/SKILL.md' subdirectory, not at plugin root.`
+      );
+    }
+
+    // Check if skills directory exists
+    const skillsDir = path.join(pluginPath, 'skills');
+    if (await dirExists(skillsDir)) {
+      // Check each subdirectory in skills/
+      const entries = await fs.readdir(skillsDir, { withFileTypes: true });
+
+      for (const entry of entries) {
+        if (entry.isDirectory()) {
+          const skillPath = path.join(skillsDir, entry.name, 'SKILL.md');
+          if (!(await fileExists(skillPath))) {
+            errors.push(
+              `Missing SKILL.md in plugin '${pluginRelPath}': ` +
+              `Expected file at 'skills/${entry.name}/SKILL.md'`
+            );
+          }
+        }
+      }
+    }
+  } catch (error) {
+    // If we can't read the directory, just skip the validation
+    // The error will be caught elsewhere
+  }
+}
+
+/**
+ * Validate command directory structure within a plugin
+ * Commands must be in plugins/{plugin-name}/commands/{command-name}.md
+ * NOT in .claude/commands/{command-name}.md
+ */
+async function validateCommandStructure(
+  pluginPath: string,
+  pluginRelPath: string,
+  errors: string[]
+): Promise<void> {
+  try {
+    // Check if commands directory exists
+    const commandsDir = path.join(pluginPath, 'commands');
+    if (await dirExists(commandsDir)) {
+      // Check that all files are .md files
+      const entries = await fs.readdir(commandsDir, { withFileTypes: true });
+
+      for (const entry of entries) {
+        if (entry.isFile() && !entry.name.endsWith('.md')) {
+          errors.push(
+            `Invalid command file in plugin '${pluginRelPath}': ` +
+            `'commands/${entry.name}' must be a .md file`
+          );
+        }
+      }
+    }
+  } catch (error) {
+    // If we can't read the directory, just skip the validation
+  }
+}
+
+/**
+ * Validate that commands are not in .claude/commands/
+ * Commands must be in plugins, not at agent root
+ */
+async function validateNoRootCommands(
+  claudeDir: string,
+  errors: string[]
+): Promise<void> {
+  try {
+    const rootCommandsDir = path.join(claudeDir, 'commands');
+    if (await dirExists(rootCommandsDir)) {
+      errors.push(
+        `Invalid commands location: Found '.claude/commands/' directory. ` +
+        `Commands must be in 'plugins/{plugin-name}/commands/', not at .claude root.`
+      );
+    }
+  } catch (error) {
+    // If we can't check the directory, just skip
+  }
+}
 
 /**
  * Validate agent structure
@@ -88,6 +186,12 @@ export function createValidateAgent(context: AgentrixContext) {
                     if (!(await fileExists(manifestPath))) {
                       errors.push(`Plugin manifest not found: ${pluginPath}/.claude-plugin/plugin.json`);
                     }
+
+                    // Validate skill directory structure
+                    await validateSkillStructure(fullPluginPath, pluginPath, errors);
+
+                    // Validate command directory structure
+                    await validateCommandStructure(fullPluginPath, pluginPath, errors);
                   }
                 }
               }
@@ -95,6 +199,9 @@ export function createValidateAgent(context: AgentrixContext) {
               errors.push(`.claude/config.json: invalid JSON - ${error instanceof Error ? error.message : String(error)}`);
             }
           }
+
+          // Check that commands are not in .claude/commands/
+          await validateNoRootCommands(paths.claudeDir, errors);
 
           // Check plugins directory
           if (!(await dirExists(paths.pluginsDir))) {
