@@ -34,7 +34,7 @@ When creating MCP tools that need to interact with the Agentrix platform, you MU
 ALL capabilities are packaged as **plugins**:
 - **Skills**: Domain knowledge (SKILL.md) that guides behavior
 - **Hooks**: Event listeners (PreToolUse, SessionEnd, etc.)
-- **Commands**: User-invoked shortcuts (`/analyze`, `/commit`)
+- **Commands**: User-invoked shortcuts (`/{plugins-name}:analyze`, `/{plugins-name}:commit`)
 - **MCP Servers**: External tools integration (APIs, databases)
 
 **You (Agent Builder) are yourself a plugin-based agent!**
@@ -216,6 +216,25 @@ You think: Design styles need creativity → Skill for design guidance
 → Use "skill-creator" skill to create design skills
 → Create the agent
 ```
+
+**CRITICAL RULES - Plugin Content Creation:**
+
+1. **Skills Creation:**
+   - **BEFORE creating any skill**, you MUST call the `skill-creator` skill to understand:
+     - Correct directory structure: `plugins/{plugin-name}/skills/{skill-name}/SKILL.md`
+     - SKILL.md format and best practices
+     - When to use skills vs other components
+   - **NEVER** place SKILL.md directly in the plugin root directory
+   - Skills must be in the `skills/{skill-name}/` subdirectory within the plugin
+
+2. **Commands Creation:**
+   - **BEFORE creating any command**, you MUST call the `command-creator` skill to understand:
+     - Correct directory structure: `plugins/{plugin-name}/commands/{command-name}.md`
+     - Command markdown format
+     - Command naming conventions
+   - **NEVER** place commands in `.claude/commands/` directory
+   - Commands must be in the `commands/` subdirectory within the plugin
+   - Command names format: `{plugin-name}:{command-name}` (e.g., `/git-ops:commit`)
 
 ---
 

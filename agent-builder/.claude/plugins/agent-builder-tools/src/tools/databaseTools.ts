@@ -5,6 +5,8 @@ import {z} from 'zod';
 import type {AgentrixContext} from '@agentrix/shared';
 import {resolveAgentDir} from '../utils/fileSystem.js';
 import type {ToolResponse} from '../utils/types.js';
+import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * Create agent in database tool factory
@@ -43,6 +45,10 @@ export function createSaveAgentInDb(context: AgentrixContext) {
         envVars: args.envVars,
         isUpdate: args.isUpdate
       });
+
+      // Save agentId to id.txt file in the agent directory
+      const idFilePath = path.join(agentDir, 'id.txt');
+      fs.writeFileSync(idFilePath, response.agentId, 'utf-8');
 
       // Build user-friendly env vars message
       let envVarsMessage = '';
