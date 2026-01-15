@@ -9,25 +9,28 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 /**
- * Create agent in database tool factory
+ * Create or update agent in database tool factory
  * CRITICAL: Call this AFTER all files are created to register the agent
+ * Automatically detects create vs update based on id.txt existence
  */
 export function createSaveAgentInDb(context: AgentrixContext) {
   return tool(
   'save_agent_in_db',
-  'Register agent in database AFTER all files are created. agentDir is automatically resolved from name.',
+  'Register or update agent in database AFTER all files are created. Automatically detects create vs update by checking if id.txt exists.',
   {
     name: z.string().describe('Agent name (same name used in write_agent_structure)'),
-    description: z.string().optional().describe('Agent description'),
+    description: z.string().optional().describe('Brief description of what the agent does (1-2 sentences)'),
     type: z.string().default('claude').describe('Agent type (claude, codex, etc.)'),
+    signature: z.string().optional().describe('Short tagline or signature that describes the agent in a few words (e.g., "Your AI coding assistant", "Smart documentation generator"). Displayed prominently in the UI.'),
+    guildMsg: z.string().optional().describe('Greeting message shown when user starts a conversation with the agent (e.g., "Hello! How can I help you code today?", "What would you like to document?"). Default: "What can I help you with today?"'),
+    placeholderMsg: z.string().optional().describe('Placeholder text shown in the message input field when user is about to send a message (e.g., "Describe your coding task...", "Ask me to document your code..."). Default: "Ask me anything..."'),
     envVars: z.array(z.object({
-      name: z.string().describe('Variable name (e.g., API_KEY)'),
-      type: z.enum(['string', 'number', 'boolean']).describe('Variable type'),
-      description: z.string().describe('Variable description'),
-      required: z.boolean().default(false).describe('Whether required'),
-      defaultValue: z.string().optional().describe('Default value'),
-    })).optional().describe('Environment variables required by agent'),
-    isUpdate: z.boolean().optional().default(false).describe("Whether is agent updated"),
+      name: z.string().describe('Variable name (e.g., API_KEY, DATABASE_URL)'),
+      type: z.enum(['string', 'number', 'boolean', 'secret']).describe('Variable type - use "secret" for sensitive data like API keys'),
+      description: z.string().describe('Clear description of what this variable is for (e.g., "OpenAI API key for GPT-4 access")'),
+      required: z.boolean().default(false).describe('Whether this variable must be set for the agent to function'),
+      defaultValue: z.string().optional().describe('Default value if not provided by user (avoid for secrets)'),
+    })).optional().describe('Environment variables required by agent for API keys, database connections, etc.'),
   },
   async (args) => {
     try {
@@ -36,19 +39,47 @@ export function createSaveAgentInDb(context: AgentrixContext) {
       // Resolve agentDir from name
       const agentDir = resolveAgentDir(workspace, args.name);
 
-      // Call context.saveDraftAgent() via RPC
-      const response = await context.saveDraftAgent({
-        name: args.name,
-        agentDir,
-        type: args.type as 'claude' | 'codex',
-        description: args.description,
-        envVars: args.envVars,
-        isUpdate: args.isUpdate
-      });
-
-      // Save agentId to id.txt file in the agent directory
+      // Check if id.txt exists to determine create vs update
       const idFilePath = path.join(agentDir, 'id.txt');
-      fs.writeFileSync(idFilePath, response.agentId, 'utf-8');
+      const isUpdate = fs.existsSync(idFilePath);
+      let response;
+
+      if (isUpdate) {
+        // Read existing agent ID
+        const agentId = fs.readFileSync(idFilePath, 'utf-8').trim();
+
+        // Call context.updateDraftAgent() via RPC
+        response = await context.updateDraftAgent(agentId, {
+          description: args.description,
+          config: {
+            environmentSchema: args.envVars,
+            signature: args.signature,
+            guildMsg: args.guildMsg,
+            placeholderMsg: args.placeholderMsg,
+          },
+        });
+
+        // For update, construct response format to match create
+        response = {
+          agentId: agentId,
+          displayName: args.name, // Use provided name as displayName
+        };
+      } else {
+        // Call context.createDraftAgent() via RPC
+        response = await context.createDraftAgent({
+          name: args.name,
+          agentDir,
+          type: args.type as 'claude' | 'codex',
+          description: args.description,
+          envVars: args.envVars,
+          signature: args.signature,
+          guildMsg: args.guildMsg,
+          placeholderMsg: args.placeholderMsg,
+        });
+
+        // Save agentId to id.txt file in the agent directory (only on create)
+        fs.writeFileSync(idFilePath, response.agentId, 'utf-8');
+      }
 
       // Build user-friendly env vars message
       let envVarsMessage = '';
@@ -74,13 +105,26 @@ export function createSaveAgentInDb(context: AgentrixContext) {
         envVarsMessage += '\nEnvironment variables should be configured in the agent\'s README.md.';
       }
 
+      // Build UI fields message
+      let uiFieldsMessage = '';
+      if (args.signature || args.guildMsg || args.placeholderMsg) {
+        uiFieldsMessage += '\n\nUI customization:';
+        if (args.signature) uiFieldsMessage += `\n  - Signature: "${args.signature}"`;
+        if (args.guildMsg) uiFieldsMessage += `\n  - Greeting: "${args.guildMsg}"`;
+        if (args.placeholderMsg) uiFieldsMessage += `\n  - Input placeholder: "${args.placeholderMsg}"`;
+      }
+
+      const actionVerb = isUpdate ? 'updated' : 'registered';
+      const successMessage = `Agent '${args.name}' ${actionVerb} successfully with name: ${response.displayName}${uiFieldsMessage}${envVarsMessage}`;
+
       return {
         content: [{
           type: 'text' as const,
           text: JSON.stringify({
             success: true,
-            message: `Agent '${args.name}' registered with name: ${response.displayName}${envVarsMessage}`,
+            message: successMessage,
             data: {
+              action: isUpdate ? 'update' : 'create',
               agentId: response.agentId,
               agentDir: agentDir,
               envVarsRequired: args.envVars?.filter(v => v.required).map(v => v.name) || [],
@@ -95,7 +139,7 @@ export function createSaveAgentInDb(context: AgentrixContext) {
           type: 'text' as const,
           text: JSON.stringify({
             success: false,
-            error: `Failed to create agent: ${error instanceof Error ? error.message : String(error)}`,
+            error: `Failed to save agent: ${error instanceof Error ? error.message : String(error)}`,
           } as ToolResponse),
         }],
       };
