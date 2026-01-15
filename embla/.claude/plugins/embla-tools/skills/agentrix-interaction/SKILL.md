@@ -110,41 +110,6 @@ const agents = context.getChatAgents();
 // agents = { "Code Reviewer": "agent-xxx", "Test Runner": "agent-yyy" }
 ```
 
-#### Agent Management (Async)
-
-##### `context.saveDraftAgent(params): Promise<{ agentId: string, displayName: string }>`
-Create a new draft agent or update an existing one in the database.
-
-**Parameters:**
-```typescript
-{
-  name: string;              // Agent name
-  agentDir: string;          // ABSOLUTE path to agent directory
-  type?: 'claude' | 'codex'; // Agent type (default: 'claude')
-  avatar?: string;           // Avatar URL
-  description?: string;      // Agent description
-  envVars?: Array<{          // Environment variables for deployment
-    name: string;
-    type: 'string' | 'number' | 'boolean' | 'secret';
-    description?: string;
-    required: boolean;
-    defaultValue?: string;
-  }>;
-  isUpdate?: boolean;        // Whether updating existing agent
-}
-```
-
-**Example:**
-```typescript
-const result = await context.saveDraftAgent({
-  name: 'my-agent',
-  agentDir: '/path/to/agent',
-  type: 'claude',
-  description: 'My custom agent',
-});
-console.log(`Created agent: ${result.agentId}`);
-```
-
 #### Multi-Agent Collaboration (Async)
 
 ##### `context.startSubTask(params): Promise<{ taskId: string }>`
