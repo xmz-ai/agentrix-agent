@@ -3,9 +3,9 @@
 
 
 "@agentrix/shared@latest":
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/@agentrix/shared/-/shared-2.0.9.tgz#a03e3164cd51016e07be664237bc258aec62feb0"
-  integrity sha512-ki5moi6hIHj3nXzYw1jMiMMHU4SLA3kqweAaJVtTfyt4JA74EzQH5WGh2323RN6dSqIB92h6HXh8e/Cs4oNCLQ==
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/@agentrix/shared/-/shared-2.0.10.tgz#1ef388911cac5871665d22cfad3a4900cea66f57"
+  integrity sha512-1EeBbo8s2jMGY3PGtONhvBGshwOY+lo6NhsylBNAtte+iPQWkcHDUhO/cBzJjR2T6t5pwmwjA+j8c4wa1KQWeQ==
   dependencies:
     "@anthropic-ai/claude-agent-sdk" "^0.1.61"
     "@anthropic-ai/sdk" "^0.71.2"
@@ -129,9 +129,9 @@
   integrity sha512-MpY/o8/8kj+EcnxwvrP4aTJSWw/aZ7JIGR4aBeZkZw5B7/Jn+tY9/VNwtcoGmdT7GfggGIU4kygOMSbYnOrAbg==
 
 "@types/node@^20.0.0":
-  version "20.19.29"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.29.tgz#49e9857d3e3f3220508d37904eb47cb3434d5b17"
-  integrity sha512-YrT9ArrGaHForBaCNwFjoqJWmn8G1Pr7+BH/vwyLHciA9qT/wSiuOhxGCT50JA5xLvFBd6PIiGkE3afxcPE1nw==
+  version "20.19.30"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.30.tgz#84fa87498ade5cd2b6ba8f8eec01d3b138ca60d0"
+  integrity sha512-WJtwWJu7UdlvzEAUm484QNg5eAoq5QR08KDNx7g45Usrs2NtOPiX8ugDqmKdXkyL03rBqU5dYNYVQetEpBHq2g==
   dependencies:
     undici-types "~6.21.0"
 
