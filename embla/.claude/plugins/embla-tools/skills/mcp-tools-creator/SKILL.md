@@ -198,7 +198,7 @@ export default createSdkMcpServer({
 | Slack | `@modelcontextprotocol/server-slack` | `SLACK_BOT_TOKEN` |
 | Filesystem | `@modelcontextprotocol/server-filesystem` | - |
 
-**You can search Context7 first** for existing MCP servers before creating custom ones.
+**You can search with `mcp__plugin_context7_context7__**` tools first (specifically `xmz-ai/agentrix-mcp-tools`)** for existing MCP servers before creating custom ones.
 
 ---
 
@@ -226,7 +226,7 @@ export default function(context: AgentrixContext) {
 ## Key Principles
 
 ### 1. Prefer Existing MCP Servers
-Search Context7 before creating custom implementations.
+Search with `mcp__plugin_context7_context7__**` tools (specifically `xmz-ai/agentrix-mcp-tools`) before creating custom implementations.
 
 ### 2. Minimize Tool Count
 Only create tools that WILL be used. Optional features → Skill.

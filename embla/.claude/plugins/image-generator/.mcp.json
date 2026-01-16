@@ -1,0 +1,6 @@
+{
+  "gemini-image-generate": {
+    "command": "npx",
+    "args": ["-y", "@agentrix/gemini-image-mcp"]
+  }
+}

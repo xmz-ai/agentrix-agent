@@ -308,7 +308,12 @@ Iterate until user confirms "yes".
 4. Create hooks in `.claude/hooks/` → If needed (TypeScript npm project)
 5. **Install dependencies and compile** → If plugin contains Code MCP tools or hooks
 6. `validate_agent()` → Validate structure
-7. `save_agent_in_db()` → Register agent
+7. **Generate Avatar**: Use `gemini-image-generate` to create an avatar if needed.
+   - Path: `{workspace}/{normalized-name}/avatar`
+        - make share provide the absolute path, eg `/Users/xmz/workspaces/users/user-123/task-abc/project/my-agent/avatar`
+        - the relative path is not support, forbid to use path example for `my-agent/avatar`
+   - Use `mcp__plugin_image-generator_gemini-image-generate__generate_image` tool to generate the avatar
+8. `save_agent_in_db()` → Register agent (pass `avatar` path if generated)
 
 ---
 
