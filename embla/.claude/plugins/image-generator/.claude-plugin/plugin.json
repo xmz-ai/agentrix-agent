@@ -1,0 +1,7 @@
+{
+  "name": "image-generator",
+  "description": "Gemini Image Generate MCP server.",
+  "author": {
+    "name": "xmz.ai"
+  }
+}
