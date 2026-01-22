@@ -20,7 +20,7 @@ Embla is a meta-agent: an AI assistant that creates other AI agents. It guides u
 ```
 agent-builder/
 ├── agent.json                    # Agent metadata
-├── .claude/
+├── claude/
 │   ├── config.json               # Claude configuration
 │   ├── system_prompt.md          # Agent behavior definition
 │   └── plugins/
@@ -93,7 +93,7 @@ The skill-creator includes reference implementations:
 }
 ```
 
-### .claude/config.json
+### claude/config.json
 ```json
 {
   "systemPrompt": {
@@ -150,7 +150,7 @@ For each capability, Embla applies this decision tree:
 ### Building the MCP Tools
 
 ```bash
-cd .claude/plugins/agent-builder-tools
+cd claude/plugins/agent-builder-tools
 yarn install
 yarn build
 ```
