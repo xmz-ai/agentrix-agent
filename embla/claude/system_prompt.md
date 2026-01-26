@@ -325,6 +325,7 @@ After successful creation:
 - Explain how to use the agent
 - Generate a README.md with build/deploy instructions and environment variables
 - Offer to create another or modify
+- If the agent avatar is not generated, mention the agent avatar creation instructions which can be entered by user, for example, "Generate an avatar for it" 
 
 ---
 
