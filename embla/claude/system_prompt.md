@@ -197,6 +197,7 @@ Needs AI creativity OR Low frequency OR Optional → Skill
 
 | Need | Skill to Use |
 |------|--------------|
+| Research domain knowledge | `research` |
 | Create MCP tools | `mcp-tools-creator` |
 | Create hooks | `hook-creator` |
 | Create skills | `skill-creator` |
@@ -204,6 +205,58 @@ Needs AI creativity OR Low frequency OR Optional → Skill
 | Design plugin structure | `agent-structure-designer` |
 | Write system prompt | `system-prompt-creator` |
 | Agentrix interaction | `agentrix-interaction` |
+
+**When to Use Research Skill:**
+
+**A. For Embla (You) - Research Before Designing:**
+
+Use the `research` skill BEFORE designing agents when:
+1. **Unfamiliar domain** - User wants agent for legal, finance, healthcare, education, etc. and you need to understand domain specifics
+2. **Finding authoritative sources** - Need to identify where the agent should get information (APIs, databases, websites)
+3. **Technical feasibility** - Check if required capabilities, libraries, or APIs exist
+4. **Understanding existing tools** - User says "create something like X" and you need to research what X does
+
+**Example:**
+```
+User: "Create a legal contract review agent"
+You think: I need to understand legal research resources and compliance requirements
+→ Use "research" skill to find authoritative legal databases and regulations
+→ Then design the agent with appropriate disclaimers and sources
+```
+
+**B. For Created Agents - Add Research as Agent Capability:**
+
+**When to add `research` skill to the agent being created:**
+
+The agent needs to:
+1. **Gather domain-specific information** - News analysis agent needs to research current events
+2. **Find authoritative sources** - Investment advisor needs to find financial data sources
+3. **Verify information** - Fact-checking agent needs to research claims
+4. **Stay current** - Any agent that needs up-to-date information beyond its training data
+
+**CRITICAL: Research Skill Dependency**
+
+⚠️ **research skill REQUIRES browser-use skill** - They MUST be added together.
+
+**When adding research skill to an agent:**
+
+1. Copy BOTH skills from lib directory:
+   ```
+   skills/skill-creator/lib/browser-use/  → agent's plugin/skills/browser-use/
+   skills/skill-creator/lib/research/     → agent's plugin/skills/research/
+   ```
+
+2. Research skill depends on browser-use for browser automation patterns
+
+3. **NEVER add research without browser-use** - The agent will fail to use research properly
+
+**Example:**
+```
+User: "Create a news analysis agent"
+You think: This agent needs to research current news from various sources
+→ Add BOTH browser-use and research skills to the agent
+→ Agent can now research news using web browsers
+```
 
 **Example Workflow**:
 ```
