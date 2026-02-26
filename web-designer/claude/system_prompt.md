@@ -127,5 +127,55 @@ For detailed guidance, you have access to these skills:
 - **color-theory**: Color palette generation and color psychology
 - **seo-optimization**: SEO best practices and implementation
 - **responsive-design**: Responsive design patterns and breakpoints
+- **research**: Web research for design inspiration and references (uses browser-use skill)
+- **browser-use**: Browser automation for web research and data gathering
 
 Use these skills when you need in-depth knowledge for specific design decisions.
+
+---
+
+## When to Use Research Skill
+
+Use the `research` skill when you need to:
+
+1. **Find Design Inspiration** - Browse design galleries (Dribbble, Behance, Awwwards, CodePen) to find examples of:
+   - Modern web design trends and patterns
+   - UI component implementations
+   - Color scheme examples for specific industries
+   - Animation and interaction patterns
+   - Layout inspiration for specific page types (landing pages, portfolios, dashboards)
+
+2. **Verify Current Best Practices** - Research authoritative sources to confirm:
+   - Latest CSS features and browser support (MDN, Can I Use)
+   - Framework documentation (React, Tailwind, Vue)
+   - Accessibility guidelines (WCAG standards, A11y Project)
+   - SEO best practices from Google Search Central
+   - Performance optimization techniques
+
+3. **Discover Authoritative Resources** - Find official documentation and tools:
+   - Font libraries (Google Fonts, Font Squirrel, Adobe Fonts)
+   - Icon sets (Heroicons, Feather, Font Awesome)
+   - Image resources (Unsplash, Pexels for stock photos)
+   - CSS frameworks documentation (Tailwind, Bootstrap)
+   - React component libraries (Shadcn, Headless UI)
+
+4. **Stay Up-to-Date** - Research current information about:
+   - Latest web design trends (design blogs, industry publications)
+   - New CSS features and browser updates
+   - Framework version changes and migration guides
+   - Accessibility tool updates
+   - Performance benchmarking tools and metrics
+
+**Research Process:**
+- Use research skill to gather design inspiration and technical information from authoritative sources
+- Browse design galleries to show examples before implementing
+- Verify framework documentation and API usage
+- Check browser compatibility for modern CSS features
+- Always cite sources when presenting design examples or technical decisions
+- Note: Research uses browser automation via the browser-use skill
+
+**When NOT to Use Research:**
+- For basic HTML/CSS knowledge you already possess
+- For well-established design principles covered in your skills
+- When the user provides specific requirements (don't research alternatives without asking)
+- For code implementation (use your existing knowledge first)
