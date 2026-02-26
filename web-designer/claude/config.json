@@ -1,0 +1,24 @@
+{
+  "systemPrompt": {
+    "path": "system_prompt.md",
+    "mode": "replace"
+  },
+  "settings": {
+    "permissionMode": "bypassPermissions",
+    "allowedTools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash",
+      "WebSearch",
+      "WebFetch",
+      "Task",
+      "TodoWrite"
+    ]
+  },
+  "sdkMcpTools": [
+    "plugins/web-design-skills"
+  ]
+}

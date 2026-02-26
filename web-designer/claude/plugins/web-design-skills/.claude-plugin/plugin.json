@@ -1,0 +1,8 @@
+{
+  "name": "web-design-skills",
+  "description": "网页设计技能包，包含设计模式、配色理论、SEO优化和响应式设计等专业知识",
+  "version": "1.0.0",
+  "author": {
+    "name": "Agent Builder"
+  }
+}
