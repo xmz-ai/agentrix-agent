@@ -250,11 +250,40 @@ The agent needs to:
 
 3. **NEVER add research without browser-use** - The agent will fail to use research properly
 
+4. **MUST document in agent's system_prompt.md** - Add a section explaining when the agent should use research skill
+
+**System Prompt Template for Research:**
+
+When adding research skill to an agent, include this in the agent's system_prompt.md:
+
+```markdown
+## When to Use Research Skill
+
+Use the `research` skill when you need to:
+
+1. **Find current information** - [Specific to agent's domain, e.g., "latest financial regulations", "recent court decisions", "current news articles"]
+
+2. **Verify facts** - [Agent-specific examples, e.g., "check company financial data", "verify medical information", "validate news sources"]
+
+3. **Discover authoritative sources** - [Domain-specific, e.g., "find government databases", "locate official APIs", "identify expert publications"]
+
+4. **Stay up-to-date** - [What needs to be current, e.g., "market prices", "legal precedents", "industry trends"]
+
+**Research Process:**
+- Use research skill to gather information from authoritative sources
+- Always verify information from multiple sources
+- Cite sources in your responses
+- Note: Research uses browser automation via the browser-use skill
+```
+
 **Example:**
 ```
 User: "Create a news analysis agent"
 You think: This agent needs to research current news from various sources
 → Add BOTH browser-use and research skills to the agent
+→ In agent's system_prompt.md, document when to use research:
+  "Use research skill to find latest news articles, verify claims,
+   and discover emerging stories from authoritative news sources"
 → Agent can now research news using web browsers
 ```
 
