@@ -56,13 +56,13 @@ See [references/error-handling.md](references/error-handling.md) for detailed so
 # Generate session ID (simple random)
 SESSION="agent-$(date +%s)-$RANDOM"
 
-# Setup cleanup
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
-
 # All commands use session
 agent-browser --session "$SESSION" open "https://example.com"
 agent-browser --session "$SESSION" snapshot -i
 agent-browser --session "$SESSION" click @e1
+
+# Close when done
+agent-browser --session "$SESSION" close
 ```
 
 **Why**: Prevents state collision between concurrent agents in different workspaces.
@@ -71,7 +71,7 @@ agent-browser --session "$SESSION" click @e1
 
 ### Rule 2: Always Check Tabs After Clicks
 
-**After clicking, check if new tab opened.**
+**After clicking, check if new tab op ened.**
 
 ```bash
 # Click might open new tab
@@ -94,19 +94,22 @@ agent-browser --session "$SESSION" snapshot -i
 
 ---
 
-### Rule 3: Always Cleanup Sessions
+### Rule 3: Always Close Browser When Done
 
-**Always close session when done.**
+**Always close the browser session AFTER all browser work is complete.**
 
 ```bash
-# Use trap to ensure cleanup even on errors
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
-
-# Work freely - cleanup happens automatically
+# Work freely - browser stays open for all operations
 agent-browser --session "$SESSION" open "https://example.com"
-# ... do work ...
-# Cleanup runs via trap
+agent-browser --session "$SESSION" snapshot -i
+agent-browser --session "$SESSION" click @e1
+# ... do all your work ...
+
+# Close browser when all work is complete
+agent-browser --session "$SESSION" close
 ```
+
+**IMPORTANT**: Close the browser **after finishing all operations**, NOT immediately after opening. Keep the browser open for your entire workflow, then close it at the end.
 
 **Why**: Prevents resource leaks and zombie browser processes.
 
@@ -167,17 +170,14 @@ set -euo pipefail
 # 1. Generate session ID (Rule 1)
 SESSION="agent-$(date +%s)-$RANDOM"
 
-# 2. Setup cleanup (Rule 3)
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
-
-# 3. Navigate and wait (Rule 4)
+# 2. Navigate and wait (Rule 4)
 agent-browser --session "$SESSION" open "https://example.com"
 agent-browser --session "$SESSION" wait --load networkidle
 
-# 4. Snapshot (Rule 5)
+# 3. Snapshot (Rule 5)
 agent-browser --session "$SESSION" snapshot -i
 
-# 5. Interact with tab checking (Rule 2)
+# 4. Interact with tab checking (Rule 2)
 agent-browser --session "$SESSION" click @e1
 agent-browser --session "$SESSION" tab  # Check for new tabs
 
@@ -185,13 +185,17 @@ agent-browser --session "$SESSION" tab  # Check for new tabs
 # agent-browser --session "$SESSION" tab 1
 # agent-browser --session "$SESSION" wait --load networkidle
 
-# 6. Re-snapshot after navigation (Rule 5)
+# 5. Re-snapshot after navigation (Rule 5)
 agent-browser --session "$SESSION" snapshot -i
 
-# 7. Extract data
+# 6. Extract data
 agent-browser --session "$SESSION" get text body > results.txt
 
-# 8. Cleanup happens via trap
+# 7. Continue doing more work if needed...
+# Browser stays open for all operations
+
+# 8. Close browser when all work is complete (Rule 3)
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -204,7 +208,6 @@ agent-browser --session "$SESSION" get text body > results.txt
 
 ```bash
 SESSION="search-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # 1. Visit homepage first (avoid CAPTCHA)
 agent-browser --session "$SESSION" --headed open "https://www.bing.com"
@@ -225,6 +228,9 @@ agent-browser --session "$SESSION" snapshot -i
 # 5. Click result and check tabs (Rule 2)
 agent-browser --session "$SESSION" click @e50
 agent-browser --session "$SESSION" tab
+
+# 6. Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 **Why `--headed` mode?** Headless browsers are more likely to trigger bot detection on search engines.
@@ -233,7 +239,6 @@ agent-browser --session "$SESSION" tab
 
 ```bash
 SESSION="form-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 agent-browser --session "$SESSION" open "https://example.com/form"
 agent-browser --session "$SESSION" wait --load networkidle
@@ -249,13 +254,15 @@ agent-browser --session "$SESSION" tab
 
 agent-browser --session "$SESSION" wait --load networkidle
 agent-browser --session "$SESSION" snapshot -i
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Multi-Tab Navigation
 
 ```bash
 SESSION="tabs-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 agent-browser --session "$SESSION" open "https://example.com"
 agent-browser --session "$SESSION" wait --load networkidle
@@ -279,8 +286,11 @@ if [ "$TAB_COUNT" -gt 1 ]; then
 
     # Close tab and return
     agent-browser --session "$SESSION" tab close
-    agent-browser --session "$SESSION" tab 1
+    agent-browser --session "$SESSION" tab 0
 fi
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Login Once, Reuse State
@@ -288,7 +298,6 @@ fi
 ```bash
 SESSION="auth-$(date +%s)-$RANDOM"
 STATE_FILE="./auth-state.json"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 if [ -f "$STATE_FILE" ]; then
     # Restore saved session
@@ -311,6 +320,9 @@ fi
 
 agent-browser --session "$SESSION" wait --load networkidle
 agent-browser --session "$SESSION" snapshot -i
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -362,7 +374,7 @@ agent-browser --session "$SESSION" snapshot -i
 
 **Cause**: Forgot to close session.
 
-**Solution**: Use trap for cleanup (Rule 3).
+**Solution**: Always close browser when done (Rule 3): `agent-browser --session "$SESSION" close`
 
 ### Empty Snapshot
 
@@ -385,7 +397,6 @@ See [references/commands.md](references/commands.md) for full command list.
 ```bash
 # Session (Rule 1)
 SESSION="agent-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Navigate (Rule 4)
 agent-browser --session "$SESSION" open <url>
@@ -408,6 +419,9 @@ agent-browser --session "$SESSION" tab close
 agent-browser --session "$SESSION" get text @e1
 agent-browser --session "$SESSION" get text body
 agent-browser --session "$SESSION" get url
+
+# Close when done (Rule 3)
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -432,13 +446,15 @@ This skill follows all agent-browser patterns with 2 additions: **mandatory sess
 2. ✅ **Always check tabs after clicks** (use `agent-browser tab`)
 
 Plus the standard browser automation best practices:
-3. ✅ Always cleanup sessions (use `trap`)
+3. ✅ Always close browser when done
 4. ✅ Wait for networkidle after navigation
 5. ✅ Re-snapshot after page changes
 
 **Key pattern:**
 ```bash
 SESSION="agent-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 # ... use session in all commands ...
+# ... do all your browser work ...
+# Close browser after all work is complete
+agent-browser --session "$SESSION" close
 ```
