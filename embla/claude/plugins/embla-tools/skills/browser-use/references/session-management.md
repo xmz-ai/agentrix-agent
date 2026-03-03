@@ -37,6 +37,10 @@ SESSION_B="public-$(date +%s)-$RANDOM"
 agent-browser --session "$SESSION_B" open https://example.com
 
 # Completely isolated - no interference
+
+# Close sessions when done
+agent-browser --session "$SESSION_A" close
+agent-browser --session "$SESSION_B" close
 ```
 
 ## State Persistence
@@ -48,6 +52,9 @@ SESSION="agent-$(date +%s)-$RANDOM"
 
 # Save cookies, storage, and auth state
 agent-browser --session "$SESSION" state save /path/to/auth-state.json
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Load Session State
@@ -60,6 +67,9 @@ agent-browser --session "$SESSION" state load /path/to/auth-state.json
 
 # Continue with authenticated session
 agent-browser --session "$SESSION" open https://app.example.com/dashboard
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Common Patterns
@@ -70,7 +80,6 @@ agent-browser --session "$SESSION" open https://app.example.com/dashboard
 #!/bin/bash
 SESSION="agent-$(date +%s)-$RANDOM"
 STATE_FILE="/tmp/auth-state.json"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Check if we have saved state
 if [[ -f "$STATE_FILE" ]]; then
@@ -88,6 +97,9 @@ else
     # Save for future use
     agent-browser --session "$SESSION" state save "$STATE_FILE"
 fi
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Concurrent Scraping
@@ -100,14 +112,6 @@ SESSION1="site1-$(date +%s)-$RANDOM"
 SESSION2="site2-$(date +%s)-$RANDOM"
 SESSION3="site3-$(date +%s)-$RANDOM"
 
-# Cleanup all sessions
-cleanup() {
-    agent-browser --session "$SESSION1" close 2>/dev/null || true
-    agent-browser --session "$SESSION2" close 2>/dev/null || true
-    agent-browser --session "$SESSION3" close 2>/dev/null || true
-}
-trap cleanup EXIT
-
 # Start all sessions
 agent-browser --session "$SESSION1" open https://site1.com &
 agent-browser --session "$SESSION2" open https://site2.com &
@@ -118,6 +122,11 @@ wait
 agent-browser --session "$SESSION1" get text body > site1.txt
 agent-browser --session "$SESSION2" get text body > site2.txt
 agent-browser --session "$SESSION3" get text body > site3.txt
+
+# Close all sessions when done
+agent-browser --session "$SESSION1" close
+agent-browser --session "$SESSION2" close
+agent-browser --session "$SESSION3" close
 ```
 
 ### A/B Testing Sessions
@@ -146,13 +155,12 @@ agent-browser --session "$SESSION_B" close
 ```bash
 SESSION="agent-$(date +%s)-$RANDOM"
 
-# Use trap for guaranteed cleanup
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
-
 # Work freely
 agent-browser --session "$SESSION" open https://example.com
 # ... automation ...
-# Cleanup happens automatically
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Best Practices
@@ -180,8 +188,8 @@ SESSION="price-scrape-$(date +%s)-$RANDOM"
 ### 3. Always Clean Up (Rule 3)
 
 ```bash
-# Use trap to ensure cleanup
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
+# Always close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### 4. Handle State Files Securely
@@ -191,7 +199,8 @@ trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 echo "*.auth-state.json" >> .gitignore
 
 # Delete after use if single-use
-trap "rm -f ./auth-state.json; agent-browser --session '$SESSION' close" EXIT
+rm -f ./auth-state.json
+agent-browser --session "$SESSION" close
 ```
 
 ### 5. Check Active Sessions

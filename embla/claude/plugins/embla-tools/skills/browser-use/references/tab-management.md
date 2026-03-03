@@ -54,6 +54,9 @@ agent-browser --session "$SESSION" tab
 agent-browser --session "$SESSION" tab 1
 agent-browser --session "$SESSION" wait --load networkidle
 agent-browser --session "$SESSION" snapshot -i
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Programmatic Detection
@@ -76,6 +79,9 @@ if [ "$TABS_AFTER" -gt "$TABS_BEFORE" ]; then
     agent-browser --session "$SESSION" wait --load networkidle
     agent-browser --session "$SESSION" snapshot -i
 fi
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Common Scenarios
@@ -84,7 +90,6 @@ fi
 
 ```bash
 SESSION="oauth-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Click "Sign in with Google"
 agent-browser --session "$SESSION" open "https://app.com/login"
@@ -113,13 +118,15 @@ agent-browser --session "$SESSION" click @e4
 
 # Wait for redirect back
 agent-browser --session "$SESSION" wait --url "**/app.com**"
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Search Results Opening New Tabs
 
 ```bash
 SESSION="search-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 agent-browser --session "$SESSION" open "https://bing.com/search?q=test"
 agent-browser --session "$SESSION" wait --load networkidle
@@ -153,7 +160,6 @@ fi
 
 ```bash
 SESSION="compare-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 agent-browser --session "$SESSION" open "https://site.com/product1"
 agent-browser --session "$SESSION" wait --load networkidle
@@ -170,6 +176,9 @@ agent-browser --session "$SESSION" get text body > product2.txt
 
 # Compare data
 echo "Comparison complete - check product1.txt and product2.txt"
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Best Practices

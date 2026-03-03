@@ -71,7 +71,6 @@ User references existing tools:
 
 ```bash
 SESSION="research-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true; rm -rf ./tmp" EXIT
 
 # 1. Visit Bing homepage
 agent-browser --session "$SESSION" --headed open "https://www.bing.com"
@@ -104,6 +103,12 @@ if [ "$TAB_COUNT" -gt 1 ]; then
 fi
 
 agent-browser --session "$SESSION" snapshot -i
+
+# Extract content as needed
+agent-browser --session "$SESSION" get text body > research-output.txt
+
+# Close browser when research is complete
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -349,7 +354,7 @@ Always follow browser-use mandatory rules:
 
 1. ✅ **Always use sessions** - `SESSION="research-$(date +%s)-$RANDOM"`
 2. ✅ **Always check tabs after clicks** - `agent-browser --session "$SESSION" tab`
-3. ✅ **Always cleanup** - Use `trap` for session close
+3. ✅ **Always close browser when done** - `agent-browser --session "$SESSION" close`
 4. ✅ **Wait for networkidle** - After navigation
 5. ✅ **Re-snapshot after changes** - Get fresh refs
 

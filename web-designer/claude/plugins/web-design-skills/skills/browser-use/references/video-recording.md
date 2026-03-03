@@ -10,7 +10,6 @@ Capture browser automation as video for debugging, documentation, or verificatio
 
 ```bash
 SESSION="record-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Start recording
 agent-browser --session "$SESSION" record start ./demo.webm
@@ -23,6 +22,9 @@ agent-browser --session "$SESSION" fill @e2 "test input"
 
 # Stop and save
 agent-browser --session "$SESSION" record stop
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Recording Commands
@@ -38,6 +40,9 @@ agent-browser --session "$SESSION" record stop
 
 # Restart with new file (stops current + starts new)
 agent-browser --session "$SESSION" record restart ./take2.webm
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Use Cases
@@ -47,7 +52,6 @@ agent-browser --session "$SESSION" record restart ./take2.webm
 ```bash
 #!/bin/bash
 SESSION="debug-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 agent-browser --session "$SESSION" record start ./debug-$(date +%Y%m%d-%H%M%S).webm
 
@@ -61,6 +65,9 @@ agent-browser --session "$SESSION" click @e1 || {
 }
 
 agent-browser --session "$SESSION" record stop
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Documentation Generation
@@ -68,7 +75,6 @@ agent-browser --session "$SESSION" record stop
 ```bash
 #!/bin/bash
 SESSION="docs-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 agent-browser --session "$SESSION" record start ./docs/how-to-login.webm
 
@@ -87,6 +93,9 @@ agent-browser --session "$SESSION" wait --load networkidle
 agent-browser --session "$SESSION" wait 1000  # Show result
 
 agent-browser --session "$SESSION" record stop
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Best Practices
@@ -99,6 +108,9 @@ SESSION="agent-$(date +%s)-$RANDOM"
 # Slow down for human viewing
 agent-browser --session "$SESSION" click @e1
 agent-browser --session "$SESSION" wait 500  # Let viewer see result
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### 2. Use Descriptive Filenames
@@ -107,6 +119,9 @@ agent-browser --session "$SESSION" wait 500  # Let viewer see result
 # Include context in filename
 agent-browser --session "$SESSION" record start ./recordings/login-flow-2024-01-15.webm
 agent-browser --session "$SESSION" record start ./recordings/checkout-test-run-42.webm
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### 3. Handle Recording in Error Cases
@@ -116,21 +131,18 @@ agent-browser --session "$SESSION" record start ./recordings/checkout-test-run-4
 set -e
 
 SESSION="agent-$(date +%s)-$RANDOM"
-cleanup() {
-    agent-browser --session "$SESSION" record stop 2>/dev/null || true
-    agent-browser --session "$SESSION" close 2>/dev/null || true
-}
-trap cleanup EXIT
 
 agent-browser --session "$SESSION" record start ./automation.webm
 # ... automation steps ...
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### 4. Combine with Screenshots
 
 ```bash
 SESSION="agent-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Record video AND capture key frames
 agent-browser --session "$SESSION" record start ./flow.webm
@@ -142,6 +154,9 @@ agent-browser --session "$SESSION" click @e1
 agent-browser --session "$SESSION" screenshot ./screenshots/step2-after-click.png
 
 agent-browser --session "$SESSION" record stop
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Output Format

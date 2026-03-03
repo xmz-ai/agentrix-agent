@@ -25,6 +25,9 @@ agent-browser --session "$SESSION" screenshot ./tmp/debug.png
 
 # Cleanup when done
 rm -rf ./tmp
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Causes
@@ -40,7 +43,6 @@ rm -rf ./tmp
 
 ```bash
 SESSION="search-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # ✅ CORRECT - Visit homepage first
 agent-browser --session "$SESSION" open "https://www.bing.com"
@@ -64,6 +66,9 @@ SESSION="search-$(date +%s)-$RANDOM"
 
 # Headed mode is less likely to trigger CAPTCHA
 agent-browser --session "$SESSION" --headed open "https://www.bing.com"
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 **Solution 3: Add delays between actions**
@@ -72,6 +77,9 @@ agent-browser --session "$SESSION" --headed open "https://www.bing.com"
 agent-browser --session "$SESSION" fill @e18 "query"
 agent-browser --session "$SESSION" wait 1000  # Brief pause
 agent-browser --session "$SESSION" press Enter
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Verification Check Pattern
@@ -86,6 +94,9 @@ if grep -q "Verify you are human" ./tmp/snapshot.txt; then
     agent-browser --session "$SESSION" screenshot ./tmp/captcha.png
     # Handle: retry with headed mode, or wait and retry
 fi
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -115,6 +126,9 @@ agent-browser --session "$SESSION" snapshot -i
 # Wait for dynamic content
 agent-browser --session "$SESSION" wait 2000
 agent-browser --session "$SESSION" snapshot -i
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -145,6 +159,9 @@ agent-browser --session "$SESSION" snapshot -i
 # Scroll to trigger lazy loading
 agent-browser --session "$SESSION" scroll down 200
 agent-browser --session "$SESSION" snapshot -i
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -183,6 +200,9 @@ agent-browser --session "$SESSION" snapshot -i
 
 # Wait for specific element (alternative)
 agent-browser --session "$SESSION" wait @e1 --timeout 10000
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 **Guideline**: Default to `wait 2000` or `wait 3000`. Only use `networkidle` with timeout if you specifically need to wait for all network activity to stop.
@@ -215,6 +235,9 @@ if [ "$TAB_COUNT" -gt 1 ]; then
     agent-browser --session "$SESSION" wait --load networkidle
     agent-browser --session "$SESSION" snapshot -i
 fi
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ---
@@ -249,7 +272,6 @@ close_session() {
     fi
 }
 
-trap close_session EXIT
 ```
 
 ---
@@ -261,6 +283,9 @@ trap close_session EXIT
 ```bash
 # When something fails, capture state
 agent-browser --session "$SESSION" screenshot ./tmp/error-$(date +%s).png
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### 2. Use Headed Mode for Debugging
@@ -268,6 +293,9 @@ agent-browser --session "$SESSION" screenshot ./tmp/error-$(date +%s).png
 ```bash
 # See what's happening visually
 agent-browser --session "$SESSION" --headed open "https://example.com"
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### 3. Check Current URL
@@ -275,6 +303,9 @@ agent-browser --session "$SESSION" --headed open "https://example.com"
 ```bash
 # Verify you're on expected page
 agent-browser --session "$SESSION" get url
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### 4. List Active Sessions
@@ -282,4 +313,7 @@ agent-browser --session "$SESSION" get url
 ```bash
 # Check for orphaned sessions
 agent-browser session list
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```

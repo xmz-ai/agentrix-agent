@@ -10,7 +10,6 @@ Login flows, session persistence, OAuth, 2FA, and authenticated browsing.
 
 ```bash
 SESSION="auth-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Navigate to login page
 agent-browser --session "$SESSION" open https://app.example.com/login
@@ -30,6 +29,9 @@ agent-browser --session "$SESSION" wait --load networkidle
 
 # Verify login succeeded
 agent-browser --session "$SESSION" get url  # Should be dashboard, not login
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Saving Authentication State
@@ -38,7 +40,6 @@ After logging in, save state for reuse:
 
 ```bash
 SESSION="auth-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Login first (see above)
 agent-browser --session "$SESSION" open https://app.example.com/login
@@ -50,6 +51,9 @@ agent-browser --session "$SESSION" wait --url "**/dashboard"
 
 # Save authenticated state
 agent-browser --session "$SESSION" state save ./auth-state.json
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Restoring Authentication
@@ -58,7 +62,6 @@ Skip login by loading saved state:
 
 ```bash
 SESSION="auth-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Load saved auth state
 agent-browser --session "$SESSION" state load ./auth-state.json
@@ -68,6 +71,9 @@ agent-browser --session "$SESSION" open https://app.example.com/dashboard
 
 # Verify authenticated
 agent-browser --session "$SESSION" snapshot -i
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## OAuth / SSO Flows
@@ -76,7 +82,6 @@ For OAuth redirects:
 
 ```bash
 SESSION="oauth-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Start OAuth flow
 agent-browser --session "$SESSION" open https://app.example.com/auth/google
@@ -96,6 +101,9 @@ agent-browser --session "$SESSION" click @e4  # Sign in
 # Wait for redirect back
 agent-browser --session "$SESSION" wait --url "**/app.example.com**"
 agent-browser --session "$SESSION" state save ./oauth-state.json
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Two-Factor Authentication
@@ -104,7 +112,6 @@ Handle 2FA with manual intervention:
 
 ```bash
 SESSION="2fa-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Login with credentials
 agent-browser --session "$SESSION" --headed open https://app.example.com/login
@@ -119,6 +126,9 @@ agent-browser --session "$SESSION" wait --url "**/dashboard" --timeout 120000
 
 # Save state after 2FA
 agent-browser --session "$SESSION" state save ./2fa-state.json
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Login Once, Reuse Pattern
@@ -127,7 +137,6 @@ agent-browser --session "$SESSION" state save ./2fa-state.json
 #!/bin/bash
 SESSION="reuse-$(date +%s)-$RANDOM"
 STATE_FILE="./auth-state.json"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Check if we have saved state
 if [ -f "$STATE_FILE" ]; then
@@ -164,6 +173,9 @@ echo "Saving session state..."
 agent-browser --session "$SESSION" state save "$STATE_FILE"
 
 agent-browser --session "$SESSION" snapshot -i
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## HTTP Basic Auth
@@ -172,13 +184,15 @@ For sites using HTTP Basic Authentication:
 
 ```bash
 SESSION="basic-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # Set credentials before navigation
 agent-browser --session "$SESSION" set credentials username password
 
 # Navigate to protected resource
 agent-browser --session "$SESSION" open https://protected.example.com/api
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Security Best Practices

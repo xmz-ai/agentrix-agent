@@ -25,6 +25,9 @@ agent-browser --session "$SESSION" open https://example.com
 export HTTP_PROXY="http://proxy.example.com:8080"
 export HTTPS_PROXY="http://proxy.example.com:8080"
 agent-browser --session "$SESSION" open https://example.com
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Authenticated Proxy
@@ -37,6 +40,9 @@ SESSION="agent-$(date +%s)-$RANDOM"
 # Include credentials in URL
 export HTTP_PROXY="http://username:password@proxy.example.com:8080"
 agent-browser --session "$SESSION" open https://example.com
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## SOCKS Proxy
@@ -51,6 +57,9 @@ agent-browser --session "$SESSION" open https://example.com
 # SOCKS5 with auth
 export ALL_PROXY="socks5://user:pass@proxy.example.com:1080"
 agent-browser --session "$SESSION" open https://example.com
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Proxy Bypass
@@ -64,6 +73,9 @@ SESSION="agent-$(date +%s)-$RANDOM"
 export NO_PROXY="localhost,127.0.0.1,.internal.company.com"
 agent-browser --session "$SESSION" open https://internal.company.com  # Direct
 agent-browser --session "$SESSION" open https://external.com          # Via proxy
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Common Use Cases
@@ -137,13 +149,15 @@ export HTTPS_PROXY="http://corpproxy.company.com:8080"
 export NO_PROXY="localhost,127.0.0.1,.company.com"
 
 SESSION="corp-$(date +%s)-$RANDOM"
-trap "agent-browser --session '$SESSION' close 2>/dev/null || true" EXIT
 
 # External sites go through proxy
 agent-browser --session "$SESSION" open https://external-vendor.com
 
 # Internal sites bypass proxy
 agent-browser --session "$SESSION" open https://intranet.company.com
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ## Verifying Proxy Connection
@@ -180,6 +194,9 @@ SESSION="agent-$(date +%s)-$RANDOM"
 
 # For testing only - not recommended for production
 agent-browser --session "$SESSION" open https://example.com --ignore-https-errors
+
+# Close browser when done
+agent-browser --session "$SESSION" close
 ```
 
 ### Slow Performance
