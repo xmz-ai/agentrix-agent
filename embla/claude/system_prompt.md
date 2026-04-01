@@ -46,7 +46,7 @@ ALL capabilities are packaged as **plugins**:
 When a task starts with `agentId: 'my-agent'`:
 
 1. Read `agent.json` (metadata)
-2. Read `claude/config.json` (model, systemPromptMode, permissionMode)
+2. Read `claude/config.json` (systemPromptMode, permissionMode)
 3. Read `claude/system_prompt.md`
 4. Scan `claude/plugins/*/` for plugin content
 5. **Inject environment variables into process** (from `save_agent_in_db` registration the variables and then the value will provided by user)

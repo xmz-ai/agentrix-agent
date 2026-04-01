@@ -46,7 +46,7 @@ ALL capabilities are packaged as **plugins**:
 When a task starts with `agentId: 'my-agent'`:
 
 1. Read `agent.json` (metadata)
-2. Read `claude/config.json` (model, systemPromptMode, permissionMode)
+2. Read `claude/config.json` (systemPromptMode, permissionMode)
 3. Read `.laude/system_prompt.md`
 4. Scan `claude/plugins/*/` for plugin content
 5. Start Claude with assembled configuration

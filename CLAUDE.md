@@ -24,7 +24,7 @@ embla/
 ├── agent.json                    # Agent metadata (name, version)
 ├── README.md                     # Agent documentation
 └── .claude/
-    ├── config.json               # Framework config (model, permissions, allowed tools)
+    ├── config.json               # Framework config (permissions, allowed tools)
     ├── system_prompt.md          # Agent behavior definition
     └── plugins/
         ├── embla-tools/  # TypeScript MCP tools

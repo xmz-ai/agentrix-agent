@@ -232,13 +232,6 @@ Are tasks complex and need user oversight?
     → NO: default
 ```
 
-### Model Selection
-
-| Model | Use Case |
-|-------|----------|
-| `claude-opus-4-5` | Complex analysis, planning, creative tasks |
-| `claude-sonnet-4-20250514` | Simple tasks, high volume, cost-sensitive |
-
 ---
 
 ## Part III: Validation Checklist
@@ -246,7 +239,7 @@ Are tasks complex and need user oversight?
 Before finalizing an agent:
 
 - [ ] `agent.json` exists with name, version, description
-- [ ] `claude/config.json` exists with model, systemPromptMode
+- [ ] `claude/config.json` exists with systemPromptMode
 - [ ] config.json has NO `plugins` field (auto-discovered)
 - [ ] Each plugin has `.claude-plugin/plugin.json` with metadata only
 - [ ] plugin.json has NO `main` or `type` fields

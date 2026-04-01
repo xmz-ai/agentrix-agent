@@ -7,8 +7,6 @@ export interface AgentMetadata {
 }
 
 export interface ClaudeConfig {
-  model?: string;
-  fallbackModel?: string;
   maxTurns?: number;
   systemPrompt?: {
     path: string;

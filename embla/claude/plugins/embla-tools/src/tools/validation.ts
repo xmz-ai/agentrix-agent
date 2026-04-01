@@ -164,7 +164,6 @@ export function createValidateAgent(context: AgentrixContext) {
           } else {
             try {
               const config = await readJson(paths.claudeConfig);
-              if (!config.model) warnings.push('claude/config.json: "model" not specified, will use default');
 
               // Check if system prompt file exists if referenced
               if (config.systemPrompt?.path) {

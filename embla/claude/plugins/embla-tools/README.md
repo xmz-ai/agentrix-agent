@@ -129,7 +129,6 @@ Validate agent directory structure and configuration files.
 - Plugin directories exist (if referenced in config)
 - Plugin manifests exist (`.claude-plugin/plugin.json`)
 - `claude/plugins/` directory exists (warning if not)
-- Model specified in config (warning if not)
 
 **Returns:**
 - `valid` (boolean) - Validation result
@@ -246,8 +245,6 @@ interface AgentMetadata {
 ### ClaudeConfig (claude/config.json)
 ```typescript
 interface ClaudeConfig {
-  model?: string;
-  fallbackModel?: string;
   maxTurns?: number;
   systemPrompt?: {
     path: string;
