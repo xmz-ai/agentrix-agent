@@ -1,7 +1,7 @@
 ---
 name: Agentrix Interaction
-description: This skill should be used when creating MCP tools or Hooks that need to interact with Agentrix service - the service connecting agents with end users and managing service data. Use AgentrixContext for getting workspace directory, user ID, task ID, creating agents in database, managing sub-tasks for multi-agent collaboration, or sending messages to users. NOTE - Only MCP tools and Hooks can receive injected AgentrixContext.
-version: 0.2.0
+description: This skill should be used when creating MCP tools or Hooks that need to interact with Agentrix service - the service connecting agents with end users and managing service data. Use AgentrixContext for getting workspace directory, user ID, task ID, uploading files, managing sub-tasks for multi-agent collaboration, or sending messages to users. NOTE - Only MCP tools and Hooks can receive injected AgentrixContext.
+version: 0.3.0
 ---
 
 # Using AgentrixContext in MCP Tools and Hooks
@@ -9,10 +9,11 @@ version: 0.2.0
 ## When to Use AgentrixContext
 
 Use AgentrixContext when you need to:
-- Interact with service data (create/update agent in database)
-- Communicate with end users (send messages, show modals)
 - Access execution context (workspace path, user ID, task ID, chat ID)
-- Multi-agent collaboration (start sub-tasks, find sub-tasks, send messages between agents)
+- Upload files to Agentrix storage (`uploadFile`)
+- Multi-agent collaboration (start sub-tasks, delegate work, collect results)
+- Communicate with end users (send messages, show modals)
+- Write execution logs (`log`)
 
 ## Important: Supported Components
 
@@ -26,337 +27,136 @@ Use AgentrixContext when you need to:
 
 If a Command or Skill needs Agentrix data, it must call an MCP tool that has access to the context.
 
-## How to Use
+## Setup: Export a Factory Function
 
-### 1. Import AgentrixContext
-```typescript
-import { AgentrixContext } from '@agentrix/shared';
-```
-
-### 2. Export Function with Context Parameter
-Your MCP tool MUST export a function that accepts `context` parameter:
+Your MCP tool MUST export a function that accepts `context`:
 
 ```typescript
 import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
 import { AgentrixContext } from '@agentrix/shared';
 
-// REQUIRED: Export function that accepts context
-export default function(context: AgentrixContext) {
+export default function (context: AgentrixContext) {
   return createSdkMcpServer({
-    name: 'my-custom-tools',
+    name: 'my-tools',
     version: '1.0.0',
-    tools: [
-      // Your tools here
-    ],
+    tools: [ /* ... */ ],
   });
 }
 ```
 
-### 3. Available Context Methods
+---
 
-#### Basic Context (Synchronous)
+## API Reference
 
-##### `context.getWorkspace(): string`
-Get the current workspace directory path.
+### Basic Context (Synchronous)
 
-```typescript
-const workspace = context.getWorkspace();
-const myPath = join(workspace, 'my-file.txt');
-```
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `log(str)` | `void` | Print a line to the task's execution log files |
+| `getWorkspace()` | `string` | Absolute path to the current workspace directory |
+| `getUserId()` | `string` | Current user ID |
+| `getTaskId()` | `string` | Current task ID |
+| `getChatId()` | `string` | Current chat ID |
+| `getRootTaskId()` | `string` | Root task ID of the current task tree |
+| `getParentTaskId()` | `string \| null` | Parent task ID, or `null` if this is the root task |
+| `getChatAgents()` | `Record<string, string>` | Map of `{ displayName: agentId }` for all agents in this chat |
 
-##### `context.getUserId(): string`
-Get the current user ID.
+### File Upload (Async)
 
-```typescript
-const userId = context.getUserId();
-```
-
-##### `context.getTaskId(): string`
-Get the current task ID.
-
-```typescript
-const taskId = context.getTaskId();
-```
-
-##### `context.getChatId(): string`
-Get the current chat ID.
+#### `uploadFile(params)`
+Upload a file to Agentrix storage and get a URL. Used mainly for agent avatars.
 
 ```typescript
-const chatId = context.getChatId();
-```
-
-##### `context.getRootTaskId(): string`
-Get the root task ID of the current task tree. If this task is the root, returns its own ID.
-
-```typescript
-const rootTaskId = context.getRootTaskId();
-```
-
-##### `context.getParentTaskId(): string | null`
-Get the parent task ID. Returns null if this is a root task.
-
-```typescript
-const parentTaskId = context.getParentTaskId();
-if (parentTaskId) {
-  // This is a sub-task
-}
-```
-
-##### `context.getChatAgents(): Record<string, string>`
-Get all agents in the current chat. Returns a map of `{ displayName: agentId }`.
-
-```typescript
-const agents = context.getChatAgents();
-// agents = { "Code Reviewer": "agent-xxx", "Test Runner": "agent-yyy" }
-```
-
-#### Multi-Agent Collaboration (Async)
-
-##### `context.startSubTask(params): Promise<{ taskId: string }>`
-Create a sub-task for multi-agent collaboration. Automatically inherits chatId, rootTaskId, machineId/cloudId from current task. Sets parentTaskId to current taskId.
-
-**Parameters:**
-```typescript
-{
-  agentId: string;           // ID of the agent to run this sub-task
-  message: SDKUserMessage;   // Initial message for the agent
-}
-```
-
-**Example:**
-```typescript
-import { SDKUserMessage } from '@anthropic-ai/claude-agent-sdk';
-
-const message: SDKUserMessage = {
-  type: 'user',
-  content: [{ type: 'text', text: 'Review this code for security issues' }],
-};
-
-const { taskId } = await context.startSubTask({
-  agentId: 'agent-code-reviewer-xxx',
-  message,
+const { fileId, url, size, contentType } = await context.uploadFile({
+  name: 'my-agent_avatar',
+  path: '/abs/path/to/image.png',  // absolute path
+  contentType: 'image/png',        // optional, auto-detected if omitted
+  visibility: 'public',            // 'public' | 'private' (default: 'private')
 });
-console.log(`Started sub-task: ${taskId}`);
+// Pass url to createDraftAgent({ avatar: url })
 ```
 
-##### `context.findSubTaskByAgent(agentId): Promise<{ taskId: string } | null>`
-Find a sub-task by agent ID. Searches direct sub-tasks (parentTaskId = current taskId) for the given agent.
+### Multi-Agent Collaboration (Async)
 
-**Example:**
+#### `startSubTask(params)`
+Create a sub-task for another agent. Automatically inherits `chatId`, `rootTaskId`, machine context.
+
 ```typescript
-const subTask = await context.findSubTaskByAgent('agent-code-reviewer-xxx');
-if (subTask) {
-  console.log(`Found existing sub-task: ${subTask.taskId}`);
-}
+const { taskId } = await context.startSubTask({
+  agentId: 'agent-xxx',
+  message: { type: 'user', message: { role: 'user', content: 'Do X' }, parent_tool_use_id: null, session_id: '' },
+});
 ```
 
-##### `context.getTaskSession(taskId): Promise<{ sessionPath: string, state: TaskState }>`
-Get the session file path and state of a task. Used to read completed task's session for analysis.
+#### `findSubTaskByAgent(agentId)`
+Find an existing sub-task (where `parentTaskId` = current task). Returns `null` if none exists.
 
-**Example:**
 ```typescript
-const { sessionPath, state } = await context.getTaskSession(subTaskId);
+const subTask = await context.findSubTaskByAgent('agent-xxx');
+// { taskId: '...' } | null
+```
+
+#### `getTaskSession(taskId)`
+Get the session file path and current state of a task.
+
+```typescript
+const { sessionPath, state } = await context.getTaskSession(taskId);
+// state: 'running' | 'stopped' | 'cancelled' | ...
 if (state === 'stopped') {
-  // Read session file to analyze results
   const session = JSON.parse(await fs.readFile(sessionPath, 'utf-8'));
 }
 ```
 
-#### Communication (Async)
+### Communication (Async)
 
-##### `context.sendMessage(params): Promise<void>`
-Send a message to a task.
+#### `sendMessage(params)`
+Send a message to a task. `target: 'agent'` injects it as user input; `target: 'user'` shows it in the chat UI.
 
-**Target behavior:**
-- `'agent'`: Routes SDKUserMessage to task's agent worker (injects as user input)
-- `'user'`: Broadcasts SDKAssistantMessage to users viewing the task (shows in chat UI)
-
-**Parameters:**
 ```typescript
-{
-  taskId: string;
-  message: SDKUserMessage | SDKAssistantMessage;
-  target: 'agent' | 'user';  // Required
-}
-```
-
-**Example - Send to agent:**
-```typescript
-import { SDKUserMessage } from '@anthropic-ai/claude-agent-sdk';
-
-const message: SDKUserMessage = {
-  type: 'user',
-  content: [{ type: 'text', text: 'Continue with the next step' }],
-};
-
+// To agent (inject as user input) — SDKUserMessage wraps MessageParam
 await context.sendMessage({
-  taskId: subTaskId,
-  message,
-  target: 'agent',
+  taskId, target: 'agent',
+  message: { type: 'user', message: { role: 'user', content: 'Continue' }, parent_tool_use_id: null, session_id: '' },
 });
+
+// To user (show in chat UI) — requires a full SDKAssistantMessage (wraps BetaMessage).
+// Only use when you already have an SDKAssistantMessage from an existing response.
+// For proactive UI notifications, prefer showModal() instead.
 ```
 
-**Example - Send to user:**
-```typescript
-import { SDKAssistantMessage } from '@anthropic-ai/claude-agent-sdk';
+#### `showModal(params)`
+Trigger a modal dialog for users viewing the task.
 
-const message: SDKAssistantMessage = {
-  type: 'assistant',
-  content: [{ type: 'text', text: 'Sub-task completed successfully!' }],
-};
-
-await context.sendMessage({
-  taskId: context.getTaskId(),
-  message,
-  target: 'user',
-});
-```
-
-##### `context.showModal(params): Promise<void>`
-Show a modal dialog to users viewing a task. Used for interactive UI elements like configuration dialogs.
-
-**Parameters:**
-```typescript
-{
-  taskId: string;
-  modalName: string;
-  modalData: Record<string, any>;
-}
-```
-
-**Example:**
 ```typescript
 await context.showModal({
   taskId: context.getTaskId(),
   modalName: 'try-draft-agent',
-  modalData: {
-    draftAgentId: 'agent-xxx',
-    draftAgentName: 'My Agent',
-  },
+  modalData: { draftAgentId: 'agent-xxx', draftAgentName: 'My Agent' },
 });
 ```
 
-## Complete Example: Multi-Agent Orchestration
+---
 
-```typescript
-import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
-import { AgentrixContext, SDKUserMessage, SDKAssistantMessage } from '@agentrix/shared';
-import { z } from 'zod';
-import fs from 'fs/promises';
+## Examples
 
-export default function(context: AgentrixContext) {
-  return createSdkMcpServer({
-    name: 'orchestrator-tools',
-    version: '1.0.0',
-    tools: [
-      tool(
-        'delegate_to_agent',
-        'Delegate a task to another agent and wait for completion',
-        {
-          agentName: z.string().describe('Display name of the agent to delegate to'),
-          task: z.string().describe('Task description for the agent'),
-        },
-        async (args) => {
-          // Find agent ID from display name
-          const agents = context.getChatAgents();
-          const agentId = agents[args.agentName];
+See `examples/` for complete, runnable TypeScript examples:
 
-          if (!agentId) {
-            return {
-              content: [{
-                type: 'text',
-                text: `Agent "${args.agentName}" not found. Available: ${Object.keys(agents).join(', ')}`
-              }],
-            };
-          }
+| File | Covers |
+|------|--------|
+| `examples/basic-context.ts` | `log`, `getWorkspace`, `getUserId`, `getTaskId`, `getChatId`, `getRootTaskId`, `getParentTaskId`, `getChatAgents` |
+| `examples/file-upload.ts` | `uploadFile`, avatar caching pattern |
+| `examples/multi-agent.ts` | `startSubTask`, `findSubTaskByAgent`, `getTaskSession`, `sendMessage` (agent) |
+| `examples/communication.ts` | `sendMessage` (user), `showModal` |
 
-          // Check if sub-task already exists
-          let subTask = await context.findSubTaskByAgent(agentId);
+---
 
-          if (!subTask) {
-            // Create new sub-task
-            const message: SDKUserMessage = {
-              type: 'user',
-              content: [{ type: 'text', text: args.task }],
-            };
-            subTask = await context.startSubTask({ agentId, message });
-          } else {
-            // Send message to existing sub-task
-            const message: SDKUserMessage = {
-              type: 'user',
-              content: [{ type: 'text', text: args.task }],
-            };
-            await context.sendMessage({
-              taskId: subTask.taskId,
-              message,
-              target: 'agent',
-            });
-          }
+## Important Rules
 
-          return {
-            content: [{
-              type: 'text',
-              text: `Delegated to ${args.agentName} (task: ${subTask.taskId})`
-            }],
-          };
-        }
-      ),
-
-      tool(
-        'check_subtask_result',
-        'Check if a sub-task has completed and get its result',
-        {
-          agentName: z.string().describe('Display name of the agent'),
-        },
-        async (args) => {
-          const agents = context.getChatAgents();
-          const agentId = agents[args.agentName];
-
-          if (!agentId) {
-            return {
-              content: [{ type: 'text', text: `Agent "${args.agentName}" not found` }],
-            };
-          }
-
-          const subTask = await context.findSubTaskByAgent(agentId);
-          if (!subTask) {
-            return {
-              content: [{ type: 'text', text: 'No sub-task found for this agent' }],
-            };
-          }
-
-          const { sessionPath, state } = await context.getTaskSession(subTask.taskId);
-
-          if (state !== 'stopped') {
-            return {
-              content: [{ type: 'text', text: `Sub-task still running (state: ${state})` }],
-            };
-          }
-
-          // Read session to extract result
-          const session = JSON.parse(await fs.readFile(sessionPath, 'utf-8'));
-          const lastMessage = session.messages?.slice(-1)[0];
-
-          return {
-            content: [{
-              type: 'text',
-              text: `Sub-task completed. Last message: ${JSON.stringify(lastMessage?.content)}`
-            }],
-          };
-        }
-      ),
-    ],
-  });
-}
-```
-
-## Important Notes
-
-- **Never use `process.env.AGENTRIX_*` directly** - always use context methods
-- **General env vars (API_KEY, etc.) can use `process.env`** - these are different from Agentrix context
-- **Context is injected by server** - your MCP tool/Hook cannot run standalone
-- **Must export function(context)** - direct export of createSdkMcpServer will error
-- **agentDir must be absolute path** - use `join(workspace, normalizedName)` to build full path
-- **Never expose env vars in system prompts** - agents cannot read `$ENV_VAR` directly
-- **Sub-tasks inherit context** - chatId, rootTaskId, machineId/cloudId are automatically inherited
-- **Use findSubTaskByAgent before startSubTask** - to avoid creating duplicate sub-tasks
+- **Never use `process.env.AGENTRIX_*` directly** — always use context methods
+- **General env vars (API_KEY, etc.) can use `process.env`** — these are not Agentrix context
+- **Must export `function(context)`** — direct export of `createSdkMcpServer` will error
+- **`agentDir` must be an absolute path** — use `join(context.getWorkspace(), normalizedName)`
+- **Never expose env vars in system prompts** — agents cannot read `$ENV_VAR` directly
+- **Sub-tasks inherit context** — `chatId`, `rootTaskId`, machine info are automatically inherited
+- **Use `findSubTaskByAgent` before `startSubTask`** — to avoid creating duplicate sub-tasks
+- **Cache `uploadFile` results** — store to `avatar/upload-avatar.json` to avoid re-uploading
