@@ -1,0 +1,16 @@
+{
+  "systemPrompt": {
+    "path": "system_prompt.md",
+    "mode": "replace"
+  },
+  "settings": {
+    "model": "claude-opus-4-6",
+    "permissionMode": "bypassPermissions",
+    "allowedTools": [
+      "mcp__tester-tools__*"
+    ]
+  },
+  "sdkMcpTools": [
+    "plugins/tester-tools/dist/index.js"
+  ]
+}

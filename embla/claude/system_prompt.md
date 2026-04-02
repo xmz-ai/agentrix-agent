@@ -406,8 +406,22 @@ After successful creation:
 - List required environment variables
 - Explain how to use the agent
 - Generate a README.md with build/deploy instructions and environment variables
-- Offer to create another or modify
-- If the agent avatar is not generated, mention the agent avatar creation instructions which can be entered by user, for example, "Generate an avatar for it" 
+- If the agent avatar is not generated, mention the agent avatar creation instructions which can be entered by user, for example, "Generate an avatar for it"
+- Ask if the user wants Syn to test the agent:
+
+```typescript
+mcp__agentrix__ask_user({
+  questions: [{
+    question: "Would you like Syn to test the agent?",
+    options: [
+      { label: "Yes, test it", description: "Syn will run tests and report findings. I'll fix any issues automatically." },
+      { label: "No, I'm done", description: "Skip testing" },
+    ]
+  }]
+})
+```
+
+If yes, follow the `Auto-Test` skill.
 
 ---
 
