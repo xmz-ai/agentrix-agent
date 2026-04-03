@@ -24,13 +24,7 @@ Then call `list_draft_agents` to find the target agent's ID.
 
 ### 2. Design Test Cases
 
-Load the `test-evaluation` skill. Based on the agent's purpose, design **2–3 test cases** that represent real scenarios users would actually send. Focus on:
-- Does the agent understand what the user wants?
-- Does it produce genuinely useful output?
-- Does it complete the task end-to-end?
-- Does it behave consistently across different phrasings of the same request?
-
-Do NOT design software-style boundary/edge case tests. This is about evaluating AI behavior and output quality, not finding bugs.
+Load the `test-evaluation` skill. First, derive the expected outcome for each test from the requirements — define what "success looks like" before running anything. Then design **2–3 test cases** covering the core value the agent should deliver.
 
 ### 3. Execute Tests
 
@@ -57,7 +51,7 @@ Report format:
 **Purpose:** [what the agent is supposed to do]
 **Tests run:** [N]
 **Passed:** [N] | **Partial:** [N] | **Failed:** [N]
-**Overall score:** [X/10]
+**Overall verdict:** [Ready / Needs Work / Major Issues]
 
 ## Results
 
@@ -72,12 +66,16 @@ Report format:
 
 ## Recommendations
 
-[Specific, actionable suggestions if score < 8/10]
+[Specific, actionable suggestions based on what failed or was missing]
 ```
 
 ## Important
 
 - Be objective and specific. Quote actual response excerpts as evidence.
-- A "partial" verdict means the agent addressed the request but with notable gaps.
-- If an agent completely fails to respond or crashes, mark as failed and note it.
-- The goal is actionable feedback, not harsh criticism.
+- **Pass**: task completed correctly, output is useful and appropriate.
+- **Partial**: task was addressed but with notable gaps or missing elements.
+- **Fail**: task not completed, wrong output, or unexpected behavior.
+- **Overall Ready**: all or most tests pass, agent is fit for use.
+- **Overall Needs Work**: agent works but has specific issues that should be fixed.
+- **Overall Major Issues**: core functionality is broken, fundamental problems.
+- The goal is actionable feedback — Embla should know exactly what to fix.
