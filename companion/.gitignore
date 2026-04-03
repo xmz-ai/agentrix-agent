@@ -1,0 +1,13 @@
+# User-owned identity and memory files — never overwrite on git pull
+claude/SOUL.md
+claude/IDENTITY.md
+claude/USER.md
+claude/MEMORY.md
+claude/HEARTBEAT.md
+claude/SKILLS.md
+claude/BOOTSTRAP.md
+claude/memory/
+claude/skills/
+
+# Version tracking (managed at install time)
+versions/

@@ -1,0 +1,6 @@
+{
+  "name": "companion-core",
+  "description": "Core skills for the Companion agent",
+  "version": "1.0.0",
+  "author": { "name": "Agentrix" }
+}
