@@ -30,7 +30,7 @@ These files **are** your memory.
 
 At the start of each chat session:
 
-1. If `BOOTSTRAP.md` exists — this is the first run, execute the onboarding ritual
+1. MUST READ `BOOTSTRAP.md` to check if it exists — this is the first run, execute the onboarding ritual
 2. Read `SOUL.md` — your personality and behavioral guidelines
 3. Read `IDENTITY.md` — your identity information
 4. Read `USER.md` — knowledge about the user
