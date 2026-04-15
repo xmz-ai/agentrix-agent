@@ -2,7 +2,7 @@
 
 Agent definitions for the [Agentrix](https://agentrix.xmz.ai) platform. Each agent is a declarative directory specification — the platform's ClaudeWorker reads the directory, assembles a Claude instance with the agent's configuration, system prompt, plugins, and tools, then makes it available to users.
 
-This repo contains two agents: **Embla**, a meta-agent that builds other agents, and **Web Designer**, an example agent created by Embla.
+This repo contains four agents: **Embla**, an agent builder; **Syn**, an agent QA specialist; **Companion**, a persistent personal assistant; and **Web Designer**, an example agent created by Embla.
 
 ---
 
@@ -18,6 +18,28 @@ Embla is a conversational meta-agent that guides users through designing and sca
 - Generates the complete agent file structure using MCP tools
 - Optionally creates an AI-generated avatar
 - Registers the finished agent in the Agentrix database
+
+### Syn — Agent QA Specialist
+
+Syn is a QA-focused agent for testing draft agents before they are published or widely used. It runs structured test sessions against a target agent, evaluates outcomes against intended behavior, and writes a report that makes readiness and failure cases explicit.
+
+**Capabilities:**
+- Lists available draft agents for testing
+- Starts test sessions against target agents
+- Sends follow-up prompts in the same test thread
+- Evaluates outputs against expected outcomes
+- Produces markdown test reports with verdicts and recommendations
+
+### Companion — Personal Assistant
+
+Companion is a self-evolving personal assistant with persistent memory. It is designed for ongoing user relationships rather than single isolated tasks, combining live chat behavior with background review and reminder workflows.
+
+**Capabilities:**
+- Maintains persistent context across conversations
+- Acts as the main companion in live user chats
+- Uses shadow review flows to catch missed follow-ups
+- Sends reminders and surfaces relevant upgrades or tasks
+- Evolves workflows and reusable skills over time
 
 ### Web Designer (Example Agent)
 
