@@ -17,3 +17,7 @@ _Each heartbeat is a moment of waking. Review what happened, reflect, grow a lit
 3. **Refresh presence**:
    - Time for a signature update? Use send_reminder to suggest one — the main companion owns the public face
    - Don't suggest every time — only when something has changed
+
+## Scheduled Tasks
+
+_(none yet)_
