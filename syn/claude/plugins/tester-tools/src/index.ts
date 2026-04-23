@@ -1,5 +1,5 @@
 import { createSdkMcpServer, tool } from '@anthropic-ai/claude-agent-sdk';
-import type { AgentrixContext } from '@agentrix/shared';
+import type { AgentrixContext, AskUserResponseMessage } from '@agentrix/shared';
 import { z } from 'zod';
 import type { SDKUserMessage } from '@anthropic-ai/claude-agent-sdk';
 
@@ -44,21 +44,34 @@ export default function (context: AgentrixContext) {
 
       tool(
         'emit_to_task',
-        'Send a follow-up message to a running sub-task.',
+        `Send a message to a running sub-task. Use this to:
+1. Answer a sub-task's ask_user questions: set answers array (one answer per question).
+2. Send follow-up instructions: set message only (no answers).`,
         {
           taskId: z.string().describe('The sub-task ID to send the message to'),
-          message: z.string().describe('The message to send'),
+          message: z.string().optional().describe('Follow-up message for the sub-task (used when not answering ask_user)'),
+          answers: z.array(z.string()).optional().describe('Answers to the sub-task ask_user questions, one per question. When provided, sends as ask_user_response.'),
         },
         async (args) => {
           try {
-            await context.sendMessage({
-              taskId: args.taskId,
-              message: {
+            let payload: any;
+            if (args.answers && args.answers.length > 0) {
+              const askUserResponse: AskUserResponseMessage = {
+                type: 'ask_user_response',
+                answers: args.answers,
+              };
+              payload = askUserResponse;
+            } else {
+              payload = {
                 type: 'user',
-                message: { role: 'user', content: args.message },
+                message: { role: 'user', content: args.message ?? '' },
                 parent_tool_use_id: null,
                 session_id: '',
-              } as SDKUserMessage,
+              } as SDKUserMessage;
+            }
+            await context.sendMessage({
+              taskId: args.taskId,
+              message: payload,
               target: 'agent',
             });
             return {
