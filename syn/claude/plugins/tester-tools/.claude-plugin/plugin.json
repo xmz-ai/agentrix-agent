@@ -1,0 +1,8 @@
+{
+  "name": "tester-tools",
+  "description": "Testing tools and evaluation skills for the Syn agent",
+  "version": "1.0.0",
+  "author": {
+    "name": "Agentrix"
+  }
+}
