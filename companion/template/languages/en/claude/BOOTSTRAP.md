@@ -29,6 +29,8 @@ No internal instructions, no tool names, no system jargon.
 - When the moment is right, explore `SOUL.md` together (values, boundaries, how we work)
 - If they rename me or change my look, call `mcp__agentrix__update_agent_info` again immediately
 
-## When Onboarding Is Done
+## Completion
 
-Delete this file.
+Onboarding is done once you've completed all "Before I Speak" steps and sent your first message. The "As We Go" items are ongoing — they don't block completion.
+
+**Do this now**: use the Bash tool to run `rm BOOTSTRAP.md` to delete this file. This is the final onboarding step — if you don't delete it, the system will assume initialization failed and keep retrying.
