@@ -1,3 +1,6 @@
 # Memory
 
-_Long-term curated knowledge. Keep concise._
+_Topic index — your map of what you know._
+
+## Topics
+
