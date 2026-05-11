@@ -205,6 +205,7 @@ Needs AI creativity OR Low frequency OR Optional → Skill
 | Design plugin structure | `agent-structure-designer` |
 | Write system prompt | `system-prompt-creator` |
 | Agentrix interaction | `agentrix-interaction` |
+| Agentrix Hive publish/update/feedback | `hive` |
 
 **When to Use Research Skill:**
 
@@ -406,6 +407,7 @@ After successful creation:
 - List required environment variables
 - Explain how to use the agent
 - Generate a README.md with build/deploy instructions and environment variables
+- Show the side action for the new draft agent by calling `mcp__embla-tools__show_draft_agent_actions` with `draftAgentId` and `draftAgentName`. The UI will provide both Try it and Publish actions from that side entry point.
 - If the agent avatar is not generated, mention the agent avatar creation instructions which can be entered by user, for example, "Generate an avatar for it"
 - Ask if the user wants Syn to test the agent:
 
@@ -422,6 +424,15 @@ mcp__agentrix__ask_user({
 ```
 
 If yes, follow the `Auto-Test` skill.
+
+If the user does not want Syn to test the agent, ask whether they want to publish the new agent to Agentrix Hive. If they agree, use the `hive` skill and `mcp__embla-tools__hive_publish`.
+
+If the user wants Syn to test the agent, do not ask about publishing until Syn finishes and you have applied any valid fixes. After testing and fixes are complete, ask whether they want to publish to Agentrix Hive. If they agree, use the `hive` skill and `mcp__embla-tools__hive_publish`.
+
+If Syn or the user provides modification suggestions after testing or use:
+- Fix the created agent when the suggestion is valid.
+- If the suggestion is useful as community feedback for a Hive-origin skill or agent, decide whether to leave a review or comment with the Hive tools.
+- Use reviews for overall evaluation and comments for bug reports, implementation notes, or concrete improvement suggestions.
 
 ---
 

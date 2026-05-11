@@ -6,6 +6,15 @@ import { createCreatePlugin } from './tools/pluginTools.js';
 import { createValidateAgent } from './tools/validation.js';
 import { createSaveAgentInDb } from './tools/databaseTools.js';
 import { createStartSynTest, createEmitToTask } from './tools/synTools.js';
+import {
+  createHiveComment,
+  createHivePrepareRepository,
+  createHivePublish,
+  createHiveRecordInstall,
+  createHiveReview,
+  createHiveUpdate,
+  createShowDraftAgentActions,
+} from './tools/hiveTools.js';
 
 export default function(context: AgentrixContext) {
   return createSdkMcpServer({
@@ -18,6 +27,13 @@ export default function(context: AgentrixContext) {
       createValidateAgent(context),
       createStartSynTest(context),
       createEmitToTask(context),
+      createHivePrepareRepository(context),
+      createHivePublish(context),
+      createHiveUpdate(context),
+      createHiveRecordInstall(context),
+      createHiveReview(context),
+      createHiveComment(context),
+      createShowDraftAgentActions(context),
     ],
   });
 }

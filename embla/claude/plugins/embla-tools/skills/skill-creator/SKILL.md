@@ -411,6 +411,12 @@ The `lib/` directory contains **production-quality SKILL examples** from Anthrop
 - Preview the skill in `lib` before you copy to agent path, not only based on the skill name.
 - You also can design your skill based on the skills in `lib`, or only copy the part of the skill what you need.
 
+### Agentrix Hive
+
+If the local `lib/` skill library does not contain a suitable skill, use the `hive` skill to query Agentrix Hive before creating a new skill from scratch.
+
+You may also adapt an existing local library or Hive skill when it is close but not exact. Create a new skill only when there is no suitable skill to copy or adapt, or when the required behavior is genuinely custom.
+
 ---
 
 ## Quality Checklist

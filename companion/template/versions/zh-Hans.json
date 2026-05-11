@@ -1,0 +1,37 @@
+{
+  "claude/BOOTSTRAP.md": {
+    "version": "1.0.0",
+    "updateStrategy": "overwrite",
+    "description": "Companion 初始引导说明"
+  },
+  "claude/HEARTBEAT.md": {
+    "version": "1.0.0",
+    "updateStrategy": "notify-user",
+    "description": "Companion 心跳例程"
+  },
+  "claude/IDENTITY.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion 身份设定"
+  },
+  "claude/MEMORY.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion 记忆索引"
+  },
+  "claude/SKILLS.md": {
+    "version": "1.1.0",
+    "updateStrategy": "notify-user",
+    "description": "Companion 技能索引"
+  },
+  "claude/SOUL.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion 人格与价值观"
+  },
+  "claude/USER.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion 用户画像"
+  }
+}

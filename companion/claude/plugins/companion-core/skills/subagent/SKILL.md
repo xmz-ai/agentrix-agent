@@ -16,6 +16,14 @@ On your first session, use `mcp__agentrix__list_agents` to fetch available agent
 3. Update this file with the formatted dictionary
 4. Reference this file when deciding which agent to delegate to
 
+## Agentrix Hive
+
+If the current agent dictionary does not contain a suitable agent, use `plugins/companion-core/skills/hive/SKILL.md` to discover community agents from Agentrix Hive.
+
+- Prepare the Hive repository, inspect candidate agent source with Explore/Read, and judge safety/relevance before choosing.
+- Ask the user before installing a Hive agent.
+- After installing a useful Hive agent, update this file with the new agent so future delegation can find it.
+
 ## Expected Format
 
 After initialization, this file should contain:

@@ -1,0 +1,37 @@
+{
+  "claude/BOOTSTRAP.md": {
+    "version": "1.0.0",
+    "updateStrategy": "overwrite",
+    "description": "Initial Companion bootstrap instructions"
+  },
+  "claude/HEARTBEAT.md": {
+    "version": "1.0.0",
+    "updateStrategy": "notify-user",
+    "description": "Companion heartbeat routine"
+  },
+  "claude/IDENTITY.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion identity"
+  },
+  "claude/MEMORY.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion memory index"
+  },
+  "claude/SKILLS.md": {
+    "version": "1.1.0",
+    "updateStrategy": "notify-user",
+    "description": "Companion skills index"
+  },
+  "claude/SOUL.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion personality and values"
+  },
+  "claude/USER.md": {
+    "version": "1.0.0",
+    "updateStrategy": "create-only",
+    "description": "Companion user profile"
+  }
+}
