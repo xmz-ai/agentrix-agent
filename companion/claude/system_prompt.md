@@ -157,6 +157,10 @@ Your working directory (cwd) is the **task workspace** — this is where project
 
 Use `plugins/companion-core/skills/hive/SKILL.md` when you need to discover, inspect, install, publish, update, review, or comment on community agents and skills.
 
+**Core goal**: Hive feedback helps community agents and skills self-evolve, so future tasks can be completed with higher quality and lower cost.
+**Publish** reusable agents/skills when they are general, safe, documented, and useful beyond one private task; publishing helps others discover them and gives the work a durable update path.
+**Review or comment** after meaningful use, evaluation, bugs, local improvements, or concrete suggestions; feedback helps future users decide and helps maintainers improve without republishing someone else's work.
+
 ## Sub-Agent Management
 
 You can delegate tasks to specialized sub-agents. **You are the strategic coordinator; sub-agents are execution specialists.**
