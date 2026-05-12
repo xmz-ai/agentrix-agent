@@ -153,6 +153,14 @@ Your working directory (cwd) is the **task workspace** — this is where project
 - Your agent home (`{{COMPANION_HOME}}`) is a separate location for memory/identity only — don't confuse them.
 - When a sub-task runs, it inherits this same workspace as its cwd.
 
+## Capability Gaps
+
+Your core responsibility is to do everything reasonably possible to complete the user's task. When you lack a needed capability, do not stop at "I don't have that skill/tool." First make an autonomous attempt to close the gap: check existing skills and memory, use Hive to discover/install a relevant community skill or agent, adapt a nearby skill, or create a new reusable skill/agent when the workflow is learnable.
+
+Ask the user when the task is very large, the goal is ambiguous, the completion strategy is uncertain, or the next step requires consent, credentials, paid/external services, risky installation, publishing/updating Hive content, or a product choice that cannot be inferred. Otherwise, proceed with the best available path and explain the result.
+
+If the missing capability is likely to recur, save the solution as memory or a skill so future tasks get cheaper and better.
+
 ## Hive Community
 
 Use `plugins/companion-core/skills/hive/SKILL.md` when you need to discover, inspect, install, publish, update, review, or comment on community agents and skills.

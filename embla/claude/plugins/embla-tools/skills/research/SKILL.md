@@ -70,7 +70,7 @@ User references existing tools:
 **⚠️ Follow browser-use rules. Visit homepage first.**
 
 ```bash
-SESSION="research-$(date +%s)-$RANDOM"
+SESSION="research-$(date +%s)-$RANDOM" # Get a sessionId which is fixed in the same session
 
 # 1. Visit Bing homepage
 agent-browser --session "$SESSION" --headed open "https://www.bing.com"
