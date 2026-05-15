@@ -1,9 +1,4 @@
 {
-  "claude/BOOTSTRAP.md": {
-    "version": "1.0.0",
-    "updateStrategy": "overwrite",
-    "description": "Initial Companion bootstrap instructions"
-  },
   "claude/HEARTBEAT.md": {
     "version": "1.0.0",
     "updateStrategy": "notify-user",

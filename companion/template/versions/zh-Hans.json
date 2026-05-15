@@ -1,9 +1,4 @@
 {
-  "claude/BOOTSTRAP.md": {
-    "version": "1.0.0",
-    "updateStrategy": "overwrite",
-    "description": "Companion 初始引导说明"
-  },
   "claude/HEARTBEAT.md": {
     "version": "1.0.0",
     "updateStrategy": "notify-user",
