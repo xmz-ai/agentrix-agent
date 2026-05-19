@@ -20,12 +20,12 @@
     "description": "Companion scheduling skill"
   },
   "claude/plugins/companion-core/skills/subagent/SKILL.md": {
-    "version": "1.1.0",
+    "version": "1.1.1",
     "updateStrategy": "overwrite",
     "description": "Companion sub-agent delegation skill"
   },
   "claude/system_prompt.md": {
-    "version": "1.6.0",
+    "version": "1.6.1",
     "updateStrategy": "overwrite",
     "description": "Companion system prompt"
   }

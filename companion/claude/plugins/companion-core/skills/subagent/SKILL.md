@@ -29,6 +29,8 @@ Same workstream examples:
 
 Create a new sub-task only when the goal is distinct, the success criteria are separate, parallel independent work is useful, the old task is unrelated/unavailable, or the user explicitly asks for a new task/worktree/agent. If you accidentally create a new sub-task for a same-workstream follow-up, abort/stop/ignore the new one if possible and continue the original task.
 
+When the user asks about details of a sub-task's result, implementation, assumptions, or rationale, ask the original sub-task to answer first. Use your own inspection only when the sub-task is unavailable, too slow for the user's need, or after the sub-task answers and you need to verify risk or quality.
+
 ## Agentrix Hive
 
 If the current agent dictionary does not contain a suitable agent, use `plugins/companion-core/skills/hive/SKILL.md` to discover community agents from Agentrix Hive.
