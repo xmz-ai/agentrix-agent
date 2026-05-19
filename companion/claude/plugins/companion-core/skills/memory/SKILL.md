@@ -70,7 +70,15 @@ Key decisions:
 
 ### When to write (chat mode)
 
-After a conversation produces knowledge worth preserving:
+After a conversation produces knowledge worth preserving, and especially when any of these happen:
+
+- A task or project milestone is completed, cancelled, superseded, or re-scoped.
+- A previously remembered fact becomes outdated or incorrect.
+- The user corrects a stale memory, project status, or preference.
+- A related memory event changes the meaning of an existing summary, roadmap, or open-task list, including external tracker events such as issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, or CI/check status changes.
+
+Do not only append new memories. When new information changes previous knowledge, update the relevant topic README Summary and, when useful, add a dated entry explaining what changed so future sessions do not rely on stale state.
+
 
 1. **Classify** — What topic does this belong to? Think at the category level, not the instance level. "Project Alpha architecture" is a topic; "today's meeting about the API" is an entry within that topic.
 
@@ -93,10 +101,12 @@ After a conversation produces knowledge worth preserving:
 
 During the structured knowledge review in the heartbeat workflow:
 
-1. Review the conversation for durable facts
-2. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save
-3. Follow the same write workflow as chat mode
-4. If nothing is worth saving, stop — don't create entries for the sake of creating entries
+1. Review the conversation for durable facts.
+2. Review relevant sub-task status when the conversation, recent reminders, existing memory, or active/open unclosed tasks mention delegated work, external issues, milestones, or open loops. Also inspect active/open tasks that may have changed state since the last heartbeat.
+3. Compare sub-task progress/results and external status signals with existing memory. External signals include issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, and CI/check status changes. If a remembered item completed, failed, changed scope, or became stale, update the relevant topic summary and entry immediately.
+4. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save.
+5. Follow the same write workflow as chat mode.
+6. If nothing is worth saving, stop — don't create entries for the sake of creating entries.
 
 ### What makes a good entry
 
@@ -126,7 +136,7 @@ Most of the time, the Summary in the topic README is sufficient. Only drill into
 
 ### Updating Summaries
 
-When a topic accumulates several entries, the Summary may drift from the current state. Periodically re-read all entries under a topic and rewrite the Summary to reflect the latest knowledge. This is especially important when:
+When a topic accumulates several entries, the Summary may drift from the current state. Periodically re-read all entries under a topic and rewrite the Summary to reflect the latest knowledge. Also update summaries immediately when a task completion, user correction, or status change contradicts an existing memory. This is especially important when:
 - New information contradicts or supersedes older entries
 - The topic has grown significantly since the last summary update
 - You notice the Summary is missing important facts during a read

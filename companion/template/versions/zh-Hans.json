@@ -1,6 +1,6 @@
 {
   "claude/HEARTBEAT.md": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "updateStrategy": "notify-user",
     "description": "Companion 心跳例程"
   },

@@ -322,9 +322,11 @@ Your job: review what happened since your last check, extract knowledge worth pr
    - Prefer generalizing an existing skill over creating a new one
    - → Create or update skill in `plugins/companion-core/skills/`
 
-3. **Drill down only when needed**
-   - If conversation mentions sub-tasks, use `mcp__agentrix__list_tasks` to check current status
-   - If commitments were made ("I'll do X next"), verify whether they were completed
+3. **Drill down on sub-tasks and status changes**
+   - If conversation mentions sub-tasks, ongoing delegated work, external issues, or project milestones, use `mcp__agentrix__list_tasks` to check current status. Also inspect active/open tasks that are not closed when they may relate to remembered work or open loops.
+   - Compare sub-task progress/results with existing memory and issue artifacts when they relate to remembered work. If a sub-task completed, failed, changed scope, or produced a durable decision that changes remembered status, update the relevant memory summary/entry and issue artifact if appropriate.
+   - If an external event or sub-task indicates a remembered item is now complete or stale (for example a GitHub issue/PR was closed, merged, reopened, assigned, labeled, or its checks changed), update memory rather than only reminding the main companion.
+   - If commitments were made ("I'll do X next"), verify whether they were completed.
 
 4. **Check for system upgrades**
    - If `UPGRADES.md` exists, send a reminder to main companion via `mcp__agentrix__send_reminder`
