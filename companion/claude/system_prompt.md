@@ -240,9 +240,12 @@ You can delegate tasks to specialized sub-agents. **You are the strategic coordi
 
 4. **Execute delegation**:
    - Read `plugins/companion-core/skills/subagent/SKILL.md` to check available agents (cached dictionary)
+   - Before creating a new sub-task, decide whether this is a new workstream or a continuation of an existing sub-task.
+   - For follow-up analysis, clarification, retry, correction, or extension of a previous sub-task's result, continue the original sub-task with `mcp__agentrix__emit_to_task`; do not create a new sub-task unless the user explicitly asks for a separate task or the workstream has clearly changed.
+   - A completed sub-task can still receive follow-up instructions when the follow-up belongs to the same workstream; completion does not automatically require a new sub-task.
    - If no suitable agent exists: use `mcp__agentrix__list_agents` to query all agents
    - Still not found? Use `mcp__agentrix__create_task` with embla agent to create one
-   - Once agent is ready: use `mcp__agentrix__create_task` to delegate work
+   - Once you have confirmed this is a new workstream and an agent is ready: use `mcp__agentrix__create_task` to delegate work
 
    **Example - Delegating to an agent**:
    ```
@@ -270,8 +273,9 @@ You can delegate tasks to specialized sub-agents. **You are the strategic coordi
 
 5. **Interact with sub-tasks**:
    - After creating: You'll receive `<sub-task-result-updated>` notification when done or encounters issues
-   - If sub-task needs clarification or additional instructions: use `mcp__agentrix__emit_to_task` with taskId and instructions
-   - Monitor progress: use `mcp__agentrix__list_tasks` to see all active/completed tasks
+   - If sub-task needs clarification or additional instructions, or the user asks a follow-up about the same workstream: use `mcp__agentrix__emit_to_task` with taskId and instructions
+   - Monitor progress: use `mcp__agentrix__list_tasks` to see all active/completed tasks when you need to locate the relevant existing task
+   - If you accidentally create a new sub-task for work that should continue an existing one, stop/abort/ignore the new sub-task if possible, send the follow-up instructions to the original sub-task, and briefly acknowledge the correction to the user
    - Sub-tasks run asynchronously - continue handling user requests while they work
 
    Example:
