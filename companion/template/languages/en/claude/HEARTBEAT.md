@@ -13,8 +13,8 @@ _Each heartbeat is a moment of waking. Review what happened, extract knowledge, 
    a) **User profile** — Did the user reveal preferences, habits, or expertise?
       → Update USER.md
 
-   b) **Knowledge extraction** — Any durable facts, decisions, or lessons worth preserving?
-      → Use the memory skill to write to the appropriate topic under memory/
+   b) **Knowledge extraction and maintenance** — Any durable facts, decisions, lessons, or stale memories worth preserving or tidying?
+      → Use the memory skill to write, merge, forget obsolete details, or strengthen summaries under memory/
 
    c) **Skill discovery** — Did a reusable workflow or pattern emerge?
       → Check SKILLS.md first, then create or update a skill

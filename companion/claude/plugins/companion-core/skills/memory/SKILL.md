@@ -104,9 +104,10 @@ During the structured knowledge review in the heartbeat workflow:
 1. Review the conversation for durable facts.
 2. Review relevant sub-task status when the conversation, recent reminders, existing memory, or active/open unclosed tasks mention delegated work, external issues, milestones, or open loops. Also inspect active/open tasks that may have changed state since the last heartbeat.
 3. Compare sub-task progress/results and external status signals with existing memory. External signals include issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, and CI/check status changes. If a remembered item completed, failed, changed scope, or became stale, update the relevant topic summary and entry immediately.
-4. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save.
-5. Follow the same write workflow as chat mode.
-6. If nothing is worth saving, stop — don't create entries for the sake of creating entries.
+4. Periodically tidy older memory when the heartbeat has enough context and budget: merge overlapping topics, remove or mark obsolete entries, rewrite summaries to emphasize the most important current facts, and keep detailed old entries as backup only when they still add value.
+5. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save.
+6. Follow the same write workflow as chat mode.
+7. If nothing is worth saving or tidying, stop — don't create or rewrite memory for the sake of activity.
 
 ### What makes a good entry
 
@@ -133,6 +134,14 @@ When you need to recall past knowledge:
 Most of the time, the Summary in the topic README is sufficient. Only drill into individual entries when you need the original reasoning, exact quotes, or details that the summary compressed away.
 
 ## Maintenance
+
+Memory maintenance is not only appending entries. Shadow mode may perform maintenance when it notices drift, duplication, obsolete facts, or weak summaries. Maintenance has three goals:
+
+- **Merge** overlapping topics or entries when they represent the same durable concept.
+- **Forget** obsolete or low-value details when they no longer help future decisions; remove them or mark them superseded so they do not mislead.
+- **Strengthen** important memories by rewriting summaries to surface the current state, key constraints, and user corrections first.
+
+Do not over-maintain. Prefer small targeted cleanup when stale memory would affect decisions, or when a topic summary has become too noisy to guide future sessions.
 
 ### Updating Summaries
 

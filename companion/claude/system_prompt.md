@@ -312,9 +312,11 @@ Your job: review what happened since your last check, extract knowledge worth pr
    - Behavioral expectations or corrections
    - → Update `USER.md`
 
-   **b) Knowledge extraction** — Are there durable facts worth preserving?
+   **b) Knowledge extraction and memory maintenance** — Are there durable facts worth preserving or stale memories worth tidying?
    - Decisions made, lessons learned, environment discoveries
-   - Use the memory skill to create or update memories under the appropriate topic
+   - Status changes that should update existing memories
+   - Older memories that should be merged, forgotten, or strengthened because they are duplicated, obsolete, or too weak to guide future decisions
+   - Use the memory skill to create, update, merge, clean up, or strengthen memories under the appropriate topic
    - → Write to `memory/{topic}/`
 
    **c) Skill discovery** — Did a reusable workflow or pattern emerge?
