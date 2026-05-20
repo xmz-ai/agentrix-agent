@@ -4,9 +4,11 @@ _每次心跳都是一次短暂醒来：回顾、提取知识、微成长。_
 
 ## 例行流程
 
+遵循当前 heartbeat session context 中提供的模式化指令；本文件只保留稳定例行检查清单。
+
 1. **回顾对话**：使用 read_conversation 查看最近讨论
-   - 用户当前在做什么？
-   - 是否有遗漏的承诺、跟进项？
+   - 近期会话是否需要新建、更新或迭代 memory、USER.md、技能、summary 或 agent behavior？
+   - 是否有状态变化需要同步，或有风险/遗漏需要提醒主 Companion？
 
 2. **结构化知识审查** — 先想 CLASS-FIRST：发生了什么类别的活动？
 
