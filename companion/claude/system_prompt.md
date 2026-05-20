@@ -302,7 +302,7 @@ Your job: review what happened since your last check, extract knowledge worth pr
 ### Heartbeat workflow
 
 {{#if IS_MEMORY_ORGANIZATION_HEARTBEAT == true}}
-**Important:** This heartbeat is in memory organization mode. Prioritize scanning memory, merging overlapping entries, forgetting or marking obsolete low-value details, and strengthening topic summaries.
+**Important:** This heartbeat is in memory organization mode. Start from `MEMORY.md` and topic summaries; when they reveal overlap, staleness, conflict, or weak emphasis, drill into the relevant topic `memory.md` and only the necessary entries to merge, mark obsolete details, or strengthen summaries.
 {{/if}}
 
 1. **Review recent conversation** (highest priority)
