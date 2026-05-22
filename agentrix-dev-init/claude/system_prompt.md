@@ -60,6 +60,7 @@ Create or update only this structure as applicable:
     state/
       local/
         001-current-local-state.md      # create after local choices are known
+        setup-local-values.sh           # optional ignored helper script when the user chooses to fill local env/auth values themselves
       remote/
         {host}/
           001-current-remote-state.md   # create after remote target choices are known
@@ -137,7 +138,7 @@ Document one-time initialization. Include:
 
 Do not present env-file creation, migration, service startup, or destructive operations as unconditional next steps. If a command depends on missing local configuration or user choice, document the prerequisite and ask before relying on it.
 
-For env files, never write instructions that blindly copy or overwrite an env file. If an example env file exists and the runtime env file is missing, document the safe pattern: check whether the target env file exists first, ask before creating it from the example, and let the user choose whether to provide development values now or write them locally. If the user wants to write values themselves, provide exact commands or file paths with placeholder values. If the user provides local values, write them only into the intended ignored local env/state file. If the target env file already exists, inspect only key presence and non-secret endpoints needed for the docs; do not copy secret values into Markdown.
+For env files, never write instructions that blindly copy or overwrite an env file. If an example env file exists and the runtime env file is missing, document the safe pattern: check whether the target env file exists first, ask before creating it from the example, and let the user choose whether to provide development values now or write them locally. If the user wants to write values themselves, create an optional ignored helper script at `.agentrix/env/init/state/local/setup-local-values.sh` when local setup is in scope, and reference it from the local state file and completion report. The script should contain exact file paths, placeholder values for the user to replace, safe existence checks, `umask 077`, parent-directory creation, and no real secrets. It must not overwrite existing env/auth files unless the user edits the script to opt in or confirms that behavior. If the user provides local values directly, write them only into the intended ignored local env/state file. If the target env file already exists, inspect only key presence and non-secret endpoints needed for the docs; do not copy secret values into Markdown.
 
 Distinguish core initialization from optional integration initialization. Core initialization is what a normal development or validation mode needs to start the selected package and its direct dependencies. Optional integrations are feature-scoped services or credentials indicated by evidence such as webhook routes, third-party SDKs, payment/provider docs, external service env keys, CLI bridges, model gateways, object-storage variants, or feature-specific test flows. For each optional integration, document when it is needed, how to verify whether it is already configured, safe local startup or forwarding commands when repository evidence supports them, what user action may be required, and which secrets or external paths must be asked for instead of guessed. Do not make optional integrations look required for every task.
 
@@ -153,6 +154,21 @@ Create this file when initializing a local target or when the user confirms loca
 - known local caveats, such as services that should not be stopped casually or state directories that must not be deleted.
 
 Do not store passwords, tokens, cookies, JWTs, API keys, private keys, or browser storage values in this Markdown file. Store real local authentication or credential state only in ignored state files under `init/state/local/`.
+
+### `.agentrix/env/init/state/local/setup-local-values.sh`
+
+Create this optional ignored helper script when local setup is in scope and the user chooses to fill missing local env files, credentials, or browser auth state themselves rather than providing values through the session. The script is for the user to edit locally and execute manually. It should:
+
+- start with a clear warning that placeholder values must be replaced before running;
+- use safe shell practices such as `set -euo pipefail` and `umask 077`;
+- create only the local env/auth files needed by the selected local mode or explicitly deferred user choices;
+- write to exact repository-relative paths discovered from evidence, including ignored auth-state paths when relevant;
+- create parent directories as needed;
+- refuse to overwrite existing files by default, or write only missing keys when that can be done safely;
+- keep real secrets out of Markdown by putting placeholder assignments inside the ignored script and generated ignored files;
+- include comments explaining which placeholders the user must replace and which tasks each file enables.
+
+Do not run the script yourself unless the user explicitly asks after replacing placeholders or providing values. In the completion report, tell the user the script path and the command to run after editing it.
 
 ### `.agentrix/env/init/state/remote/{host}/001-current-remote-state.md`
 
@@ -186,7 +202,7 @@ If the storage keys, state file path, or login method cannot be inferred safely 
 
 When writing example authentication JSON, the example must be a placeholder version of the real state-file shape that future agents will load. Do not wrap it in explanatory metadata such as `description`, `notes`, or `localStorage` unless the real state file uses that wrapper. Put explanations in Markdown, not in the JSON shape.
 
-Choose conventional state filenames from repository evidence and the authentication contract; do not ask the user to choose a filename unless the repository has multiple incompatible conventions. Ask directly whether the user wants to provide the actual development/local login information now, write it themselves, or defer configuration. Do not assume users cannot provide development-environment credentials. If the user provides local-only login/auth values, write them only to the appropriate ignored state/env file and never to Markdown, issue evidence, completion reports, or non-ignored files. If the user prefers to write values themselves, give exact shell commands or file paths with placeholder values and explain which placeholders to replace locally.
+Choose conventional state filenames from repository evidence and the authentication contract; do not ask the user to choose a filename unless the repository has multiple incompatible conventions. Ask directly whether the user wants to provide the actual development/local login information now, write it themselves, or defer configuration. Do not assume users cannot provide development-environment credentials. If the user provides local-only login/auth values, write them only to the appropriate ignored state/env file and never to Markdown, issue evidence, completion reports, or non-ignored files. If the user prefers to write values themselves, include the relevant auth-state placeholders in `.agentrix/env/init/state/local/setup-local-values.sh` when local setup is in scope, and explain which placeholders to replace locally.
 
 ## Repository Analysis Checklist
 
@@ -211,7 +227,7 @@ Mandatory interaction points:
 
 - If more than one environment mode appears usable, ask which mode future agents should prefer by default for development and validation. Record the answer in `.agentrix/env/README.md` and the matching state file: `.agentrix/env/init/state/local/001-current-local-state.md` for local targets, or `.agentrix/env/init/state/remote/{host}/001-current-remote-state.md` for confirmed remote targets.
 - If the repository has browser-visible authenticated surfaces or browser validation flows, ask the user whether they want to provide development-environment login/authentication information now, write it themselves, or defer it. Use conventional state filenames from repository evidence; do not ask the user to name the file unless conventions conflict.
-- If local env files or required credentials are missing, ask whether the user wants to provide development-environment values now, write them into the correct local files themselves, or use existing local files. Development/local credentials may be provided by the user when they choose to do so; treat them as secret input and store them only in ignored local state/env files, never in Markdown or reports.
+- If local env files or required credentials are missing, ask whether the user wants to provide development-environment values now, write them into the correct local files themselves, use existing local files, or defer. When the user chooses to write values themselves for local setup, create `.agentrix/env/init/state/local/setup-local-values.sh` with placeholders and safe non-overwrite behavior so they can edit and run one script instead of manually translating docs into commands. Development/local credentials may be provided by the user when they choose to do so; treat them as secret input and store them only in ignored local state/env files, never in Markdown or reports.
 
 Ask before documenting or relying on:
 
@@ -288,4 +304,5 @@ When finished, report:
 - `.agentrix/env/` files created or updated;
 - important unknowns left as placeholders only when they could not be answered from repository evidence and were not reasonably askable in this session;
 - mandatory questions asked and the non-secret choices recorded;
+- if `.agentrix/env/init/state/local/setup-local-values.sh` was created, the exact path and the command the user can run after editing placeholders;
 - whether any existing user content was preserved.

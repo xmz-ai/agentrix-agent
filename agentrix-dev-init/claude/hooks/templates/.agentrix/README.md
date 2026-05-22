@@ -5,7 +5,7 @@ This directory is a dogfood installation of the project-local guidance that futu
 ## Structure
 
 - `prompt.md` — short system-prompt extension that routes agents to project-local operating knowledge and workflow skills.
-- `dev/` — project-specific development environment, command, service, and troubleshooting facts. Start from `dev/README.md`.
+- `env/` — project-specific environment, command, service, initialization, and troubleshooting facts. Start from `env/README.md`.
 - `issues/` — requirements, plans, reviews, and test evidence for development work.
 - `plugins/agentrix-devops/skills/` — reusable workflow skills for project development work and web app end-to-end testing.
 
