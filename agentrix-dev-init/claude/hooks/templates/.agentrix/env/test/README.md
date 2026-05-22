@@ -21,11 +21,7 @@ Before running Agentrix web app E2E, read:
 
 ## Workflows
 
-- `workflows/agent-chat-start-run.md` — UI action pattern for starting a real agent run from an Agentrix web agent chat. It covers selecting the agent context, opening a new run, selecting execution target, entering the issue-specific prompt, starting the run, and handing verification back to the calling test.
-
 ## Lessons
-
-- `lessons/451-automation-corrections.md` — Retrospective from issue 451. Records the user corrections, what the agent did wrong, why it was wrong, and the new automation rules.
 
 ## When To Add A New Memory
 

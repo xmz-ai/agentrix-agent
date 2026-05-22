@@ -13,6 +13,7 @@ const FIXED_TEMPLATE_PATHS = [
   '.agentrix/plugins/agentrix-devops/skills/agentrix-test-memory',
   '.agentrix/plugins/agentrix-devops/skills/webapp-testing',
   '.agentrix/env/test/README.md',
+  '.agentrix/env/.gitignore',
 ];
 
 async function pathExists(path: string): Promise<boolean> {
@@ -98,18 +99,33 @@ async function ensureEnvDirectories(workspace: string): Promise<void> {
   }
 }
 
+async function runBootstrap(context: Parameters<HookFactory>[0]): Promise<void> {
+  const workspace = context.getWorkspace();
+  for (const relativePath of FIXED_TEMPLATE_PATHS) {
+    await copyTemplate(workspace, relativePath);
+  }
+
+  await ensureEnvDirectories(workspace);
+}
+
 const createHooks: HookFactory = (context) => {
+  const bootstrap = async () => {
+    await runBootstrap(context);
+    return {};
+  };
+
   return {
-    SessionStart: async () => {
-      const workspace = context.getWorkspace();
-      for (const relativePath of FIXED_TEMPLATE_PATHS) {
-        await copyTemplate(workspace, relativePath);
-      }
+    // Preferred lifecycle hook when the Claude SDK emits it.
+    SessionStart: bootstrap,
 
-      await ensureEnvDirectories(workspace);
+    // Fallback before the first user prompt is processed, for runtimes that do not emit SessionStart consistently.
+    UserPromptSubmit: bootstrap,
 
-      return {};
-    },
+    // Last-resort fallback before the first tool call. This is idempotent and only creates missing fixed files/directories.
+    PreToolUse: async () => {
+      await runBootstrap(context);
+      return { decision: 'approve' as const };
+    }
   };
 };
 
