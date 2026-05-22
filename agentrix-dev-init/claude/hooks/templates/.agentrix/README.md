@@ -12,6 +12,6 @@ This directory is a dogfood installation of the project-local guidance that futu
 ## Authoring rules
 
 - Keep reusable workflow logic in `plugins/agentrix-devops/skills/`.
-- Keep repository-specific commands and operational details under `.agentrix/dev/`.
+- Keep repository-specific commands and operational details under `.agentrix/env/`.
 - Do not encode one project's commands into reusable skills.
 - Runtime-specific integrations may load skills as plugins, but runtimes without skill/plugin support should read the matching `SKILL.md` file directly.
