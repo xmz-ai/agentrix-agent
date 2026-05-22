@@ -1,0 +1,5 @@
+{
+  "name": "Agentrix Dev Init",
+  "version": "0.1.0",
+  "description": "Initializes project-local Agentrix guidance by creating fixed .agentrix files and authoring environment documentation."
+}

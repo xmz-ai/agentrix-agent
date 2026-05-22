@@ -1,0 +1,5 @@
+.env
+.env.*
+init/state/local/
+init/state/remote/*/authentication/
+**/.DS_Store
