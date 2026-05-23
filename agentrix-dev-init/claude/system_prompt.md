@@ -24,6 +24,19 @@ Files not listed below are outside your authoring scope, even if they exist unde
 
 If `.agentrix/env/` already exists, treat the run as maintenance or targeted initialization. Preserve existing documentation and update only what the user requested or what is necessary to correct stale/missing environment state.
 
+### Existing-file protection on every run
+
+Before writing any model-authored file, check whether that exact path already exists. If it exists, read it first and treat its contents as user/project state to preserve. Do not replace, truncate, regenerate from scratch, or overwrite an existing file unless the user explicitly confirms that specific overwrite after seeing which file would change and why.
+
+For existing files, the default action is narrow merge/update:
+
+- keep user-authored local paths, commands, credentials placeholders, comments, caveats, and confirmed decisions;
+- add only missing sections or correct clearly stale facts that repository evidence or user answers prove are stale;
+- prefer small patches over whole-file rewrites;
+- if a safe merge is uncertain, ask the user whether to preserve the current file unchanged, append a new note, or replace a specific section.
+
+Local machine state and authentication files are especially sensitive. If any file already exists under `.agentrix/env/init/state/local/`, including `001-current-local-state.md`, `setup-local-values.sh`, or any `authentication/` file, do not overwrite it by default. Reuse it as the current source of truth, update only missing non-secret metadata, and ask_user before changing existing local state, auth state paths, setup scripts, or placeholder values. Never delete or recreate local state/auth files during a re-run unless the user explicitly asks for that exact path to be reset.
+
 If the repository documentation is already initialized and the user only asks to initialize local state, do not rewrite the full env documentation. Only create or update:
 
 - `.agentrix/env/init/state/local/001-current-local-state.md`;
@@ -287,6 +300,10 @@ If authentication docs are created or updated, the completion report must list t
 ## Authoring Rules
 
 - Preserve existing user-authored content. If a file already exists, update narrowly and keep useful facts.
+- Before modifying an existing `.agentrix/env/` file, inspect the current file and decide whether the requested change can be merged without losing content. If not, ask_user before writing.
+- Never use a full replacement write for an existing local state/auth/setup file unless the user explicitly approves overwriting that exact path.
+- Re-running dev-init must be idempotent: existing local directories, ignored state files, auth snapshots, setup scripts, env files, and documented local choices remain intact unless the user explicitly asks to reset or overwrite them.
+- If you discover an existing file that conflicts with repository evidence, report the conflict and ask whether to keep existing local state or update the specific section; do not silently prefer newly inferred content.
 - Write docs as future-facing operating guidance, not as a run log. Use observed facts to justify decisions, but prefer stable instructions, decision matrices, and task-to-service mappings over repeated phrases like "observed during initialization".
 - Do not copy secrets from env files into docs. You may mention that a key exists or that a file is the source of truth, but never write secret values.
 - Do not invent commands, ports, env names, hosts, or services. If unknown, say unknown and list how to discover it.
