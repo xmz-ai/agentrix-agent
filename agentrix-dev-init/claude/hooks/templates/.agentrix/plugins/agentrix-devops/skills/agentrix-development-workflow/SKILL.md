@@ -2,7 +2,7 @@
 
 Use this skill for non-trivial implementation work that starts from a user request, requirement, bug report, or issue. It is not limited to Git hosting issues.
 
-This is an acceptance-first workflow: write or update the issue context, plan, review questions, and test plan before or during implementation; after implementation, answer review questions first, then run tests.
+This is an acceptance-first workflow: write or update the issue context, plan, review questions, and test plan before implementation whenever a plan is required; after implementation, answer review questions first, then run tests. Never write code first and then backfill the plan or review questions, unless you have explicitly judged that planning is unnecessary for this change or you are only acting as an implementation executor for an existing valid plan.
 
 Tiny non-functional edits do not need the full workflow, such as wording changes, typos, simple CSS styling, documentation / README / checklist / explanatory text. Function-related changes should use the full workflow.
 
@@ -89,7 +89,7 @@ Primarily the solution designer role. The implementation executor should read th
 Do not treat every requirement note or MVP sketch as a plan. A file under `plan/` must be actionable enough that an implementation executor can reasonably proceed from it. If the current role is only requirement proposer, or the idea remains product direction / MVP exploration / non-actionable thinking, keep it in a root-level draft file such as `mvp-draft.md`, `product-draft.md`, or `notes.md` and link it from `README.md`.
 
 - Check whether `plan/` already contains a plan for the current iteration.
-- If no current actionable plan exists and implementation is requested/ready, create the next numbered plan file under `plan/` before implementation.
+- If no current actionable plan exists and implementation is requested/ready, create the next numbered plan file under `plan/` before any code changes. Never write code first and then fill in the plan later, unless you have explicitly judged that planning is unnecessary for this change or you are only acting as an implementation executor for an existing valid plan.
 - If the requirement, constraints, or intended approach changed after a real plan exists, append a new numbered plan revision instead of overwriting the old one.
 - Plans should capture the chosen approach, relevant alternatives, files/modules likely affected, risks, what should not change, and testing/verification strategy.
 - Identify the source of the behavior rather than only the surface file.
@@ -99,14 +99,14 @@ Do not treat every requirement note or MVP sketch as a plan. A file under `plan/
 
 Primarily the solution designer role. These questions are prepared for the implementation executor to answer after implementation.
 
-- For every new or revised plan, create matching numbered question files under `review/questions/`.
+- For every new or revised plan, create matching numbered question files under `review/questions/` before implementation begins. Do not generate review questions retroactively after coding as a substitute for pre-implementation design review.
 - Review questions should be answerable after implementation.
 - Questions should probe architecture path, behavior, edge cases, safety, compatibility, UX/prompt/rendering implications when relevant, tests run, and known limitations.
 - The purpose is to review semantics and design decisions, not just to inspect a diff.
 
 ### 5. Implement
 
-Primarily the implementation executor role. Start here only after the relevant requirement, plan, and review questions are available or confirmed unnecessary for a trivial change.
+Primarily the implementation executor role. Start here only after the relevant requirement, plan, and review questions are available, after you have explicitly judged that planning/review questions are unnecessary for this change, or when you are only executing an existing valid plan. If the task needs a plan, stop before editing code until that plan and its review questions exist.
 
 - Do not stash, switch branches, reset, clean, commit, push, or force operations unless explicitly requested.
 - Keep the diff scoped to the task.
