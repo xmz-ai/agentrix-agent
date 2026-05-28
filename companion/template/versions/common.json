@@ -10,7 +10,7 @@
     "description": "Agentrix Hive discovery and feedback skill"
   },
   "claude/plugins/companion-core/skills/memory/SKILL.md": {
-    "version": "1.2.0",
+    "version": "1.3.0",
     "updateStrategy": "overwrite",
     "description": "Companion memory management skill"
   },

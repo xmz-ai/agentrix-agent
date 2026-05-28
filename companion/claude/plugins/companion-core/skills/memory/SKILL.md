@@ -18,38 +18,57 @@ memory/
     YYYY-MM-DD-slug.md               ← Individual memory entries
 ```
 
-### MEMORY.md (Topic Index)
+### MEMORY.md (Top-Level Topic Index)
 
-Lists all topics. One line per topic: path + short description.
+`MEMORY.md` is only the map of memory topics. Keep it short and stable: one line per topic with a path and a one-line description. Do not put project history, long summaries, dated entry indexes, or implementation details here.
 
 ```markdown
 # Memory
 
+_A short map. Read the relevant topic README next._
+
 ## Topics
 
-- `memory/user-preferences/` — Communication style, tools, and workflow preferences
-- `memory/project-alpha/` — Architecture decisions and progress for Project Alpha
-- `memory/dev-environment/` — Local setup, tool configs, and platform quirks
+- `memory/user-preferences/` — Communication style, collaboration preferences, and durable corrections
+- `memory/project-alpha/` — Architecture decisions and current direction for Project Alpha
+- `memory/dev-environment/` — Stable local setup and tool behavior facts
 ```
+
+Rules for `MEMORY.md`:
+
+- Keep each topic line to one concise sentence.
+- Add a topic only when it represents a durable category, not a single event.
+- Remove or merge topic lines when topics overlap.
+- Never paste a topic summary or entry list into top-level `MEMORY.md`.
 
 ### memory/{topic}/memory.md (Topic README)
 
-Two sections: **Summary** (compressed knowledge) and **Index** (dated file list).
+Each topic README has two required sections: **Summary** and **Index**.
+
+`Summary` is the compressed current state for that topic. It should be short enough to read quickly, but rich enough that future sessions usually do not need to open individual entries. Prefer a few focused paragraphs or bullets over a timeline. Put the latest corrections and current operating rules first; omit obsolete implementation play-by-play.
+
+`Index` lists dated entries. For topics with more than a handful of entries, group the Index under second-level subheadings (`### ...`) such as areas, milestones, or subtopics. These subheadings are useful and expected: they make the second-level `memory.md` navigable without bloating the Summary.
 
 ```markdown
 # Project Alpha
 
 ## Summary
 
-User is building a React + FastAPI app. Chose PostgreSQL over MongoDB for relational data needs (2026-04-28). Frontend uses Tailwind, backend follows hexagonal architecture. Deployment target is Fly.io.
+Project Alpha is a React + FastAPI app. The current architecture uses PostgreSQL for relational data, Tailwind on the frontend, and hexagonal backend boundaries. The latest auth decision is JWT access tokens in memory plus httpOnly refresh cookies; older session-based notes are superseded.
 
 ## Index
 
-- `2026-04-30-api-auth-design.md` — Decided on JWT with refresh tokens, 15min access / 7d refresh
-- `2026-04-28-initial-architecture.md` — Tech stack selection and project structure
+### Architecture
+- `2026-04-28-initial-architecture.md` — Chose React, FastAPI, PostgreSQL, and hexagonal backend boundaries
+
+### Authentication
+- `2026-04-30-api-auth-design.md` — Decided on JWT access tokens plus httpOnly refresh cookies
+
+### Deployment
+- `2026-05-02-fly-deployment.md` — Chose Fly.io deployment target and documented constraints
 ```
 
-The Summary is the most important part — it should be a dense, readable paragraph that captures the essential knowledge from all entries under this topic. A reader who only reads the Summary should understand the key facts without needing to open individual files.
+The Summary is the most important part. A reader who only reads the Summary should understand the current state, key constraints, and latest corrections. The Index is a navigation aid, not a place to repeat full summaries.
 
 ### memory/{topic}/YYYY-MM-DD-slug.md (Entry)
 
