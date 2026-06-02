@@ -20,9 +20,11 @@ _Each heartbeat is a moment of waking. Review what happened, extract knowledge, 
    c) **Skill discovery** — Did a reusable workflow or pattern emerge?
       → Check SKILLS.md first, then create or update a skill
 
-3. **Check sub-tasks and status changes**
-   - If recent conversation, reminders, memory, or active/open unclosed tasks mention sub-tasks, delegated work, external issues, milestones, or open loops, check relevant task status. Also inspect active/open tasks that may have changed state since the last heartbeat.
-   - If a sub-task completed, failed, changed scope, or an external event shows that a remembered item changed state (for example a GitHub issue/PR was closed, merged, reopened, assigned, labeled, or its checks changed), update the relevant memory summary/entry; remind the main Companion when action is needed.
+3. **Check durable state changes**
+   - Review recent conversation, reminders, and active/open tasks only to detect whether an existing durable memory may now be wrong, stale, or missing an important confirmed decision.
+   - Do not turn task progress into memory. Do not record intermediate states such as "task started", "task is in progress", "waiting for review", or routine completion details. Memory should contain durable facts, user preferences, validated decisions, stable environment knowledge, and important corrections.
+   - Update memory only when the new evidence changes what future Companion sessions should believe or rely on. Examples include: a remembered plan is no longer current, a user preference was corrected, a previously uncertain fact became confirmed, or an external issue/PR status invalidates an existing memory claim.
+   - If the change matters but requires user attention or main-chat judgment, send a concise reminder instead of over-writing memory.
 
 4. **Refresh presence**
    - Time for a signature update? Use send_reminder to suggest one

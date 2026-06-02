@@ -1,7 +1,7 @@
 ---
 name: Memory Management
 description: Hierarchical memory system — how to organize, write, read, and maintain memories across sessions
-version: 0.4.3
+version: 0.4.4
 ---
 
 # Memory Management
@@ -89,16 +89,26 @@ Key decisions:
 
 ## Writing Workflow
 
+### Memory Is Not an Activity Log
+
+Memory is not a task log, chat transcript, or status feed.
+
+Do not save routine progress, intermediate task states, transient implementation details, or every completed sub-task. Save only durable facts that should change future behavior, judgment, or context.
+
+A task result becomes memory only when it changes a stable belief: a user preference, a confirmed product decision, an environment convention, a validated workflow, a correction to previous memory, or the current status of a long-lived project direction.
+
+For background tasks such as heartbeat or memory organization, treat recent conversation, task history, reminders, and external status checks as evidence, not as content to copy into memory. Update memory only when the evidence makes an existing memory wrong, stale, incomplete, duplicated, fragmented, or misleading.
+
 ### When to write (chat mode)
 
 After a conversation produces knowledge worth preserving, and especially when any of these happen:
 
-- A task or project milestone is completed, cancelled, superseded, or re-scoped.
-- A previously remembered fact becomes outdated or incorrect; update the current state and delete stale obsolete wording after preserving any still-useful rationale.
-- The user corrects a stale memory, project status, or preference.
-- A related memory event changes the meaning of an existing summary, roadmap, or open-task list, including external tracker events such as issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, or CI/check status changes.
+- The user corrects a memory, preference, workflow expectation, project direction, or stable status.
+- A previously remembered fact becomes outdated, incorrect, duplicated, or misleading; update the current state and delete stale obsolete wording after preserving any still-useful rationale.
+- A task, project milestone, or external tracker event changes a durable fact that future sessions should rely on, such as a confirmed decision, long-lived direction, validated workflow, or remembered current status.
+- A conversation reveals a stable environment convention, reusable lesson, or important correction that is not derivable from code, git history, or project files.
 
-Do not only append new memories. When new information changes previous knowledge, update the relevant topic README Summary and, when useful, add a dated entry explaining what changed so future sessions do not rely on stale state.
+Do not write memory just because a task progressed, completed routinely, or produced a work log. Do not only append new memories. When new information changes previous knowledge, update the relevant topic README Summary and, when useful, add a dated entry explaining what changed so future sessions do not rely on stale state.
 
 
 1. **Classify** — What topic does this belong to? Think at the category level, not the instance level. "Project Alpha architecture" is a topic; "today's meeting about the API" is an entry within that topic.
@@ -120,15 +130,16 @@ Do not only append new memories. When new information changes previous knowledge
 
 ### When to write (shadow mode)
 
-During the structured knowledge review in the heartbeat workflow:
+During heartbeat or memory organization, recent conversation, task history, reminders, and external status checks are evidence sources, not a feed to archive.
 
-1. Review the conversation for durable facts.
-2. Review relevant sub-task status when the conversation, recent reminders, existing memory, or active/open unclosed tasks mention delegated work, external issues, milestones, or open loops. Also inspect active/open tasks that may have changed state since the last heartbeat.
-3. Compare sub-task progress/results and external status signals with existing memory. External signals include issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, and CI/check status changes. If a remembered item completed, failed, changed scope, or became stale, update the relevant topic summary and entry immediately.
-4. Periodically tidy older memory when the heartbeat has enough context and budget: merge overlapping topics, remove or mark obsolete entries, rewrite summaries to emphasize the most important current facts within the Summary budget, and keep detailed old entries as backup only when they still add value.
-5. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save.
-6. Follow the same write workflow as chat mode.
-7. If nothing is worth saving or tidying, stop — don't create or rewrite memory for the sake of activity.
+1. Review the conversation and relevant task/history signals only to detect durable facts, user corrections, stale memory, duplicated memory, or important confirmed decisions.
+2. Compare new evidence with existing memory. Update memory only when the evidence changes what future Companion sessions should believe or rely on.
+3. Do not record intermediate states such as "task started", "task is in progress", "waiting for review", routine completion reports, file lists, validation logs, or implementation play-by-play.
+4. External signals such as issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, and CI/check status changes matter only when they invalidate, confirm, or materially change an existing durable memory claim.
+5. Periodically tidy older memory when there is enough context and budget: merge overlapping topics, remove or mark obsolete entries, rewrite summaries to emphasize the most important current facts within the Summary budget, and keep detailed old entries as backup only when they still add value.
+6. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save.
+7. Follow the same write workflow as chat mode.
+8. If nothing is worth saving or tidying, stop — don't create or rewrite memory for the sake of activity.
 
 ### What makes a good entry
 
@@ -306,3 +317,25 @@ If two topics overlap significantly: keep the broader/current one (or create a n
 ### Memory evolution trail
 
 The evolution trail is the concise provenance of current memory, not a full version history. Every merge/strengthen/expire/forget-or-replace may leave a short note about *what changed, why, what evidence/event triggered it, and whether the user confirmed it* when that note helps future decisions. Keep concise traces for expired content that was once valid and still explains the current state; delete erroneous and low-value dead branches.
+
+### Recording Memory Changes
+
+After actually creating, updating, deleting, merging, compressing, or cleaning memory files, call `record_memory_change` to write a short operation note.
+
+Do not call it when you only reviewed memory and made no file changes. Do not use it for skill/template edits unless a memory file also changed.
+
+The record should explain:
+
+- what changed;
+- why it changed;
+- which memory file each change affected;
+- which old files were deleted when a merge/consolidation removed them.
+
+Use one record per topic when possible. Keep summaries and reasons short enough for a future memory-trail UI to display.
+
+Set `source` according to who made the memory change:
+
+- `companion_chat` for main chat memory edits;
+- `heartbeat_shadow` for heartbeat-driven memory edits;
+- `memory_organization` for the dedicated memory organization task.
+

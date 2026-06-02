@@ -19,9 +19,11 @@ _每次心跳都是一次短暂醒来：回顾、提取知识、微成长。_
    c) **技能发现** — 是否出现了可复用的工作流或模式？
       → 先查看 SKILLS.md，再决定创建或更新技能
 
-3. **检查子任务和状态变化**
-   - 如果最近对话、提醒、记忆，或 active/open 且未关闭的 task 中提到子任务、委派工作、外部 issue、里程碑或 open loop，检查相关任务当前状态。也要检查可能自上次 heartbeat 后发生变化的 active/open 未关闭 task。
-   - 如果子任务完成、失败、范围变化，或外部事件表明某个记忆中的事项状态改变（例如 GitHub issue/PR 已关闭、合并、重开、分配、打标签，或 checks 状态变化），更新相关记忆 summary/entry；必要时提醒主 Companion。
+3. **检查 durable 状态变化**
+   - 查看近期对话、提醒和 active/open task 的目的，只是判断现有 durable memory 是否已经错误、过期，或是否缺少重要且已确认的决策。
+   - 不要把任务进度写成记忆。不要记录“任务开始了”“任务进行中”“等待 review”“普通完成结果”这类中间状态。Memory 应保存 durable facts、用户偏好、已验证决策、稳定环境知识和重要纠正。
+   - 只有当新证据会改变未来 Companion 会话应该相信或依赖的内容时，才更新 memory。例如：已记录的计划不再 current、用户偏好被纠正、原本不确定的事实变成 confirmed、外部 issue/PR 状态使已有 memory claim 失效。
+   - 如果变化重要但需要主 Companion 判断或用户注意，发送简短提醒，而不是把过程性状态写入 memory。
 
 4. **刷新外显形象**
    - 如果需要更新签名，用 send_reminder 建议主 Companion 更新

@@ -1,8 +1,13 @@
 {
   "claude/HEARTBEAT.md": {
-    "version": "1.5.0",
+    "version": "1.5.1",
     "updateStrategy": "notify-user",
     "description": "Companion 心跳例程"
+  },
+  "claude/MEMORY_ORGANIZATION.md": {
+    "version": "1.0.1",
+    "updateStrategy": "notify-user",
+    "description": "Companion 记忆整理例程"
   },
   "claude/IDENTITY.md": {
     "version": "1.0.0",
