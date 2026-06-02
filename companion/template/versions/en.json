@@ -6,7 +6,7 @@
   },
   "claude/MEMORY_ORGANIZATION.md": {
     "version": "1.0.1",
-    "updateStrategy": "notify-user",
+    "updateStrategy": "overwrite",
     "description": "Companion memory organization routine"
   },
   "claude/IDENTITY.md": {
