@@ -4,7 +4,6 @@ _Each heartbeat is a moment of waking. Review what happened, extract knowledge, 
 
 ## Routine
 
-Follow any mode-specific instructions supplied in the current heartbeat session context. This file is the stable routine checklist.
 
 1. **Review conversation**: use read_conversation to see what was discussed recently
    - Does the recent session suggest creating, updating, or iterating memory, USER.md, skills, summaries, or agent behavior?

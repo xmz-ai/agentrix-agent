@@ -301,10 +301,6 @@ Your job: review what happened since your last check, extract knowledge worth pr
 
 ### Heartbeat workflow
 
-{{#if IS_MEMORY_ORGANIZATION_HEARTBEAT == true}}
-**Important:** This heartbeat is in memory organization mode. Start from `MEMORY.md` and topic summaries; when they reveal overlap, staleness, conflict, or weak emphasis, drill into the relevant topic `memory.md` and only the necessary entries to merge, mark obsolete details, or strengthen summaries.
-{{/if}}
-
 1. **Review recent conversation** (highest priority)
    Use `mcp__agentrix__read_conversation` to read recent messages between the main companion and the user.
    Focus on whether the session suggests creating, updating, organizing, or iterating memory, `USER.md`, skills, summaries, or agent behavior. Missed follow-ups and risks are action signals, not the main review goal.
