@@ -1,7 +1,7 @@
 ---
 name: Memory Management
 description: Hierarchical memory system — how to organize, write, read, and maintain memories across sessions
-version: 0.4.4
+version: 0.4.5
 ---
 
 # Memory Management
@@ -98,6 +98,14 @@ Do not save routine progress, intermediate task states, transient implementation
 A task result becomes memory only when it changes a stable belief: a user preference, a confirmed product decision, an environment convention, a validated workflow, a correction to previous memory, or the current status of a long-lived project direction.
 
 For background tasks such as heartbeat or memory organization, treat recent conversation, task history, reminders, and external status checks as evidence, not as content to copy into memory. Update memory only when the evidence makes an existing memory wrong, stale, incomplete, duplicated, fragmented, or misleading.
+
+### Sub-task and executor reports
+
+Sub-task reports are evidence, not memory entries. Do not copy or progressively append executor reports into memory.
+
+When a sub-task or executor report changes memory, extract only the smallest current-state claim that future sessions should rely on: a confirmed product/system invariant, a corrected user preference, a validated workflow, a stable environment fact, or a caveated current project status. Leave touched-file lists, validation commands, logs, temporary task ids/timestamps, and implementation play-by-play in task history or git.
+
+If the same workstream already has a memory entry, rewrite or compress that entry into the current design/status instead of adding another follow-up report bullet. If the implementation is still awaiting user review or acceptance, keep that caveat concise; do not preserve every reported correction as memory.
 
 ### When to write (chat mode)
 
@@ -333,9 +341,5 @@ The record should explain:
 
 Use one record per topic when possible. Keep summaries and reasons short enough for a future memory-trail UI to display.
 
-Set `source` according to who made the memory change:
-
-- `companion_chat` for main chat memory edits;
-- `heartbeat_shadow` for heartbeat-driven memory edits;
-- `memory_organization` for the dedicated memory organization task.
+Set `source` according to the evidence source for the changed memory fact, not the Companion execution path or writer. Examples: `user correction`, `recent conversation`, `task history`, `reminder`, `existing memory consolidation`, `verified project evidence`, or `sub-task report`.
 

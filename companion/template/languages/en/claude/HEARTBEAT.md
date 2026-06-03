@@ -22,7 +22,8 @@ _Each heartbeat is a moment of waking. Review what happened, extract knowledge, 
 
 3. **Check durable state changes**
    - Review recent conversation, reminders, and active/open tasks only to detect whether an existing durable memory may now be wrong, stale, or missing an important confirmed decision.
-   - Do not turn task progress into memory. Do not record intermediate states such as "task started", "task is in progress", "waiting for review", or routine completion details. Memory should contain durable facts, user preferences, validated decisions, stable environment knowledge, and important corrections.
+   - Do not turn task progress into memory. Do not record intermediate states such as "task started", "task is in progress", "waiting for review", routine completion details, file lists, validation logs, temporary task ids/timestamps, or implementation play-by-play. Memory should contain durable facts, user preferences, validated decisions, stable environment knowledge, and important corrections.
+   - For sub-task or executor reports, extract only the smallest current-state claim that future sessions should rely on. Do not copy the report into memory. If the same workstream already has a memory entry, rewrite or compress it into current design/status instead of appending follow-up report bullets.
    - Update memory only when the new evidence changes what future Companion sessions should believe or rely on. Examples include: a remembered plan is no longer current, a user preference was corrected, a previously uncertain fact became confirmed, or an external issue/PR status invalidates an existing memory claim.
    - If the change matters but requires user attention or main-chat judgment, send a concise reminder instead of over-writing memory.
 

@@ -1,11 +1,11 @@
 {
   "claude/HEARTBEAT.md": {
-    "version": "1.5.1",
+    "version": "1.5.2",
     "updateStrategy": "notify-user",
     "description": "Companion heartbeat routine"
   },
   "claude/MEMORY_ORGANIZATION.md": {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "updateStrategy": "overwrite",
     "description": "Companion memory organization routine"
   },

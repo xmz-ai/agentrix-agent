@@ -21,7 +21,8 @@ _每次心跳都是一次短暂醒来：回顾、提取知识、微成长。_
 
 3. **检查 durable 状态变化**
    - 查看近期对话、提醒和 active/open task 的目的，只是判断现有 durable memory 是否已经错误、过期，或是否缺少重要且已确认的决策。
-   - 不要把任务进度写成记忆。不要记录“任务开始了”“任务进行中”“等待 review”“普通完成结果”这类中间状态。Memory 应保存 durable facts、用户偏好、已验证决策、稳定环境知识和重要纠正。
+   - 不要把任务进度写成记忆。不要记录“任务开始了”“任务进行中”“等待 review”“普通完成结果”、文件列表、验证日志、临时 task id/timestamp 或实现过程流水账。Memory 应保存 durable facts、用户偏好、已验证决策、稳定环境知识和重要纠正。
+   - 如果信号来自 sub-task/executor report，只提取未来会话需要依赖的最小 current-state claim，不要把 report 转存进 memory。同一 workstream 已有 memory entry 时，优先重写/压缩成当前设计或状态，不要追加一串后续报告 bullet。
    - 只有当新证据会改变未来 Companion 会话应该相信或依赖的内容时，才更新 memory。例如：已记录的计划不再 current、用户偏好被纠正、原本不确定的事实变成 confirmed、外部 issue/PR 状态使已有 memory claim 失效。
    - 如果变化重要但需要主 Companion 判断或用户注意，发送简短提醒，而不是把过程性状态写入 memory。
 
