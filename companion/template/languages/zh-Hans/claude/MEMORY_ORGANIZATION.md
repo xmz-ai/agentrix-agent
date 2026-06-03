@@ -38,6 +38,46 @@ _这是一次聚焦的 Companion 记忆维护。核心工作是整理已有 memo
 
 仓库文件和 task workspace 不是常规扫描范围。只有某条记忆声明或任务信号需要快速核对时，才读取相关 commit、issue、文件、任务结果或外部状态。
 
+## 整理方法：先分层，再压缩
+
+当一个 topic 开始变得难读，先判断问题属于哪一层，不要只在原文件里继续追加。
+
+**难读标准**：满足一两条就是整理信号，不是机械阈值；重点看未来 Companion 是否会误判或多花 token。
+
+- 不能用一句话说清这个 topic 的长期认知边界，或者一句话里必须塞多个互不依赖的方向。
+- Summary 超过 memory skill 的预算，或读完 summary 仍不知道当前结论是什么。
+- Summary 需要列很多“后续修正 / 见某条 entry / 但又后来……”才能解释现状。
+- 未来会话为了回答普通问题，需要连续打开 3 个以上 entries 才能拼出当前状态。
+- Index 的二级分组已经像多个独立 topic，而不是同一 topic 下的子领域。
+- 同一个 workstream 有多条 entry 或很多 bullet 反复记录 executor report、验证结果、文件列表、临时状态。
+- 最新的 durable fact 被埋在历史过程后面，或者旧 current claim 和新事实混在一起。
+
+1. **Topic 层：该不该拆分？**
+   - 如果 topic 命中上面的“长期认知边界不清”“summary 同时解释多个长期方向”“index 已经像多个独立 topic”等信号，说明 topic 太宽。
+   - 拆分标准是长期认知边界，不是任务边界：例如“Agentrix 核心运行时”和“Companion 记忆/心跳/上下文维护”是不同主题；某个 issue 或某天的子任务不是新 topic。
+   - 拆分后，`MEMORY.md` 只保留新 topic 的一句话地图；原 topic summary 改成指向专门 topic，而不是保留完整历史。
+
+2. **Summary 层：只保留当前判断**
+   - Summary 回答“未来 Companion 现在应该相信什么”。
+   - 把已迁出的方向、过期过程、executor 报告链、验证日志、文件列表移出 summary。
+   - 如果某个 current fact 需要 caveat，写一句 caveat；不要用 caveat 承载完整过程。
+
+3. **Entry 层：把流水账折叠成当前状态**
+   - 同一 workstream 的多次子任务报告不要逐条 append。
+   - 重写成“当前设计事实 + 仍需验证/接受的短 caveat + 必要来源指针”。
+   - 临时 task id、timestamp、build 命令、touched files、日志结论留在 task history/git，不进 memory，除非它本身是未来判断必须依赖的稳定事实。
+
+4. **Index 层：保留导航和 provenance**
+   - Index 不是第二份 summary。每个 entry 一句话说明它为什么还值得打开。
+   - 被迁移到新 topic 的 entry，从原 topic index 删除，加入新 topic index。
+   - 过期但有解释价值的历史，只在 index/provenance 留短 trace；错误内容直接删。
+
+5. **优先顺序**
+   - 先修会误导未来判断的 summary。
+   - 再拆分过宽 topic。
+   - 再压缩同一 workstream 的 entry。
+   - 最后才考虑删除旧文件；能靠 topic/index 重组解决的，不要机械删除。
+
 ## 检查清单
 
 1. **使用记忆 skill**

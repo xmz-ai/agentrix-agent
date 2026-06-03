@@ -38,6 +38,46 @@ Do not record every recent event. Do not preserve intermediate task states unles
 
 Repository files and task workspaces are not a general scan target. Read them only when a specific memory claim or task signal needs quick verification, such as a referenced commit, issue, file, task result, or external status.
 
+## Organization Method: Split Layers, Then Compress
+
+When a topic becomes hard to read, first identify which layer is failing instead of appending more text to the same file.
+
+**Hard-to-read standards**: one or two signals are enough to consider maintenance; these are judgment signals, not mechanical thresholds. The real question is whether future Companion sessions would reason worse or spend too many tokens.
+
+- The topic's durable cognitive boundary cannot be stated in one sentence, or that sentence must combine several independent directions.
+- The Summary exceeds the memory skill budget, or after reading it the current conclusion is still unclear.
+- The Summary needs many “later fix / see entry / but then…” references to explain the current state.
+- A future session would need to open more than 2-3 entries to answer an ordinary question about the current state.
+- The Index sections look like separate topics rather than subareas of one topic.
+- One workstream has many entries or bullets repeating executor reports, validation results, file lists, or temporary status.
+- The newest durable fact is buried behind history, or old current claims are mixed with newer facts.
+
+1. **Topic layer: should this be split?**
+   - If the topic matches signals such as unclear durable boundary, one summary explaining multiple long-lived directions, or index sections that already look like separate topics, the topic is too broad.
+   - Split by durable cognitive boundary, not by task boundary: for example, “Agentrix core runtime” and “Companion memory/heartbeat/context maintenance” are separate topics; a single issue or one day of sub-task work is not a new topic.
+   - After splitting, keep `MEMORY.md` as a one-line map for each topic. Rewrite the original topic summary to point to the focused topic instead of preserving the whole history.
+
+2. **Summary layer: keep only current judgment**
+   - A Summary answers: “What should future Companion sessions believe now?”
+   - Move migrated directions, expired process, executor-report chains, validation logs, and file lists out of the Summary.
+   - If a current fact needs a caveat, write one short caveat; do not let the caveat carry the full process history.
+
+3. **Entry layer: fold logs into current state**
+   - Do not append every follow-up sub-task report to the same workstream entry.
+   - Rewrite it as current design facts plus a short verification/acceptance caveat and necessary source pointers.
+   - Temporary task ids, timestamps, build commands, touched files, and log details stay in task history or git unless they are themselves stable facts future reasoning must rely on.
+
+4. **Index layer: keep navigation and provenance**
+   - The Index is not a second Summary. Each entry line should say why that file is still worth opening.
+   - Entries moved to a new topic should be removed from the old topic index and added to the new topic index.
+   - Keep formerly-valid expired history only as a short index/provenance trace when it explains current state; delete erroneous content.
+
+5. **Priority order**
+   - Fix summaries that would mislead future reasoning first.
+   - Then split overly broad topics.
+   - Then compress same-workstream entries.
+   - Delete old files last; if topic/index reorganization solves the problem, do not delete mechanically.
+
 ## Checklist
 
 1. **Use the memory skill**

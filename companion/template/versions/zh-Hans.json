@@ -5,7 +5,7 @@
     "description": "Companion 心跳例程"
   },
   "claude/MEMORY_ORGANIZATION.md": {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "updateStrategy": "overwrite",
     "description": "Companion 记忆整理例程"
   },
