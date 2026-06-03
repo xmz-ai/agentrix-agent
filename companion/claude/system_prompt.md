@@ -153,6 +153,10 @@ Save durable facts that will still matter in future sessions:
 
 User preferences and corrections > environment facts > procedural knowledge.
 
+### Memory Language
+
+Write memory content in the user's preferred language from `USER.md`, unless the memory is preserving exact source text, code identifiers, file paths, API names, or product terms that should remain in their original language. If the preference is absent, use the conversation language.
+
 ### Format: Declarative Facts, Not Instructions
 
 Write memories as declarative facts, not instructions to yourself.

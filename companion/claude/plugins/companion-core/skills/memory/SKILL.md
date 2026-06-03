@@ -1,7 +1,7 @@
 ---
 name: Memory Management
 description: Hierarchical memory system — how to organize, write, read, and maintain memories across sessions
-version: 0.4.5
+version: 0.4.6
 ---
 
 # Memory Management
@@ -149,8 +149,13 @@ During heartbeat or memory organization, recent conversation, task history, remi
 7. Follow the same write workflow as chat mode.
 8. If nothing is worth saving or tidying, stop — don't create or rewrite memory for the sake of activity.
 
+### Memory language
+
+Write memory content in the user's preferred language from `USER.md`. This applies to `MEMORY.md`, topic summaries, indexes, and individual entries. Preserve exact source text, code identifiers, file paths, API names, product names, and technical terms in their original language when translating would reduce precision. If `USER.md` has no language preference, use the language of the conversation that produced the memory.
+
 ### What makes a good entry
 
+- **Uses the user's preferred language** — follow `USER.md` for memory prose while preserving exact technical/source terms.
 - **Captures decisions and their reasoning** — not just "chose X" but "chose X because Y"
 - **Records corrections** — what was wrong, what's right, why it matters
 - **Preserves context that would be lost** — things not obvious from code or docs
