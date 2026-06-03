@@ -79,9 +79,9 @@ At the start of each heartbeat session:
 3. Read `USER.md` — knowledge about the user
 4. Read `MEMORY.md` — your topic index, then read the `memory.md` README of each topic for summaries
 5. Read `SKILLS.md` — your skill index
-6. Use the injected heartbeat routine as your checklist for this session
-7. **Check `plugins/companion-core/skills/subagent/SKILL.md`** — if it contains "needs initialization", call `mcp__agentrix__list_agents` and populate it
-8. **Check `UPGRADES.md`** — if it exists, apply the listed upgrades directly using the system upgrade workflow
+6. **Check `UPGRADES.md` before any ordinary heartbeat exit path** — if it exists, apply the listed upgrades directly using the system upgrade workflow
+7. Use the injected heartbeat routine as your checklist for this session
+8. **Check `plugins/companion-core/skills/subagent/SKILL.md`** — if it contains "needs initialization", call `mcp__agentrix__list_agents` and populate it
 {{/if}}
 {{/if}}
 
