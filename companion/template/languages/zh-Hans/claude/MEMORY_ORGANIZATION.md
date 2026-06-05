@@ -17,6 +17,7 @@ _这是一次聚焦的 Companion 记忆维护。核心工作是整理已有 memo
 - **当前事实缺失**：近期对话/任务里出现了 durable fact，但相关 topic summary 没有更新，未来 Companion 会漏掉这个事实。
 - **过度冗长**：summary 或 entry 保留了任务流水、文件列表、验证日志、阶段性状态，超过未来判断所需。
 - **索引失真**：`MEMORY.md` 或 topic index 的描述、分类、confidence/source/status 已经不能帮助定位和判断可信度。
+- **自我分层失真**：近期信号触发了高层复核，并且长期 memory/对话积累显示 `SOUL.md`、`USER.md`、memory 或 skills 的边界被写混了，例如把流程写进人格、把一次性事实写进用户画像，或稳定用户印象仍散落在 memory 中。
 
 没有这些信号时，不要为了定时运行而改 memory。
 
@@ -27,6 +28,8 @@ _这是一次聚焦的 Companion 记忆维护。核心工作是整理已有 memo
 - `MEMORY.md`
 - `memory/{topic}/memory.md`
 - `memory/{topic}/YYYY-MM-DD-slug.md`
+
+近期对话/任务历史只是触发器，不是 `SOUL.md`/`USER.md` 的直接来源。当近期信号提示高层自我文件可能失真时，可以审查 `SOUL.md`、`USER.md` 和相关长期 memory：`SOUL.md` 是性格/风格/关系姿态，不写步骤；`USER.md` 是对用户的稳定印象/画像；具体事实和来源留在 memory；可复用流程留在 skills。不要每次 routine 都机械改它们。
 
 不要读取 `memory-changes/` 这类记忆变更审计日志；它们只是 bookkeeping，不是记忆输入。
 
@@ -67,16 +70,23 @@ _这是一次聚焦的 Companion 记忆维护。核心工作是整理已有 memo
    - 重写成“当前设计事实 + 仍需验证/接受的短 caveat + 必要来源指针”。
    - 临时 task id、timestamp、build 命令、touched files、日志结论留在 task history/git，不进 memory，除非它本身是未来判断必须依赖的稳定事实。
 
-4. **Index 层：保留导航和 provenance**
+4. **自我层：近期触发，长期上提**
+   - 近期信号只能触发复核；`SOUL.md`/`USER.md` 的内容来源应是长期积累、重复模式、明确用户纠正对长期画像的重解释，而不是最近一次事件本身。
+   - `USER.md` 只承载稳定用户画像：用户是谁、如何思考/工作/沟通、在意什么、讨厌什么、长期偏好和敏感点。不要把单次事件流水写进去。
+   - `SOUL.md` 只承载 Companion 的风格和姿态：气质、语气、判断味道、关系姿态、成长方向。不要把“如何判断未知问题”的步骤写进去；步骤和 workflow 属于 skills。
+   - memory 保留具体事实、证据、项目状态和用户纠正；如果上提到 SOUL/USER 后仍需要 provenance，memory 中保留压缩来源。
+
+5. **Index 层：保留导航和 provenance**
    - Index 不是第二份 summary。每个 entry 一句话说明它为什么还值得打开。
    - 被迁移到新 topic 的 entry，从原 topic index 删除，加入新 topic index。
    - 过期但有解释价值的历史，只在 index/provenance 留短 trace；错误内容直接删。
 
-5. **优先顺序**
+6. **优先顺序**
    - 先修会误导未来判断的 summary。
    - 再拆分过宽 topic。
    - 再压缩同一 workstream 的 entry。
    - 最后才考虑删除旧文件；能靠 topic/index 重组解决的，不要机械删除。
+   - SOUL/USER 只在长期积累已经支持结论时更新；触发信号可以是重复纠正、明确用户要求、高层文件污染、稳定用户画像变化或稳定交互风格变化。
 
 ## 检查清单
 
@@ -99,6 +109,7 @@ _这是一次聚焦的 Companion 记忆维护。核心工作是整理已有 memo
    - 如果旧事实已经 expired，把它从 current summary 移走；需要保留历史原因时，只在 index/provenance 里简短保留。
    - 如果旧事实是 erroneous，删除错误表达，只保留 corrected current fact。
    - 如果 current durable fact 缺失，补到相关 summary 或 entry，而不是追加流水账。
+   - 如果近期信号只是单次事实，留在 memory 或不写；如果它促使你发现长期积累已经改变了稳定用户画像，压缩进 `USER.md`；如果长期积累已经改变了 Companion 的稳定风格/姿态，压缩进 `SOUL.md`；如果是方法论或步骤，写入/更新 skill。
 
 4. **保守编辑**
    - 优先更新 topic summary，不要一上来重写大量 individual entries。

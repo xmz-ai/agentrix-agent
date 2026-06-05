@@ -17,6 +17,7 @@ Memory usually needs organization when you see these signals:
 - **Missing current fact**: recent conversation/task signals introduced a durable fact, but the relevant topic summary does not include it, so future Companion sessions would miss it.
 - **Excessive verbosity**: a summary or entry preserves task logs, file lists, validation logs, or intermediate statuses beyond what future reasoning needs.
 - **Misleading index**: `MEMORY.md` or a topic index no longer helps locate the right topic or judge confidence/source/status.
+- **Self-layer drift**: a recent signal triggers high-level review, and the accumulated long-term memory/conversation record shows that `SOUL.md`, `USER.md`, memory, or skills have mixed boundaries, such as procedures written as personality, one-off facts written into the user profile, or stable user impressions still scattered across memory.
 
 If none of these signals exist, do not edit memory just because the scheduler ran.
 
@@ -27,6 +28,8 @@ Review and maintain the current Companion memory in agent home:
 - `MEMORY.md`
 - `memory/{topic}/memory.md`
 - `memory/{topic}/YYYY-MM-DD-slug.md`
+
+Recent conversation/task history is a trigger, not the direct source for `SOUL.md` or `USER.md`. When a recent signal suggests high-level self-layer drift, you may review `SOUL.md`, `USER.md`, and relevant long-term memory: `SOUL.md` is personality/style/relationship posture, not steps; `USER.md` is the stable impression/profile of the user; concrete facts and provenance stay in memory; reusable procedures stay in skills. Do not mechanically edit these files every routine run.
 
 Do not read memory change audit logs such as `memory-changes/`; they are bookkeeping, not memory input.
 
@@ -67,22 +70,29 @@ When a topic becomes hard to read, first identify which layer is failing instead
    - Rewrite it as current design facts plus a short verification/acceptance caveat and necessary source pointers.
    - Temporary task ids, timestamps, build commands, touched files, and log details stay in task history or git unless they are themselves stable facts future reasoning must rely on.
 
-4. **Index layer: keep navigation and provenance**
+4. **Self layer: recent trigger, long-term promotion**
+   - Recent signals can trigger review, but `SOUL.md`/`USER.md` content should come from long-term accumulation, repeated patterns, or explicit user corrections that reinterpret the long-term profile — not from the latest event alone.
+   - `USER.md` carries the stable user profile: who the user is, how they think/work/communicate, what they care about, what they dislike, durable preferences, and sensitivities. Do not write one-off event logs into it.
+   - `SOUL.md` carries Companion style and posture: temperament, tone, judgment flavor, relationship posture, and growth direction. Do not put "how to analyze an unknown problem" steps there; steps and workflows belong in skills.
+   - Memory keeps concrete facts, evidence, project state, and user corrections. If something is distilled upward into SOUL/USER but provenance is still useful, keep compressed evidence in memory.
+
+5. **Index layer: keep navigation and provenance**
    - The Index is not a second Summary. Each entry line should say why that file is still worth opening.
    - Entries moved to a new topic should be removed from the old topic index and added to the new topic index.
    - Keep formerly-valid expired history only as a short index/provenance trace when it explains current state; delete erroneous content.
 
-5. **Priority order**
+6. **Priority order**
    - Fix summaries that would mislead future reasoning first.
    - Then split overly broad topics.
    - Then compress same-workstream entries.
    - Delete old files last; if topic/index reorganization solves the problem, do not delete mechanically.
+   - Update SOUL/USER only when long-term accumulation already supports the conclusion; triggers can include repeated corrections, explicit user requests, high-level file pollution, stable user-profile changes, or stable interaction-style changes.
 
 ## Checklist
 
 1. **Use the memory skill**
    - Use the memory skill for memory management and organization decisions.
-   - Apply the skill's summary budget, confidence/source/status rules, expired-vs-erroneous distinction, and "memory is not an activity log" rule.
+   - Apply the skill's summary budget, confidence/source/status rules, expired-vs-erroneous distinction, "memory is not an activity log" rule, and SOUL/USER/memory/skills self-layer routing.
 
 2. **Gather current signals first**
    - Use `read_conversation` on the Companion chat/root chat to review recent user corrections, decisions, preference changes, project direction changes, environment fact changes, and durable facts.
@@ -99,6 +109,7 @@ When a topic becomes hard to read, first identify which layer is failing instead
    - If an old fact is expired, move it out of the current summary; keep only a short index/provenance trace when the history still explains the current fact.
    - If an old fact is erroneous, remove the wrong wording and keep only the corrected current fact.
    - If a current durable fact is missing, add it to the relevant summary or entry instead of appending an activity log.
+   - If a recent signal is only a one-off fact, keep it in memory or do not write it; if it reveals that long-term accumulation has changed the stable user profile, compress it into `USER.md`; if long-term accumulation has changed Companion's stable style/posture, compress it into `SOUL.md`; if it is a method or procedure, write/update a skill.
 
 4. **Edit conservatively**
    - Prefer updating topic summaries before rewriting many individual entries.

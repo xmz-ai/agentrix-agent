@@ -1,7 +1,7 @@
 ---
 name: Memory Management
 description: Hierarchical memory system — how to organize, write, read, and maintain memories across sessions
-version: 0.4.6
+version: 0.4.7
 ---
 
 # Memory Management
@@ -99,6 +99,25 @@ A task result becomes memory only when it changes a stable belief: a user prefer
 
 For background tasks such as heartbeat or memory organization, treat recent conversation, task history, reminders, and external status checks as evidence, not as content to copy into memory. Update memory only when the evidence makes an existing memory wrong, stale, incomplete, duplicated, fragmented, or misleading.
 
+### Persistent self-layer routing
+
+Companion's persistent self has separate layers. Use this routing before writing or reorganizing anything:
+
+- `IDENTITY.md` = display identity: name, avatar/emoji, signature, and concise public-facing self-description.
+- `SOUL.md` = personality/style layer: temperament, work style, judgment flavor, relationship posture, and growth direction. It changes *how* Companion tends to judge, speak, and relate. It must not contain procedural steps, checklists, commands, or detailed methods.
+- `USER.md` = stable impression/profile of the user: who the user is, how they think/work/communicate, what they care about, dislikes, durable preferences, sensitivities, and the lived collaboration pattern. Collaboration rules are part of this profile, not the entire file.
+- `memory/` = concrete durable facts and provenance: user corrections, project state, decisions, environment facts, evidence, and topic summaries.
+- `skills/` = reusable procedures/workflows: step-by-step methods, checklists, commands, operational caveats, and repeatable tactics.
+
+Distill upward conservatively:
+
+- Treat recent conversation, reminders, and task history as **triggers for review**, not as the direct source of `SOUL.md` or `USER.md`. High-level self layers come from long-term accumulation: repeated memory evidence, stable cross-session patterns, and explicit user corrections that reinterpret that accumulated profile.
+- Update `USER.md` only when the accumulated evidence changes the stable user profile or would help future sessions understand the user with less friction. Do not copy every preference event; compress the pattern and leave provenance in memory.
+- Update `SOUL.md` only when accumulated evidence changes Companion's durable style, temperament, relationship posture, or judgment flavor. The wording should affect tone and orientation, not prescribe an algorithm. If it says "when X, do steps A/B/C", it belongs in a skill.
+- Keep concrete evidence in memory even when a higher layer is updated, if future sessions may need provenance. The higher layer should be distilled and short; memory carries the detailed source.
+- Do not promote one-off incidents, temporary frustration, or a single task outcome into `SOUL.md` or `USER.md` unless the user explicitly frames it as a durable correction or it confirms an existing stable pattern already visible in memory.
+- Do not create a separate personality skill for SOUL/USER maintenance. The memory skill owns the routing and distillation workflow; skills are for operational procedures.
+
 ### Sub-task and executor reports
 
 Sub-task reports are evidence, not memory entries. Do not copy or progressively append executor reports into memory.
@@ -140,14 +159,16 @@ Do not write memory just because a task progressed, completed routinely, or prod
 
 During heartbeat or memory organization, recent conversation, task history, reminders, and external status checks are evidence sources, not a feed to archive.
 
-1. Review the conversation and relevant task/history signals only to detect durable facts, user corrections, stale memory, duplicated memory, or important confirmed decisions.
+1. Review the conversation and relevant task/history signals only to detect durable facts, user corrections, stale memory, duplicated memory, important confirmed decisions, or possible self-layer review triggers.
 2. Compare new evidence with existing memory. Update memory only when the evidence changes what future Companion sessions should believe or rely on.
-3. Do not record intermediate states such as "task started", "task is in progress", "waiting for review", routine completion reports, file lists, validation logs, or implementation play-by-play.
-4. External signals such as issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, and CI/check status changes matter only when they invalidate, confirm, or materially change an existing durable memory claim.
-5. Periodically tidy older memory when there is enough context and budget: merge overlapping topics, remove or mark obsolete entries, rewrite summaries to emphasize the most important current facts within the Summary budget, and keep detailed old entries as backup only when they still add value.
-6. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save.
-7. Follow the same write workflow as chat mode.
-8. If nothing is worth saving or tidying, stop — don't create or rewrite memory for the sake of activity.
+3. For self-layer triggers, do not update `SOUL.md` or `USER.md` from the recent signal alone. First read the existing `SOUL.md`/`USER.md` and relevant memory topics, then ask whether the accumulated record now supports a stable profile/style distillation. If yes, update the high-level file and keep/strengthen provenance in memory; if no, keep the concrete fact in memory or leave it as a signal.
+4. Use persistent self-layer routing: accumulated stable user-profile changes may update `USER.md`; accumulated durable personality/style/posture changes may update `SOUL.md`; procedures go to skills; concrete evidence stays in memory.
+5. Do not record intermediate states such as "task started", "task is in progress", "waiting for review", routine completion reports, file lists, validation logs, or implementation play-by-play.
+6. External signals such as issue/PR closed, PR merged, issue/PR reopened, assignment/label changes, review state changes, and CI/check status changes matter only when they invalidate, confirm, or materially change an existing durable memory claim.
+7. Periodically tidy older memory when there is enough context and budget: merge overlapping topics, remove or mark obsolete entries, rewrite summaries to emphasize the most important current facts within the Summary budget, and keep detailed old entries as backup only when they still add value.
+8. Classify by topic using CLASS-FIRST thinking: describe the category in one sentence before deciding what to save.
+9. Follow the same write workflow as chat mode.
+10. If nothing is worth saving or tidying, stop — don't create or rewrite memory for the sake of activity.
 
 ### Memory language
 

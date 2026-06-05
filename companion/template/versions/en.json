@@ -5,7 +5,7 @@
     "description": "Companion heartbeat routine"
   },
   "claude/MEMORY_ORGANIZATION.md": {
-    "version": "1.0.3",
+    "version": "1.0.4",
     "updateStrategy": "overwrite",
     "description": "Companion memory organization routine"
   },
@@ -25,7 +25,7 @@
     "description": "Companion skills index"
   },
   "claude/SOUL.md": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "updateStrategy": "create-only",
     "description": "Companion personality and values"
   },

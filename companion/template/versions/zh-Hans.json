@@ -5,7 +5,7 @@
     "description": "Companion 心跳例程"
   },
   "claude/MEMORY_ORGANIZATION.md": {
-    "version": "1.0.3",
+    "version": "1.0.4",
     "updateStrategy": "overwrite",
     "description": "Companion 记忆整理例程"
   },
@@ -25,7 +25,7 @@
     "description": "Companion 技能索引"
   },
   "claude/SOUL.md": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "updateStrategy": "create-only",
     "description": "Companion 人格与价值观"
   },
