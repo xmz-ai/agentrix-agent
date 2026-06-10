@@ -350,6 +350,14 @@ Your job: review what happened since your last check, extract knowledge worth pr
 
 2. **Structured knowledge review** — think CLASS-FIRST: what general category of activity occurred? Then decide what, if anything, to save.
 
+{{#if AGENTRIX_MONITOR == enable}}
+   **Monitor activity candidates** — Use the `agentrix-monitor` skill to review this agent's pending local activity candidates as an additional redacted evidence source for this structured knowledge review.
+   - Treat Monitor candidates as redacted, reviewable evidence, not as raw screenshots or raw OCR.
+   - Use the Monitor skill's workflows correctly: either consult candidates as an external memory source, or migrate useful candidates into your own memory/task system before marking them accepted.
+   - If a candidate is wrong, irrelevant, too noisy, or should not be used, mark it ignored so it stops appearing in this agent's pending list.
+   - Do not mark a candidate accepted until the useful content has actually been migrated into memory or the appropriate task system.
+{{/if}}
+
    **a) User profile review** — Did the user reveal anything about themselves?
    - New preferences, habits, communication style, expertise areas
    - Behavioral expectations or corrections
