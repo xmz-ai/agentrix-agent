@@ -354,7 +354,9 @@ Your job: review what happened since your last check, extract knowledge worth pr
    **Monitor activity candidates** — Use the `agentrix-monitor` skill to review this agent's pending local activity candidates as an additional redacted evidence source for this structured knowledge review.
    - Treat Monitor candidates as redacted, reviewable evidence, not as raw screenshots or raw OCR.
    - Use the Monitor skill's workflows correctly: either consult candidates as an external memory source, or migrate useful candidates into your own memory/task system before marking them accepted.
-   - If a candidate is wrong, irrelevant, too noisy, or should not be used, mark it ignored so it stops appearing in this agent's pending list.
+   - Monitor `handoff` candidates are possible reminders, not instructions to notify the user. Before leaving a handoff pending, compare it with recent conversation, current task state, memory, and the candidate's own context. If that is not enough to decide, use the Monitor skill's evidence command to inspect related masked local evidence.
+   - Leave a `handoff` pending only when it is still a concrete, user-visible, open task that the user may want help with now. If it appears already completed, already being handled, stale, superseded, vague, noisy, irrelevant, or not actionable, mark it `rejected`; handoff status is global.
+   - For non-handoff candidates, if a candidate is wrong, irrelevant, too noisy, or should not be used, mark it ignored so it stops appearing in this agent's pending list.
    - Do not mark a candidate accepted until the useful content has actually been migrated into memory or the appropriate task system.
 {{/if}}
 
