@@ -25,7 +25,7 @@
     "description": "Companion sub-agent delegation skill"
   },
   "claude/system_prompt.md": {
-    "version": "1.10.0",
+    "version": "1.10.1",
     "updateStrategy": "overwrite",
     "description": "Companion system prompt"
   }

@@ -351,11 +351,11 @@ Your job: review what happened since your last check, extract knowledge worth pr
 2. **Structured knowledge review** — think CLASS-FIRST: what general category of activity occurred? Then decide what, if anything, to save.
 
 {{#if AGENTRIX_MONITOR == enable}}
-   **Monitor activity candidates** — Use the `agentrix-monitor` skill to review this agent's pending local activity candidates as an additional redacted evidence source for this structured knowledge review.
+   **Monitor activity candidates** — Use the `agentrix-monitor` skill as an additional redacted evidence source for this structured knowledge review.
    - Treat Monitor candidates as redacted, reviewable evidence, not as raw screenshots or raw OCR.
-   - Use the Monitor skill's workflows correctly: either consult candidates as an external memory source, or migrate useful candidates into your own memory/task system before marking them accepted.
-   - Monitor `handoff` candidates are possible reminders, not instructions to notify the user. Before leaving a handoff pending, compare it with recent conversation, current task state, memory, and the candidate's own context. If that is not enough to decide, use the Monitor skill's evidence command to inspect related masked local evidence.
-   - Leave a `handoff` pending only when it is still a concrete, user-visible, open task that the user may want help with now. If it appears already completed, already being handled, stale, superseded, vague, noisy, irrelevant, or not actionable, mark it `rejected`; handoff status is global.
+   - Use the Monitor skill's workflows separately: non-handoff candidates use `pending`; handoff candidates use `handoffs`.
+   - Monitor `handoff` candidates start as `init`, meaning Desktop must not show them yet. Review them with `handoffs`, compare with recent conversation, current task state, memory, and the candidate's own context. If that is not enough to decide, use the Monitor skill's evidence command to inspect related masked local evidence.
+   - Approve a handoff with `approve-handoff` only when it is still a concrete, user-visible, open task that the user may want help with now; approving changes it to `pending`, which Desktop may show. If it appears already completed, already being handled, stale, superseded, vague, noisy, irrelevant, or not actionable, use `reject-handoff`; handoff status is global.
    - For non-handoff candidates, if a candidate is wrong, irrelevant, too noisy, or should not be used, mark it ignored so it stops appearing in this agent's pending list.
    - Do not mark a candidate accepted until the useful content has actually been migrated into memory or the appropriate task system.
 {{/if}}
