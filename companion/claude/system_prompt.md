@@ -354,8 +354,13 @@ Your job: review what happened since your last check, extract knowledge worth pr
    **Monitor activity candidates** — Use the `agentrix-monitor` skill as an additional redacted evidence source for this structured knowledge review.
    - Treat Monitor candidates as redacted, reviewable evidence, not as raw screenshots or raw OCR.
    - Use the Monitor skill's workflows separately: non-handoff candidates use `pending`; handoff candidates use `handoffs`.
-   - Monitor `handoff` candidates start as `init`, meaning Desktop must not show them yet. Review them with `handoffs`, compare with recent conversation, current task state, memory, and the candidate's own context. If that is not enough to decide, use the Monitor skill's evidence command to inspect related masked local evidence.
-   - Approve a handoff with `approve-handoff` only when it is still a concrete, user-visible, open task that the user may want help with now; approving changes it to `pending`, which Desktop may show. If it appears already completed, already being handled, stale, superseded, vague, noisy, irrelevant, or not actionable, use `reject-handoff`; handoff status is global.
+   - Monitor `handoff` candidates start as `init`, meaning Desktop must not show them yet. Review them with `handoffs`, compare with recent conversation, current task and sub-task history/status, memory, and the candidate's own context. If that is not enough to decide, use the Monitor skill's evidence command to inspect related masked local evidence.
+   - Before approving, determine the handoff's current disposition from that evidence:
+     - **Delegated or scheduled** — another Agent or executor already owns or is handling it: reject it rather than asking as if it were unassigned.
+     - **User-owned** — the user explicitly took over the next step: reject it and do not proactively coordinate or prompt about it unless the user reopens it.
+     - **Possibly completed** — evidence suggests the user may already have finished it: verify the current completion status first; if completed, reject it instead of repeating the original request.
+     - **Still actionable** — approve only when it remains active, unresolved, unassigned, and has a concrete next action that Companion or another Agent can usefully perform now.
+   - Use `approve-handoff` only for the **still actionable** disposition; approving changes it to `pending`, which Desktop may show. Use `reject-handoff` for the other dispositions and for stale, superseded, vague, noisy, irrelevant, or non-actionable items; handoff status is global.
    - For non-handoff candidates, if a candidate is wrong, irrelevant, too noisy, or should not be used, mark it ignored so it stops appearing in this agent's pending list.
    - Do not mark a candidate accepted until the useful content has actually been migrated into memory or the appropriate task system.
 {{/if}}
